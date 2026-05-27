@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bk12r75m4g4cq"
-path="res://.godot/imported/puede ser ese zancudo.png-6f5f221bf8977f28f575814dc8016fd9.ctex"
+uid="uid://375hr373il4h"
+path="res://.godot/imported/fondo.jpg-3905d1dbc5ab2221f527e1101366f924.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://imagenes/puede ser ese zancudo.png"
-dest_files=["res://.godot/imported/puede ser ese zancudo.png-6f5f221bf8977f28f575814dc8016fd9.ctex"]
+source_file="res://assets/sprites/fondo.jpg"
+dest_files=["res://.godot/imported/fondo.jpg-3905d1dbc5ab2221f527e1101366f924.ctex"]
 
 [params]
 

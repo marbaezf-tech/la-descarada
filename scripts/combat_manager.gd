@@ -163,6 +163,11 @@ func _check_enemy_death() -> void:
 		_update_ui()
 		_log("\n💀 %s cae. Biomasa asegurada." % enemy_name)
 		var loot = LootSystem.generar_loot()
+		# Arañas siempre dropean Seda de Fibra de Carbono
+		if "Araña" in enemy_name or "Polilla" in enemy_name:
+			var seda = {"nombre": "Seda de Fibra de Carbono", "emoji": "🕸️", "tipo": "material", "valor": 2, "tier": "raro", "desc": "Robada del cadáver. Material para el Anclaje."}
+			GameManager.agregar_item(seda)
+			_log("   🕸️ Seda de Fibra de Carbono obtenida!")
 		GameManager.agregar_item(loot)
 		_log("   📦 %s %s [%s]" % [loot["emoji"], loot["nombre"], loot["tier"].to_upper()])
 		GameManager.obtener_recurso(15.0)

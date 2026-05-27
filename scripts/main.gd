@@ -12,10 +12,11 @@ func _ready() -> void:
 		SaveSystem.cargar()
 	
 	# Fondo
-	var bg = ColorRect.new()
+	var bg = TextureRect.new()
+	bg.texture = load("res://assets/sprites/fondo.jpg")
+	bg.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
 	bg.offset_right = 640
 	bg.offset_bottom = 360
-	bg.color = Color(0.08, 0.1, 0.12, 1)
 	add_child(bg)
 	
 	# Título de zona
@@ -25,16 +26,30 @@ func _ready() -> void:
 	title.add_theme_color_override("font_color", Color(0.6, 0.8, 0.6, 1))
 	add_child(title)
 	
+	# Objetivo
+	var objetivo = Label.new()
+	objetivo.position = Vector2(350, 5)
+	objetivo.text = "🎯 Craftea el Anclaje de Fibra [I]"
+	objetivo.add_theme_font_size_override("font_size", 10)
+	objetivo.add_theme_color_override("font_color", Color(0.2, 0.9, 0.9, 0.8))
+	add_child(objetivo)
+	
 	# Player
 	_create_player()
 	
 	# Spots
-	_create_spot(Vector2(150, 100), "Estantería Abandonada", "todos", "Un monolito oxidado de la Era de los Titanes. Las Cucarachas creen que esta basura es un tesoro.", Color(0.8, 0.6, 0.1))
+	_create_spot(Vector2(150, 100), "Monitor Holográfico Roto", "todos", "Un monitor oxidado de la Era de los Titanes. Su pantalla parpadea con datos incomprensibles. Las Cucarachas creen que esta basura es un tesoro.", Color(0.8, 0.6, 0.1))
 	_create_spot(Vector2(480, 250), "Vaso de Agua Estancada", "cazar", "Un cráter de cristal sellado por una fina capa de hielo. Donde hay milagros, hay parásitos.", Color(0.2, 0.4, 0.8))
 	_create_spot(Vector2(100, 280), "Cable Expuesto", "explorar", "Un nervio muerto de la antigua Santiago. El cobre asoma como un hueso roto.", Color(0.9, 0.3, 0.1))
 	
 	# HUD
 	_create_hud()
+	
+	# Touch controls (mobile)
+	var touch = CanvasLayer.new()
+	touch.name = "TouchControls"
+	touch.set_script(load("res://scripts/touch_controls.gd"))
+	add_child(touch)
 
 func _create_player() -> void:
 	var player = CharacterBody2D.new()
@@ -90,14 +105,26 @@ func _create_spot(pos: Vector2, spot_name: String, spot_type: String, desc: Stri
 	area.add_child(col)
 	spot.add_child(area)
 	
-	# Visual
-	var visual = ColorRect.new()
-	visual.offset_left = -12
-	visual.offset_top = -12
-	visual.offset_right = 12
-	visual.offset_bottom = 12
-	visual.color = color
-	spot.add_child(visual)
+	# Visual — usar imagen si existe, sino ColorRect
+	var img_map = {
+		"Monitor Holográfico Roto": "res://assets/sprites/monitorroto.png",
+		"Vaso de Agua Estancada": "res://assets/sprites/vasoaguapodrida.png",
+		"Cable Expuesto": "res://assets/sprites/cableroto.png",
+	}
+	
+	if img_map.has(spot_name) and ResourceLoader.exists(img_map[spot_name]):
+		var spr = Sprite2D.new()
+		spr.texture = load(img_map[spot_name])
+		spr.scale = Vector2(0.45, 0.45)  # Ajustar según tamaño de imagen
+		spot.add_child(spr)
+	else:
+		var visual = ColorRect.new()
+		visual.offset_left = -12
+		visual.offset_top = -12
+		visual.offset_right = 12
+		visual.offset_bottom = 12
+		visual.color = color
+		spot.add_child(visual)
 	
 	# Indicator
 	var indicator = Sprite2D.new()

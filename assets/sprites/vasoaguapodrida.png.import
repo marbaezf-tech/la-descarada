@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cf86y568tindi"
-path="res://.godot/imported/lucid-origin_2._Prompt_para_Estilo_Micro-Gótico_Pixel_Art_Sharp_Pixel_art_32x32_16-bit_retro-0.jpg-de272eaabd2d31d42706a5d700e8c63a.ctex"
+uid="uid://ceveowoyqq1wt"
+path="res://.godot/imported/vasoaguapodrida.png-1d8a9a357e7c2223fbc0894b75add7bf.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://imagenes/lucid-origin_2._Prompt_para_Estilo_Micro-Gótico_Pixel_Art_Sharp_Pixel_art_32x32_16-bit_retro-0.jpg"
-dest_files=["res://.godot/imported/lucid-origin_2._Prompt_para_Estilo_Micro-Gótico_Pixel_Art_Sharp_Pixel_art_32x32_16-bit_retro-0.jpg-de272eaabd2d31d42706a5d700e8c63a.ctex"]
+source_file="res://assets/sprites/vasoaguapodrida.png"
+dest_files=["res://.godot/imported/vasoaguapodrida.png-1d8a9a357e7c2223fbc0894b75add7bf.ctex"]
 
 [params]
 

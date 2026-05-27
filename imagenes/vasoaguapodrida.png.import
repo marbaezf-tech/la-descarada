@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dfnuktiqg4453"
-path="res://.godot/imported/realista.jpg-a3df0e651448ab17a0c3d078d98706e4.ctex"
+uid="uid://c4p2xnf8cktyv"
+path="res://.godot/imported/vasoaguapodrida.png-b0f999952583259151ac79a74af409fa.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://imagenes/realista.jpg"
-dest_files=["res://.godot/imported/realista.jpg-a3df0e651448ab17a0c3d078d98706e4.ctex"]
+source_file="res://imagenes/vasoaguapodrida.png"
+dest_files=["res://.godot/imported/vasoaguapodrida.png-b0f999952583259151ac79a74af409fa.ctex"]
 
 [params]
 

@@ -73,12 +73,17 @@ func _ready() -> void:
 
 func _on_explorar() -> void:
 	var textos = {
-		"Estantería Abandonada": "Un monolito oxidado de la Era de los Titanes, cubierto de escarcha y mediocridad.",
+		"Monitor Holográfico Roto": "Un monitor oxidado de la Era de los Titanes. Su pantalla parpadea con datos incomprensibles. Quizás contenga coordenadas. Quizás solo basura digital.",
 		"Vaso de Agua Estancada": "Un cráter de cristal sellado por una fina capa de hielo. Prepara la aguja.",
 		"Cable Expuesto": "Un nervio muerto de la antigua Santiago. Aún retiene un fantasma de estática."
 	}
 	desc_label.text = textos.get(_spot_name, "Inspeccionas el territorio ganado.")
 	GameManager.accion_quest_pacifica()
+	# El Cable Expuesto da Nervio de Cobre al inspeccionar
+	if _spot_name == "Cable Expuesto":
+		var cobre = {"nombre": "Nervio de Cobre", "emoji": "⚡", "tipo": "material", "valor": 3, "tier": "raro", "desc": "Vibra con estática. Material para el Anclaje."}
+		if GameManager.agregar_item(cobre):
+			desc_label.text += "\n\n⚡ ¡Obtuviste Nervio de Cobre!"
 
 func _on_cazar() -> void:
 	var enemies = [

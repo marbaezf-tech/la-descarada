@@ -36,6 +36,13 @@ func _physics_process(delta: float) -> void:
 	input_dir.x = Input.get_axis("move_left", "move_right")
 	input_dir.y = Input.get_axis("move_up", "move_down")
 	
+	# Leer joystick virtual si existe
+	var touch = get_tree().current_scene.get_node_or_null("TouchControls")
+	if touch and touch.has_method("get_direction"):
+		var touch_dir = touch.get_direction()
+		if touch_dir.length() > 0.2:
+			input_dir = touch_dir
+	
 	if input_dir != Vector2.ZERO:
 		input_dir = input_dir.normalized()
 		velocity = input_dir * SPEED

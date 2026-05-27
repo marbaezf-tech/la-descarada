@@ -57,6 +57,32 @@ func _refresh_items() -> void:
 	for child in items_container.get_children():
 		child.queue_free()
 	
+	# Sección de equipo actual
+	var equip_title = Label.new()
+	equip_title.text = "⚔️ EQUIPO ACTUAL"
+	equip_title.add_theme_font_size_override("font_size", 11)
+	equip_title.add_theme_color_override("font_color", Color(0.9, 0.7, 0.2))
+	items_container.add_child(equip_title)
+	
+	var arma_val = GameManager.stats.get("arma_equipada", 0)
+	var armadura_val = GameManager.stats.get("armadura_equipada", 0)
+	
+	var equip_arma = Label.new()
+	equip_arma.text = "  🗡️ Arma: +%d daño" % arma_val if arma_val > 0 else "  🗡️ Arma: (ninguna)"
+	equip_arma.add_theme_font_size_override("font_size", 10)
+	equip_arma.add_theme_color_override("font_color", Color(0.7, 0.7, 0.7) if arma_val == 0 else Color(0.9, 0.9, 0.9))
+	items_container.add_child(equip_arma)
+	
+	var equip_armor = Label.new()
+	equip_armor.text = "  🛡️ Armadura: +%d defensa" % armadura_val if armadura_val > 0 else "  🛡️ Armadura: (ninguna)"
+	equip_armor.add_theme_font_size_override("font_size", 10)
+	equip_armor.add_theme_color_override("font_color", Color(0.7, 0.7, 0.7) if armadura_val == 0 else Color(0.9, 0.9, 0.9))
+	items_container.add_child(equip_armor)
+	
+	var sep = HSeparator.new()
+	items_container.add_child(sep)
+	
+	# Items del inventario
 	if GameManager.inventario.is_empty():
 		var empty = Label.new()
 		empty.text = "Inventario vacío. Sal a cobrar lo que te deben."
@@ -107,6 +133,33 @@ func _refresh_items() -> void:
 	footer.add_theme_font_size_override("font_size", 10)
 	footer.add_theme_color_override("font_color", Color(0.6, 0.8, 0.6))
 	items_container.add_child(footer)
+	
+	# Botón de Crafteo del Anclaje
+	var craft_sep = HSeparator.new()
+	items_container.add_child(craft_sep)
+	
+	var craft_title = Label.new()
+	craft_title.text = "🔧 CRAFTEO — Anclaje de Fibra"
+	craft_title.add_theme_font_size_override("font_size", 11)
+	craft_title.add_theme_color_override("font_color", Color(0.2, 0.9, 0.9))
+	items_container.add_child(craft_title)
+	
+	# Contar materiales
+	var sedas = _contar_material("Seda de Fibra de Carbono")
+	var cobres = _contar_material("Nervio de Cobre")
+	var hemo_ok = GameManager.hemolinfa_actual >= 15.0
+	
+	var req_label = Label.new()
+	req_label.text = "  🕸️ Seda: %d/3  |  ⚡ Cobre: %d/1  |  💧 Hemolinfa: %s" % [sedas, cobres, "✅" if hemo_ok else "❌ (necesitas 15)"]
+	req_label.add_theme_font_size_override("font_size", 9)
+	items_container.add_child(req_label)
+	
+	var btn_craft = Button.new()
+	btn_craft.text = "🔧 Craftear Anclaje de Fibra (FIN DE DEMO)"
+	btn_craft.add_theme_font_size_override("font_size", 10)
+	btn_craft.disabled = not (sedas >= 3 and cobres >= 1 and hemo_ok)
+	btn_craft.pressed.connect(_craftear_anclaje)
+	items_container.add_child(btn_craft)
 
 func _cerrar() -> void:
 	queue_free()
@@ -158,3 +211,74 @@ func _tirar_item(index: int) -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("inventario"):
 		_cerrar()
+
+func _contar_material(nombre: String) -> int:
+	var count = 0
+	for item in GameManager.inventario:
+		if item.get("nombre", "") == nombre:
+			count += 1
+	return count
+
+func _remover_material(nombre: String, cantidad: int) -> void:
+	var removed = 0
+	var i = GameManager.inventario.size() - 1
+	while i >= 0 and removed < cantidad:
+		if GameManager.inventario[i].get("nombre", "") == nombre:
+			GameManager.inventario.remove_at(i)
+			removed += 1
+		i -= 1
+
+func _craftear_anclaje() -> void:
+	# Consumir materiales
+	_remover_material("Seda de Fibra de Carbono", 3)
+	_remover_material("Nervio de Cobre", 1)
+	GameManager.hemolinfa_actual -= 15.0
+	GameManager.hemolinfa_changed.emit(GameManager.hemolinfa_actual, GameManager.hemolinfa_max)
+	
+	# Cerrar inventario y mostrar pantalla de fin de demo
+	queue_free()
+	
+	var fin = CanvasLayer.new()
+	fin.layer = 50
+	var bg = ColorRect.new()
+	bg.anchor_right = 1.0
+	bg.anchor_bottom = 1.0
+	bg.color = Color(0, 0, 0, 0.9)
+	fin.add_child(bg)
+	
+	var vbox = VBoxContainer.new()
+	vbox.anchor_left = 0.5
+	vbox.anchor_top = 0.3
+	vbox.anchor_right = 0.5
+	vbox.offset_left = -200
+	vbox.offset_right = 200
+	vbox.add_theme_constant_override("separation", 15)
+	fin.add_child(vbox)
+	
+	var t1 = Label.new()
+	t1.text = "🔧 ANCLAJE DE FIBRA CRAFTEADO"
+	t1.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	t1.add_theme_font_size_override("font_size", 18)
+	t1.add_theme_color_override("font_color", Color(0.2, 0.9, 0.9))
+	vbox.add_child(t1)
+	
+	var t2 = Label.new()
+	t2.text = "El Charco se queda atrás.\nLo que viene es peor.\nPero tú ya no eres el mismo insecto que llegó aquí."
+	t2.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	t2.autowrap_mode = TextServer.AUTOWRAP_WORD
+	t2.add_theme_font_size_override("font_size", 12)
+	vbox.add_child(t2)
+	
+	var t3 = Label.new()
+	t3.text = "\n— FIN DE LA DEMO —\nGracias por jugar Plaga: La Descarada"
+	t3.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	t3.add_theme_font_size_override("font_size", 14)
+	t3.add_theme_color_override("font_color", Color(0.9, 0.7, 0.2))
+	vbox.add_child(t3)
+	
+	var btn = Button.new()
+	btn.text = "Volver al Menú"
+	btn.pressed.connect(func(): get_tree().change_scene_to_file("res://menu.tscn"))
+	vbox.add_child(btn)
+	
+	get_tree().current_scene.add_child(fin)
