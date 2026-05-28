@@ -275,20 +275,11 @@ func _show_confirm(title: String, desc: String, on_confirm: Callable) -> void:
 	hbox.add_child(btn_no)
 
 const FUSION_RECIPES: Array = [
+	# === TIER 1 → TIER 2 (items base → items mejorados) ===
 	{
 		"input": "Espina de Cactus",
 		"cantidad": 10,
 		"output": {"nombre": "Lanza de Espinas", "emoji": "🌵", "tipo": "arma", "valor": 6, "tier": "raro", "desc": "10 espinas trenzadas. +6 Daño. Duele solo de verla.", "bonus_ataque": 6}
-	},
-	{
-		"input": "Hemolinfa Fresca",
-		"cantidad": 5,
-		"output": {"nombre": "Ampolla de Hemolinfa Pura", "emoji": "🩸", "tipo": "consumible", "valor": 4, "tier": "raro", "desc": "+80 Turgencia. Sangre concentrada.", "efecto": "turgencia", "cantidad": 80}
-	},
-	{
-		"input": "Capa de Hoja Seca",
-		"cantidad": 8,
-		"output": {"nombre": "Manto de Hojarasca", "emoji": "🍂", "tipo": "armadura", "valor": 5, "tier": "raro", "desc": "8 capas comprimidas. +5 Defensa. Cruje al caminar.", "bonus_defensa": 5}
 	},
 	{
 		"input": "Fémur de Grillo",
@@ -296,9 +287,9 @@ const FUSION_RECIPES: Array = [
 		"output": {"nombre": "Mazo de Huesos", "emoji": "🦴", "tipo": "arma", "valor": 5, "tier": "raro", "desc": "5 fémures atados. +5 Daño. Suena a xilófono de guerra.", "bonus_ataque": 5}
 	},
 	{
-		"input": "Hoja de Menta",
-		"cantidad": 5,
-		"output": {"nombre": "Bálsamo de Menta Concentrado", "emoji": "🌿", "tipo": "consumible", "valor": 3, "tier": "poco_comun", "desc": "+40 Turgencia + cura veneno.", "efecto": "turgencia", "cantidad": 40}
+		"input": "Capa de Hoja Seca",
+		"cantidad": 8,
+		"output": {"nombre": "Manto de Hojarasca", "emoji": "🍂", "tipo": "armadura", "valor": 5, "tier": "raro", "desc": "8 capas comprimidas. +5 Defensa. Cruje al caminar.", "bonus_defensa": 5}
 	},
 	{
 		"input": "Placa de Élitro",
@@ -306,9 +297,40 @@ const FUSION_RECIPES: Array = [
 		"output": {"nombre": "Coraza de Élitros Blindada", "emoji": "🪲", "tipo": "armadura", "valor": 6, "tier": "epico", "desc": "4 alas de escarabajo soldadas. +6 Defensa. Casi impenetrable.", "bonus_defensa": 6}
 	},
 	{
+		"input": "Hemolinfa Fresca",
+		"cantidad": 5,
+		"output": {"nombre": "Ampolla de Hemolinfa Pura", "emoji": "🩸", "tipo": "consumible", "valor": 4, "tier": "raro", "desc": "+80 Turgencia. Sangre concentrada.", "efecto": "turgencia", "cantidad": 80}
+	},
+	{
 		"input": "Gota de Miel",
 		"cantidad": 5,
 		"output": {"nombre": "Jalea Real Concentrada", "emoji": "🍯", "tipo": "consumible", "valor": 4, "tier": "raro", "desc": "+100% Turgencia. Restauración total.", "efecto": "turgencia", "cantidad": 100}
+	},
+	{
+		"input": "Hoja de Menta",
+		"cantidad": 5,
+		"output": {"nombre": "Bálsamo de Menta Concentrado", "emoji": "🌿", "tipo": "consumible", "valor": 3, "tier": "poco_comun", "desc": "+40 Turgencia + cura veneno.", "efecto": "turgencia", "cantidad": 40}
+	},
+	# === TIER 2 → TIER 3 (items mejorados → items épicos) ===
+	{
+		"input": "Lanza de Espinas",
+		"cantidad": 3,
+		"output": {"nombre": "Tridente del Charco", "emoji": "🔱", "tipo": "arma", "valor": 12, "tier": "epico", "desc": "3 lanzas forjadas en una. +12 Daño. El Charco tiembla.", "bonus_ataque": 12}
+	},
+	{
+		"input": "Mazo de Huesos",
+		"cantidad": 3,
+		"output": {"nombre": "Martillo de Exoesqueletos", "emoji": "🔨", "tipo": "arma", "valor": 10, "tier": "epico", "desc": "Huesos de 15 grillos. +10 Daño. Aplasta quitina.", "bonus_ataque": 10}
+	},
+	{
+		"input": "Manto de Hojarasca",
+		"cantidad": 3,
+		"output": {"nombre": "Armadura del Bosque Muerto", "emoji": "🌲", "tipo": "armadura", "valor": 10, "tier": "epico", "desc": "24 capas fosilizadas. +10 Defensa. Eres un tanque.", "bonus_defensa": 10}
+	},
+	{
+		"input": "Coraza de Élitros Blindada",
+		"cantidad": 2,
+		"output": {"nombre": "Exoesqueleto del Progenitor", "emoji": "👑", "tipo": "armadura", "valor": 14, "tier": "legendario", "desc": "Armadura digna de Arthropleura. +14 Defensa. Inmovible.", "bonus_defensa": 14}
 	},
 ]
 
