@@ -71,6 +71,10 @@ func _physics_process(delta: float) -> void:
 		velocity = Vector2.ZERO
 	
 	move_and_slide()
+	
+	# Limitar al área del mapa (640x360 viewport)
+	position.x = clampf(position.x, 16, 624)
+	position.y = clampf(position.y, 16, 344)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("interact") and nearby_spot:

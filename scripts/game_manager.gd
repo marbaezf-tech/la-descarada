@@ -331,8 +331,124 @@ func modificar_esencia(cantidad: float, razon: String) -> void:
 		_activar_marioneta()
 
 func _activar_marioneta() -> void:
-	print("💀 [ASIMILADO] Tus comandos ya no responden. Tu voluntad se apaga mientras los filamentos verdes brotan de tus ojos. Ya no eres un Zancudo. Eres un dron más en la marcha de la Colmena Silenciosa.")
+	print("💀 [ASIMILADO] Tu voluntad se apaga. Los filamentos verdes brotan de tus ojos.")
 	marioneta_triggered.emit()
+	_mostrar_asimilado()
+
+func _mostrar_game_over() -> void:
+	var scene_tree = Engine.get_main_loop() as SceneTree
+	if not scene_tree: return
+	
+	var fin = CanvasLayer.new()
+	fin.layer = 100
+	var bg = ColorRect.new()
+	bg.anchor_right = 1.0
+	bg.anchor_bottom = 1.0
+	bg.color = Color(0.1, 0, 0, 0.95)
+	fin.add_child(bg)
+	
+	var vbox = VBoxContainer.new()
+	vbox.anchor_left = 0.5
+	vbox.anchor_top = 0.25
+	vbox.anchor_right = 0.5
+	vbox.offset_left = -200
+	vbox.offset_right = 200
+	vbox.add_theme_constant_override("separation", 12)
+	fin.add_child(vbox)
+	
+	var t1 = Label.new()
+	t1.text = "💀 QUITINA QUEBRADA"
+	t1.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	t1.add_theme_font_size_override("font_size", 20)
+	t1.add_theme_color_override("font_color", Color(0.9, 0.1, 0.1))
+	vbox.add_child(t1)
+	
+	var t2 = Label.new()
+	t2.text = "Tu exoesqueleto se fractura.\nLa presión interna cede.\nEl Gran Charco reclama otro cadáver."
+	t2.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	t2.autowrap_mode = TextServer.AUTOWRAP_WORD
+	t2.add_theme_font_size_override("font_size", 11)
+	t2.add_theme_color_override("font_color", Color(0.7, 0.3, 0.3))
+	vbox.add_child(t2)
+	
+	var t3 = Label.new()
+	t3.text = "\n\"El Charco no perdona la debilidad.\nPero siempre acepta más biomasa.\""
+	t3.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	t3.add_theme_font_size_override("font_size", 10)
+	t3.add_theme_color_override("font_color", Color(0.5, 0.5, 0.5))
+	vbox.add_child(t3)
+	
+	var btn = Button.new()
+	btn.text = "Volver al Menú"
+	btn.add_theme_font_size_override("font_size", 12)
+	btn.pressed.connect(func():
+		reset()
+		scene_tree.change_scene_to_file("res://menu.tscn")
+	)
+	vbox.add_child(btn)
+	
+	scene_tree.current_scene.add_child(fin)
+
+func _mostrar_asimilado() -> void:
+	var scene_tree = Engine.get_main_loop() as SceneTree
+	if not scene_tree: return
+	
+	var fin = CanvasLayer.new()
+	fin.layer = 100
+	var bg = ColorRect.new()
+	bg.anchor_right = 1.0
+	bg.anchor_bottom = 1.0
+	bg.color = Color(0, 0.05, 0, 0.95)
+	fin.add_child(bg)
+	
+	var vbox = VBoxContainer.new()
+	vbox.anchor_left = 0.5
+	vbox.anchor_top = 0.2
+	vbox.anchor_right = 0.5
+	vbox.offset_left = -220
+	vbox.offset_right = 220
+	vbox.add_theme_constant_override("separation", 12)
+	fin.add_child(vbox)
+	
+	var t1 = Label.new()
+	t1.text = "🍄 A S I M I L A D O"
+	t1.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	t1.add_theme_font_size_override("font_size", 22)
+	t1.add_theme_color_override("font_color", Color(0.2, 0.9, 0.1))
+	vbox.add_child(t1)
+	
+	var t2 = Label.new()
+	t2.text = "Los filamentos verdes brotan de tus ojos compuestos.\nTu voluntad se apaga como una luz fundida.\nYa no eres tú.\n\nEres un dron más en la marcha de\nLa Colmena Silenciosa."
+	t2.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	t2.autowrap_mode = TextServer.AUTOWRAP_WORD
+	t2.add_theme_font_size_override("font_size", 11)
+	t2.add_theme_color_override("font_color", Color(0.4, 0.8, 0.2))
+	vbox.add_child(t2)
+	
+	var t3 = Label.new()
+	t3.text = "\n\"El Silencio Verde no te mató.\nTe mejoró. Ahora eres parte de algo\nmás grande que tu patética individualidad.\""
+	t3.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	t3.add_theme_font_size_override("font_size", 10)
+	t3.add_theme_color_override("font_color", Color(0.3, 0.6, 0.2))
+	vbox.add_child(t3)
+	
+	var t4 = Label.new()
+	t4.text = "— El Silencio Verde"
+	t4.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	t4.add_theme_font_size_override("font_size", 9)
+	t4.add_theme_color_override("font_color", Color(0.2, 0.4, 0.1))
+	vbox.add_child(t4)
+	
+	var btn = Button.new()
+	btn.text = "Aceptar el Silencio"
+	btn.add_theme_font_size_override("font_size", 12)
+	btn.pressed.connect(func():
+		reset()
+		scene_tree.change_scene_to_file("res://menu.tscn")
+	)
+	vbox.add_child(btn)
+	
+	scene_tree.current_scene.add_child(fin)
 
 # ===== ACCIONES QUE AFECTAN ESENCIA =====
 func accion_matar_sin_justificacion() -> void:
@@ -420,6 +536,7 @@ func recibir_dano(cantidad: float) -> void:
 	turgencia_changed.emit(turgencia_actual, turgencia_max)
 	if turgencia_actual <= 0.0:
 		print("💀 Turgencia agotada — la Plaga cae")
+		_mostrar_game_over()
 
 func curar(cantidad: float) -> void:
 	turgencia_actual = minf(turgencia_actual + cantidad, turgencia_max)
