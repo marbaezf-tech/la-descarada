@@ -278,7 +278,7 @@ const FUSION_RECIPES: Array = [
 	{
 		"input": "Espina de Cactus",
 		"cantidad": 10,
-		"output": {"nombre": "Lanza de Espinas Fusionadas", "emoji": "🌵", "tipo": "arma", "valor": 6, "tier": "raro", "desc": "10 espinas trenzadas. +6 Daño. Duele solo de verla.", "bonus_ataque": 6}
+		"output": {"nombre": "Lanza de Espinas", "emoji": "🌵", "tipo": "arma", "valor": 6, "tier": "raro", "desc": "10 espinas trenzadas. +6 Daño. Duele solo de verla.", "bonus_ataque": 6}
 	},
 	{
 		"input": "Hemolinfa Fresca",
