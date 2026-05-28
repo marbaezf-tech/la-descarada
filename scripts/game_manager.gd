@@ -321,14 +321,30 @@ func modificar_esencia(cantidad: float, razon: String) -> void:
 	
 	if cantidad < 0:
 		print("🍄 Esencia -%s: %s [%s → %s]" % [abs(cantidad), razon, anterior, esencia])
-		if esencia <= 15.0 and anterior > 15.0:
-			print("⚠️ ERROR DE SISTEMA. Tus patas se mueven solas. El hongo teje su micelio en tu sistema nervioso.")
+		# Verificar cambio de fase
+		_check_fase_infeccion(anterior, esencia)
 	else:
 		print("✨ Esencia +%s: %s [%s → %s]" % [cantidad, razon, anterior, esencia])
 	
 	# Verificar Marioneta (Game Over)
 	if esencia <= 0.0:
 		_activar_marioneta()
+
+func _check_fase_infeccion(anterior: float, actual: float) -> void:
+	# Fase Susurros (75%)
+	if anterior > 75.0 and actual <= 75.0:
+		print("🟡 FASE: Susurros. El hongo te habla. -1 Sensilios.")
+		stats["sensilios"] = max(stats.get("sensilios", 5) - 1, 1)
+	# Fase Parasitismo (50%)
+	if anterior > 50.0 and actual <= 50.0:
+		print("🟠 FASE: Parasitismo. +1 Tórax, -2 Ganglios. Más letal, más torpe.")
+		stats["torax"] = stats.get("torax", 5) + 1
+		stats["ganglios"] = max(stats.get("ganglios", 5) - 2, 1)
+	# Fase Dominación (25%)
+	if anterior > 25.0 and actual <= 25.0:
+		print("🔴 FASE: Dominación. El hongo toma control parcial. -3 a todo.")
+		for key in ["torax", "ganglios", "sensilios", "cripsis", "feromonas"]:
+			stats[key] = max(stats.get(key, 5) - 1, 1)
 
 func _activar_marioneta() -> void:
 	print("💀 [ASIMILADO] Tu voluntad se apaga. Los filamentos verdes brotan de tus ojos.")
