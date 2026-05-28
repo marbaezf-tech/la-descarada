@@ -158,6 +158,38 @@ func _refresh_items() -> void:
 	btn_craft.disabled = not (sedas >= 3 and cobres >= 1 and hemo_ok)
 	btn_craft.pressed.connect(_craftear_anclaje)
 	items_container.add_child(btn_craft)
+	
+	# Fusión de items repetidos
+	items_container.add_child(HSeparator.new())
+	var fusion_title = Label.new()
+	fusion_title.text = "⚗️ FUSIÓN — Combinar items repetidos"
+	fusion_title.add_theme_font_size_override("font_size", 11)
+	fusion_title.add_theme_color_override("font_color", Color(0.9, 0.6, 0.2))
+	items_container.add_child(fusion_title)
+	
+	var fusion_found = false
+	for recipe in FUSION_RECIPES:
+		var count = _contar_material(recipe["input"])
+		if count >= recipe["cantidad"]:
+			fusion_found = true
+			var btn_fusion = Button.new()
+			btn_fusion.text = "⚗️ %dx %s → %s (+%d)" % [recipe["cantidad"], recipe["input"], recipe["output"]["nombre"], recipe["output"].get("bonus_ataque", recipe["output"].get("bonus_defensa", 0))]
+			btn_fusion.add_theme_font_size_override("font_size", 9)
+			btn_fusion.pressed.connect(_fusionar.bind(recipe))
+			items_container.add_child(btn_fusion)
+		elif count >= 1:
+			var progress_label = Label.new()
+			progress_label.text = "  %s %s: %d/%d" % [recipe["output"].get("emoji", "⚗️"), recipe["input"], count, recipe["cantidad"]]
+			progress_label.add_theme_font_size_override("font_size", 9)
+			progress_label.add_theme_color_override("font_color", Color(0.5, 0.5, 0.5))
+			items_container.add_child(progress_label)
+	
+	if not fusion_found:
+		var no_fusion = Label.new()
+		no_fusion.text = "  Junta items repetidos para fusionarlos en algo mejor."
+		no_fusion.add_theme_font_size_override("font_size", 9)
+		no_fusion.add_theme_color_override("font_color", Color(0.4, 0.4, 0.4))
+		items_container.add_child(no_fusion)
 
 func _is_item_equipped(item: Dictionary) -> bool:
 	var tipo = item.get("tipo", "")
@@ -241,6 +273,42 @@ func _show_confirm(title: String, desc: String, on_confirm: Callable) -> void:
 		_confirm_popup = null
 	)
 	hbox.add_child(btn_no)
+
+const FUSION_RECIPES: Array = [
+	{
+		"input": "Espina de Cactus",
+		"cantidad": 10,
+		"output": {"nombre": "Lanza de Espinas Fusionadas", "emoji": "🌵", "tipo": "arma", "valor": 6, "tier": "raro", "desc": "10 espinas trenzadas. +6 Daño. Duele solo de verla.", "bonus_ataque": 6}
+	},
+	{
+		"input": "Hemolinfa Fresca",
+		"cantidad": 5,
+		"output": {"nombre": "Ampolla de Hemolinfa Pura", "emoji": "🩸", "tipo": "consumible", "valor": 4, "tier": "raro", "desc": "+80 Turgencia. Sangre concentrada.", "efecto": "turgencia", "cantidad": 80}
+	},
+	{
+		"input": "Capa de Hoja Seca",
+		"cantidad": 8,
+		"output": {"nombre": "Manto de Hojarasca", "emoji": "🍂", "tipo": "armadura", "valor": 5, "tier": "raro", "desc": "8 capas comprimidas. +5 Defensa. Cruje al caminar.", "bonus_defensa": 5}
+	},
+	{
+		"input": "Fémur de Grillo",
+		"cantidad": 5,
+		"output": {"nombre": "Mazo de Huesos", "emoji": "🦴", "tipo": "arma", "valor": 5, "tier": "raro", "desc": "5 fémures atados. +5 Daño. Suena a xilófono de guerra.", "bonus_ataque": 5}
+	},
+	{
+		"input": "Hoja de Menta",
+		"cantidad": 5,
+		"output": {"nombre": "Bálsamo de Menta Concentrado", "emoji": "🌿", "tipo": "consumible", "valor": 3, "tier": "poco_comun", "desc": "+40 Turgencia + cura veneno.", "efecto": "turgencia", "cantidad": 40}
+	},
+]
+
+func _fusionar(recipe: Dictionary) -> void:
+	_remover_material(recipe["input"], recipe["cantidad"])
+	var output = recipe["output"].duplicate()
+	output["tier"] = output.get("tier", "raro")
+	GameManager.agregar_item(output)
+	_show_notification("⚗️ ¡Fusión! %s %s creado" % [output.get("emoji",""), output["nombre"]], Color(0.9, 0.6, 0.2))
+	_refresh_items()
 
 # === ACCIONES ===
 func _usar_item(index: int) -> void:
