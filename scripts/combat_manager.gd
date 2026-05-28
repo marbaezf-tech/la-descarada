@@ -74,6 +74,18 @@ func _ready() -> void:
 	_update_ui()
 	_log("⚔️ ¡%s te desafía en TU territorio!" % enemy_name)
 	_log("Tu turno. Exige respeto.")
+	_aplicar_pasivos_turno()
+
+func _aplicar_pasivos_turno() -> void:
+	## Pasivos que se activan al inicio de cada turno del jugador
+	var taxon_data = GameManager.TAXON_DATA[GameManager.taxon_actual]
+	var pasivo = taxon_data.get("pasivo", "")
+	if pasivo == "tanque_regenerativo":
+		# Garrapata: regenera 3% HP por turno (parásito que se alimenta constantemente)
+		var regen = GameManager.turgencia_max * 0.03
+		GameManager.curar(regen)
+		_log("🩸 Regeneración parasitaria. +%.0f HP." % regen)
+		_update_ui()
 
 func _build_ui() -> void:
 	# === FONDO OSCURO SEMI-TRANSPARENTE ===
@@ -361,6 +373,9 @@ func _set_buttons_enabled(enabled: bool) -> void:
 	btn_habilidad.disabled = not enabled
 	btn_danza.disabled = not enabled
 	btn_huir.disabled = not enabled
+	# Activar pasivos al inicio del turno del jugador
+	if enabled:
+		_aplicar_pasivos_turno()
 
 func _log(text: String) -> void:
 	log_label.text += text + "\n"
@@ -862,6 +877,10 @@ func _enemy_turn() -> void:
 	var player_gan = GameManager.stats.get("ganglios", 5)
 	var player_cri = GameManager.stats.get("cripsis", 5)
 	var player_evasion = minf(0.55, player_gan * 0.035 + player_cri * 0.025)
+	# Pasivo Pulga: "Evasión Maestra" — GAN cuenta doble para evasión (cap 70%)
+	var taxon_data = GameManager.TAXON_DATA[GameManager.taxon_actual]
+	if taxon_data.get("pasivo", "") == "evasion_maestra":
+		player_evasion = minf(0.70, player_gan * 0.055 + player_cri * 0.025)
 	# Precisión enemiga reduce evasión
 	var enemy_precision = enemy_sensilios * 0.02
 	var evasion_final = maxf(0.05, player_evasion - enemy_precision)

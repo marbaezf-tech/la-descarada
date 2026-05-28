@@ -128,15 +128,23 @@ func _ready() -> void:
 	subtitle.autowrap_mode = TextServer.AUTOWRAP_WORD
 	right_vbox.add_child(subtitle)
 	
-	# Grid de Taxones (3 columnas para que quepan mejor)
+	# Grid de Taxones (3 columnas — solo los 10 de v1.0)
 	var grid = GridContainer.new()
 	grid.columns = 3
 	grid.add_theme_constant_override("h_separation", 4)
 	grid.add_theme_constant_override("v_separation", 3)
 	right_vbox.add_child(grid)
 	
-	# Crear botón por cada taxón
-	for taxon_id in GameManager.TAXON_DATA.keys():
+	# 10 taxones jugables en v1.0 (4 reservados para DLC)
+	var taxones_v1 = [
+		GameManager.Taxon.ESCORPION, GameManager.Taxon.AVISPA, GameManager.Taxon.VINCHUCA,
+		GameManager.Taxon.GARRAPATA, GameManager.Taxon.ARANA, GameManager.Taxon.PULGA,
+		GameManager.Taxon.TIPULA, GameManager.Taxon.MARIPOSA, GameManager.Taxon.POLILLA,
+		GameManager.Taxon.MOSCA,
+	]
+	
+	# Crear botón por cada taxón jugable
+	for taxon_id in taxones_v1:
 		var data = GameManager.TAXON_DATA[taxon_id]
 		var btn = Button.new()
 		btn.text = "%s %s" % [data["emoji"], data["nombre"]]

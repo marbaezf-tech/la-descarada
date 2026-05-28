@@ -57,9 +57,10 @@ const TAXON_DATA: Dictionary = {
 		"emoji": "🕷️",
 		"recurso_nombre": "Plasma Estancado",
 		"defecto_nombre": "Anclaje Pesado",
-		"stats_base": {"torax": 4, "ganglios": 2, "quitina_base": 9, "sensilios": 5, "cripsis": 4, "feromonas": 2},
+		"stats_base": {"torax": 5, "ganglios": 2, "quitina_base": 9, "sensilios": 5, "cripsis": 4, "feromonas": 2},
 		"recurso_max": 150.0,
-		"faccion": "Los Sueltos"
+		"faccion": "Los Sueltos",
+		"pasivo": "tanque_regenerativo"
 	},
 	Taxon.CHINCHE: {
 		"nombre": "Chinche de Cama",
@@ -84,7 +85,7 @@ const TAXON_DATA: Dictionary = {
 		"emoji": "🕸️",
 		"recurso_nombre": "Hemolinfa",
 		"defecto_nombre": "Fobia Social",
-		"stats_base": {"torax": 4, "ganglios": 5, "quitina_base": 5, "sensilios": 9, "cripsis": 7, "feromonas": 1},
+		"stats_base": {"torax": 6, "ganglios": 5, "quitina_base": 5, "sensilios": 9, "cripsis": 7, "feromonas": 1},
 		"recurso_max": 90.0,
 		"faccion": "La Colmena"
 	},
@@ -140,7 +141,8 @@ const TAXON_DATA: Dictionary = {
 		"defecto_nombre": "Hiperactividad Crónica",
 		"stats_base": {"torax": 4, "ganglios": 10, "quitina_base": 4, "sensilios": 6, "cripsis": 5, "feromonas": 5},
 		"recurso_max": 70.0,
-		"faccion": "Los Sueltos"
+		"faccion": "Los Sueltos",
+		"pasivo": "evasion_maestra"
 	},
 	Taxon.TIPULA: {
 		"nombre": "Típula",
@@ -172,9 +174,9 @@ const ATAVISMOS_DATA: Dictionary = {
 		{"nombre": "Mandíbula de Acero", "costo": 3, "tipo": "melee", "efecto": "penetrar", "desc": "Ignora armadura. x1.8", "valor": 1.8},
 	],
 	Taxon.GARRAPATA: [
-		{"nombre": "Anclaje Vital", "costo": 3, "tipo": "melee", "efecto": "drenar", "desc": "Drena 15% HP enemigo", "valor": 0.15},
-		{"nombre": "Presión Parasitaria", "costo": 2, "tipo": "social", "efecto": "stun", "desc": "Enemigo aturdido 1 turno", "valor": 1.0},
-		{"nombre": "Exoesqueleto Ancestral", "costo": 4, "tipo": "utilidad", "efecto": "armadura", "desc": "+4 Defensa 3 turnos", "valor": 4.0},
+		{"nombre": "Anclaje Vital", "costo": 3, "tipo": "melee", "efecto": "drenar", "desc": "Drena 20% HP enemigo → te cura igual", "valor": 0.2},
+		{"nombre": "Coraza Ancestral", "costo": 4, "tipo": "utilidad", "efecto": "armadura", "desc": "+6 Defensa 4 turnos (muro)", "valor": 6.0},
+		{"nombre": "Presión Parasitaria", "costo": 2, "tipo": "social", "efecto": "stun", "desc": "Se ancla al enemigo. Pierde turno + drena 5 HP.", "valor": 5.0},
 	],
 	Taxon.CHINCHE: [
 		{"nombre": "Mordida Nocturna", "costo": 3, "tipo": "melee", "efecto": "drenar", "desc": "Drena 10% HP + heal", "valor": 0.1},
@@ -187,9 +189,9 @@ const ATAVISMOS_DATA: Dictionary = {
 		{"nombre": "Aleteo Dimensional", "costo": 4, "tipo": "utilidad", "efecto": "esquiva", "desc": "Esquiva 100% próximo ataque", "valor": 1.0},
 	],
 	Taxon.ARANA: [
-		{"nombre": "Necrosis Clandestina", "costo": 4, "tipo": "melee", "efecto": "veneno", "desc": "6 daño/turno ×3 (agravado)", "valor": 6.0},
-		{"nombre": "Red de Contención", "costo": 3, "tipo": "social", "efecto": "stun", "desc": "Inmoviliza 2 turnos", "valor": 2.0},
-		{"nombre": "Tejeduría de Éter", "costo": 3, "tipo": "utilidad", "efecto": "regen", "desc": "+25% Turgencia", "valor": 0.25},
+		{"nombre": "Necrosis Letal", "costo": 4, "tipo": "melee", "efecto": "critico", "desc": "Veneno necrótico x2.5 (ignora def)", "valor": 2.5},
+		{"nombre": "Red de Contención", "costo": 3, "tipo": "social", "efecto": "stun", "desc": "Inmoviliza 2 turnos (telaraña)", "valor": 2.0},
+		{"nombre": "Emboscada Silenciosa", "costo": 2, "tipo": "utilidad", "efecto": "stun", "desc": "Stun 1 turno + próximo ataque crítico", "valor": 1.0},
 	],
 	Taxon.ESCORPION: [
 		{"nombre": "Golpe de Pinza", "costo": 5, "tipo": "melee", "efecto": "critico", "desc": "Daño x2.5 ignora armadura", "valor": 2.5},
@@ -202,9 +204,9 @@ const ATAVISMOS_DATA: Dictionary = {
 		{"nombre": "Desvanecimiento", "costo": 2, "tipo": "utilidad", "efecto": "esquiva", "desc": "Invisible. Esquiva 100%.", "valor": 1.0},
 	],
 	Taxon.MOSCA: [
-		{"nombre": "Invocar Larva", "costo": 4, "tipo": "melee", "efecto": "larva", "desc": "Aliado: 5 daño/turno ×3", "valor": 5.0},
-		{"nombre": "Olor a Muerte", "costo": 2, "tipo": "social", "efecto": "miedo", "desc": "Hedor. Enemigo pierde turno.", "valor": 1.0},
-		{"nombre": "Gólem de Basural", "costo": 5, "tipo": "utilidad", "efecto": "golem", "desc": "Escudo absorbe 30 daño", "valor": 30.0},
+		{"nombre": "Invocar Larva Tanque", "costo": 4, "tipo": "melee", "efecto": "golem", "desc": "Larva absorbe 25 daño (tanquea por ti)", "valor": 25.0},
+		{"nombre": "Espíritu de Carroña", "costo": 3, "tipo": "melee", "efecto": "larva", "desc": "Espíritu ataca: 6 daño/turno ×3", "valor": 6.0},
+		{"nombre": "Hedor Paralizante", "costo": 2, "tipo": "social", "efecto": "stun", "desc": "Olor a muerte. Enemigo pierde 2 turnos.", "valor": 2.0},
 	],
 	Taxon.SANGUIJUELA: [
 		{"nombre": "Éxtasis Tóxico", "costo": 3, "tipo": "melee", "efecto": "drenar", "desc": "Drena 12% HP + adicción", "valor": 0.12},
