@@ -300,6 +300,16 @@ const FUSION_RECIPES: Array = [
 		"cantidad": 5,
 		"output": {"nombre": "Bálsamo de Menta Concentrado", "emoji": "🌿", "tipo": "consumible", "valor": 3, "tier": "poco_comun", "desc": "+40 Turgencia + cura veneno.", "efecto": "turgencia", "cantidad": 40}
 	},
+	{
+		"input": "Placa de Élitro",
+		"cantidad": 4,
+		"output": {"nombre": "Coraza de Élitros Blindada", "emoji": "🪲", "tipo": "armadura", "valor": 6, "tier": "epico", "desc": "4 alas de escarabajo soldadas. +6 Defensa. Casi impenetrable.", "bonus_defensa": 6}
+	},
+	{
+		"input": "Gota de Miel",
+		"cantidad": 5,
+		"output": {"nombre": "Jalea Real Concentrada", "emoji": "🍯", "tipo": "consumible", "valor": 4, "tier": "raro", "desc": "+100% Turgencia. Restauración total.", "efecto": "turgencia", "cantidad": 100}
+	},
 ]
 
 func _fusionar(recipe: Dictionary) -> void:
