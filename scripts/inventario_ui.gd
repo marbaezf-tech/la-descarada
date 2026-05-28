@@ -444,38 +444,60 @@ func _craftear_anclaje() -> void:
 	var bg = ColorRect.new()
 	bg.anchor_right = 1.0
 	bg.anchor_bottom = 1.0
-	bg.color = Color(0, 0, 0, 0.9)
+	bg.color = Color(0, 0, 0, 0.95)
 	fin.add_child(bg)
+	
+	# Reproducir video final si existe
+	if ResourceLoader.exists("res://video/final demo escorpion.mp4"):
+		var video = VideoStreamPlayer.new()
+		video.stream = load("res://video/final demo escorpion.mp4")
+		video.anchor_right = 1.0
+		video.anchor_bottom = 1.0
+		video.expand = true
+		fin.add_child(video)
+		video.play()
 	
 	var vbox = VBoxContainer.new()
 	vbox.anchor_left = 0.5
-	vbox.anchor_top = 0.3
+	vbox.anchor_top = 0.55
 	vbox.anchor_right = 0.5
 	vbox.offset_left = -200
 	vbox.offset_right = 200
-	vbox.add_theme_constant_override("separation", 15)
+	vbox.add_theme_constant_override("separation", 10)
 	fin.add_child(vbox)
 	
 	var t1 = Label.new()
 	t1.text = "🔧 ANCLAJE DE FIBRA CRAFTEADO"
 	t1.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	t1.add_theme_font_size_override("font_size", 18)
+	t1.add_theme_font_size_override("font_size", 16)
 	t1.add_theme_color_override("font_color", Color(0.2, 0.9, 0.9))
 	vbox.add_child(t1)
 	
 	var t2 = Label.new()
-	t2.text = "El Charco se queda atrás.\nLo que viene es peor.\nPero tú ya no eres el mismo insecto que llegó aquí."
+	t2.text = "El Charco se queda atrás. Lo que viene es peor.\nPero tú ya no eres el mismo insecto que llegó aquí."
 	t2.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	t2.autowrap_mode = TextServer.AUTOWRAP_WORD
-	t2.add_theme_font_size_override("font_size", 12)
+	t2.add_theme_font_size_override("font_size", 10)
 	vbox.add_child(t2)
 	
 	var t3 = Label.new()
-	t3.text = "\n— FIN DE LA DEMO —\nGracias por jugar Plaga: La Descarada"
+	t3.text = "\n— FIN DE LA DEMO —"
 	t3.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	t3.add_theme_font_size_override("font_size", 14)
 	t3.add_theme_color_override("font_color", Color(0.9, 0.7, 0.2))
 	vbox.add_child(t3)
+	
+	# Premio: desbloquear Escorpión
+	var premio = Label.new()
+	premio.text = "\n🦂 ¡DESBLOQUEADO: TAXÓN ESCORPIÓN!\n\"Invicto en el Torneo del Gran Charco.\nAhora es tuyo. Úsalo con responsabilidad.\n...o no. Tú verás.\""
+	premio.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	premio.autowrap_mode = TextServer.AUTOWRAP_WORD
+	premio.add_theme_font_size_override("font_size", 11)
+	premio.add_theme_color_override("font_color", Color(0.9, 0.5, 0.1))
+	vbox.add_child(premio)
+	
+	# Guardar desbloqueo
+	GameManager.set_meta("escorpion_desbloqueado", true)
 	
 	var btn = Button.new()
 	btn.text = "Volver al Menú"
