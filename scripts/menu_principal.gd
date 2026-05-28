@@ -5,8 +5,8 @@ extends Control
 var _intro_playing: bool = false
 
 func _ready() -> void:
-	# Intentar reproducir intro si existe
-	var has_video = ResourceLoader.exists("res://assets/video/intro.ogv") or ResourceLoader.exists("res://video/video Trailer torneo 1.mp4") or ResourceLoader.exists("res://assets/video/video Trailer torneo 1.mp4")
+	# Intentar reproducir intro si existe (verificar archivo en disco)
+	var has_video = FileAccess.file_exists("res://video/video Trailer torneo 1.ogv") or FileAccess.file_exists("res://video/video Trailer torneo 1.mp4") or FileAccess.file_exists("res://assets/video/intro.ogv")
 	if has_video:
 		_play_intro()
 	else:
@@ -23,15 +23,16 @@ func _play_video_sequence() -> void:
 	# Buscar videos en orden: trailer 1, pantalla intermedia, trailer 2
 	_video_queue = []
 	
-	var videos_to_check = [
-		"res://assets/video/intro.ogv",
+	# Priorizar OGV (nativo Godot), fallback a MP4
+	var videos_v1 = [
+		"res://video/video Trailer torneo 1.ogv",
 		"res://video/video Trailer torneo 1.mp4",
-		"res://assets/video/video Trailer torneo 1.mp4",
+		"res://assets/video/intro.ogv",
 	]
 	
 	# Video 1
-	for v in videos_to_check:
-		if ResourceLoader.exists(v):
+	for v in videos_v1:
+		if FileAccess.file_exists(v):
 			_video_queue.append({"tipo": "video", "path": v})
 			break
 	
@@ -39,12 +40,12 @@ func _play_video_sequence() -> void:
 	_video_queue.append({"tipo": "texto", "msg": "🦂 El Escorpión rompió el balance en v0.2.0\n\n\"Invicto. 100% winrate. 2600 victorias.\nLos desarrolladores están trabajando en un nerf.\"\n\n— Ramazzottius, bostezando"})
 	
 	# Video 2
-	var videos2 = [
+	var videos_v2 = [
+		"res://video/video Trailer torneo 2.ogv",
 		"res://video/video Trailer torneo 2.mp4",
-		"res://assets/video/video Trailer torneo 2.mp4",
 	]
-	for v in videos2:
-		if ResourceLoader.exists(v):
+	for v in videos_v2:
+		if FileAccess.file_exists(v):
 			_video_queue.append({"tipo": "video", "path": v})
 			break
 	
@@ -60,7 +61,14 @@ func _play_next_in_queue() -> void:
 	if item["tipo"] == "video":
 		_current_video_player = VideoStreamPlayer.new()
 		_current_video_player.name = "IntroVideo"
-		_current_video_player.stream = load(item["path"])
+		# Cargar OGV directamente con VideoStreamTheora (no requiere reimportar)
+		var vpath = item["path"] as String
+		if vpath.ends_with(".ogv"):
+			var stream = VideoStreamTheora.new()
+			stream.file = vpath
+			_current_video_player.stream = stream
+		else:
+			_current_video_player.stream = load(vpath)
 		_current_video_player.anchor_right = 1.0
 		_current_video_player.anchor_bottom = 1.0
 		_current_video_player.expand = true

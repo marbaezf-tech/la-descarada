@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bgl7hdllg4d60"
-path="res://.godot/imported/2d_cucaracha_carronera.png.png-104260bab3e446ecf5a4fb5be620da42.ctex"
+uid="uid://5pg44niuob0p"
+path="res://.godot/imported/2d_cucaracha_carronera.png-6af68fa4704a71bf2df2f282a19f3798.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://imagenes/Enemigos/2d_cucaracha_carronera.png.png"
-dest_files=["res://.godot/imported/2d_cucaracha_carronera.png.png-104260bab3e446ecf5a4fb5be620da42.ctex"]
+source_file="res://imagenes/Enemigos/2d_cucaracha_carronera.png"
+dest_files=["res://.godot/imported/2d_cucaracha_carronera.png-6af68fa4704a71bf2df2f282a19f3798.ctex"]
 
 [params]
 

@@ -30,7 +30,7 @@ const TAXON_DATA: Dictionary = {
 		"emoji": "🦟",
 		"recurso_nombre": "Sangre Fresca",
 		"defecto_nombre": "Sobrecarga de Buffer",
-		"stats_base": {"torax": 5, "ganglios": 7, "quitina_base": 4, "sensilios": 6, "cripsis": 8, "feromonas": 3},
+		"stats_base": {"torax": 5, "ganglios": 7, "quitina_base": 5, "sensilios": 6, "cripsis": 8, "feromonas": 3},
 		"recurso_max": 100.0,
 		"faccion": "El Enjambre Negro"
 	},
@@ -39,7 +39,7 @@ const TAXON_DATA: Dictionary = {
 		"emoji": "🪳",
 		"recurso_nombre": "Bio-Residuos",
 		"defecto_nombre": "Aura de Asco",
-		"stats_base": {"torax": 6, "ganglios": 5, "quitina_base": 9, "sensilios": 7, "cripsis": 6, "feromonas": 1},
+		"stats_base": {"torax": 5, "ganglios": 5, "quitina_base": 7, "sensilios": 7, "cripsis": 6, "feromonas": 1},
 		"recurso_max": 120.0,
 		"faccion": "Los Parásitos Libres"
 	},
@@ -48,7 +48,7 @@ const TAXON_DATA: Dictionary = {
 		"emoji": "🐝",
 		"recurso_nombre": "Carne Dulce y Azúcar",
 		"defecto_nombre": "Frenesí de Asado",
-		"stats_base": {"torax": 8, "ganglios": 7, "quitina_base": 5, "sensilios": 4, "cripsis": 3, "feromonas": 4},
+		"stats_base": {"torax": 7, "ganglios": 7, "quitina_base": 5, "sensilios": 4, "cripsis": 3, "feromonas": 4},
 		"recurso_max": 80.0,
 		"faccion": "Los Sueltos"
 	},
@@ -57,7 +57,7 @@ const TAXON_DATA: Dictionary = {
 		"emoji": "🕷️",
 		"recurso_nombre": "Plasma Estancado",
 		"defecto_nombre": "Anclaje Pesado",
-		"stats_base": {"torax": 7, "ganglios": 2, "quitina_base": 10, "sensilios": 5, "cripsis": 4, "feromonas": 2},
+		"stats_base": {"torax": 4, "ganglios": 2, "quitina_base": 9, "sensilios": 5, "cripsis": 4, "feromonas": 2},
 		"recurso_max": 150.0,
 		"faccion": "Los Sueltos"
 	},
@@ -66,7 +66,7 @@ const TAXON_DATA: Dictionary = {
 		"emoji": "🛏️",
 		"recurso_nombre": "Sangre Premium",
 		"defecto_nombre": "Paladar Fino",
-		"stats_base": {"torax": 3, "ganglios": 4, "quitina_base": 4, "sensilios": 6, "cripsis": 7, "feromonas": 9},
+		"stats_base": {"torax": 3, "ganglios": 5, "quitina_base": 4, "sensilios": 6, "cripsis": 7, "feromonas": 9},
 		"recurso_max": 60.0,
 		"faccion": "La Colmena"
 	},
@@ -75,7 +75,7 @@ const TAXON_DATA: Dictionary = {
 		"emoji": "🦋",
 		"recurso_nombre": "Néctar Fermentado",
 		"defecto_nombre": "Alas de Cristal",
-		"stats_base": {"torax": 2, "ganglios": 9, "quitina_base": 2, "sensilios": 7, "cripsis": 5, "feromonas": 10},
+		"stats_base": {"torax": 3, "ganglios": 9, "quitina_base": 3, "sensilios": 7, "cripsis": 5, "feromonas": 10},
 		"recurso_max": 70.0,
 		"faccion": "La Colmena"
 	},
@@ -93,7 +93,7 @@ const TAXON_DATA: Dictionary = {
 		"emoji": "🦂",
 		"recurso_nombre": "Turgencia",
 		"defecto_nombre": "Fotofobia Humillante",
-		"stats_base": {"torax": 8, "ganglios": 4, "quitina_base": 8, "sensilios": 5, "cripsis": 6, "feromonas": 3},
+		"stats_base": {"torax": 7, "ganglios": 4, "quitina_base": 6, "sensilios": 5, "cripsis": 6, "feromonas": 3},
 		"recurso_max": 100.0,
 		"faccion": "El Enjambre Negro"
 	},
@@ -102,7 +102,7 @@ const TAXON_DATA: Dictionary = {
 		"emoji": "🗡️",
 		"recurso_nombre": "Sangre Inoculada",
 		"defecto_nombre": "Digestión Traicionera",
-		"stats_base": {"torax": 5, "ganglios": 6, "quitina_base": 5, "sensilios": 8, "cripsis": 10, "feromonas": 2},
+		"stats_base": {"torax": 5, "ganglios": 7, "quitina_base": 5, "sensilios": 8, "cripsis": 10, "feromonas": 2},
 		"recurso_max": 80.0,
 		"faccion": "Los Parásitos Libres"
 	},
@@ -120,7 +120,7 @@ const TAXON_DATA: Dictionary = {
 		"emoji": "💉",
 		"recurso_nombre": "Toxinas y Filtros",
 		"defecto_nombre": "Adicción Espiritual",
-		"stats_base": {"torax": 3, "ganglios": 4, "quitina_base": 6, "sensilios": 6, "cripsis": 5, "feromonas": 8},
+		"stats_base": {"torax": 4, "ganglios": 4, "quitina_base": 4, "sensilios": 6, "cripsis": 5, "feromonas": 8},
 		"recurso_max": 90.0,
 		"faccion": "Los Parásitos Libres"
 	},
@@ -129,7 +129,7 @@ const TAXON_DATA: Dictionary = {
 		"emoji": "🌙",
 		"recurso_nombre": "Fotones",
 		"defecto_nombre": "Atracción Fatal",
-		"stats_base": {"torax": 3, "ganglios": 7, "quitina_base": 3, "sensilios": 10, "cripsis": 4, "feromonas": 6},
+		"stats_base": {"torax": 3, "ganglios": 7, "quitina_base": 4, "sensilios": 10, "cripsis": 4, "feromonas": 6},
 		"recurso_max": 80.0,
 		"faccion": "Neutral"
 	},
@@ -138,7 +138,7 @@ const TAXON_DATA: Dictionary = {
 		"emoji": "⚡",
 		"recurso_nombre": "Flujo Cinético",
 		"defecto_nombre": "Hiperactividad Crónica",
-		"stats_base": {"torax": 4, "ganglios": 10, "quitina_base": 3, "sensilios": 6, "cripsis": 5, "feromonas": 5},
+		"stats_base": {"torax": 4, "ganglios": 10, "quitina_base": 4, "sensilios": 6, "cripsis": 5, "feromonas": 5},
 		"recurso_max": 70.0,
 		"faccion": "Los Sueltos"
 	},
@@ -147,83 +147,84 @@ const TAXON_DATA: Dictionary = {
 		"emoji": "🦟",
 		"recurso_nombre": "Calor Robado",
 		"defecto_nombre": "Cristal Ambulante",
-		"stats_base": {"torax": 3, "ganglios": 8, "quitina_base": 2, "sensilios": 9, "cripsis": 7, "feromonas": 6},
+		"stats_base": {"torax": 3, "ganglios": 8, "quitina_base": 2, "sensilios": 10, "cripsis": 8, "feromonas": 9},
 		"recurso_max": 60.0,
 		"faccion": "Los Parásitos Libres"
 	}
 }
 
 # ===== ATAVISMOS POR TAXÓN =====
+# Cada taxón tiene: 1 Melee (daño), 1 Social (debuff/presión), 1 Utilidad (evasión/stun/heal)
 const ATAVISMOS_DATA: Dictionary = {
 	Taxon.ZANCUDO: [
-		{"nombre": "Micro-Inyección", "costo": 3, "tipo": "debuff", "efecto": "paralisis", "desc": "-50% Agilidad enemigo 2 turnos", "valor": 0.5},
-		{"nombre": "Vicisitud", "costo": 4, "tipo": "daño", "efecto": "mutacion", "desc": "Daño x2 + deforma (-1 Def)", "valor": 2.0},
-		{"nombre": "Llamada del Enjambre", "costo": 5, "tipo": "buff", "efecto": "enjambre", "desc": "+3 Tórax 3 turnos. -3% Esencia", "valor": 3.0},
+		{"nombre": "Micro-Inyección", "costo": 3, "tipo": "melee", "efecto": "veneno", "desc": "Veneno: 4 daño/turno ×3", "valor": 4.0},
+		{"nombre": "Zumbido Hipnótico", "costo": 2, "tipo": "social", "efecto": "confuso", "desc": "Enemigo se ataca solo (30%)", "valor": 0.3},
+		{"nombre": "Vuelo Errático", "costo": 3, "tipo": "utilidad", "efecto": "evasion", "desc": "+40% evasión 2 turnos", "valor": 0.4},
 	],
 	Taxon.CUCARACHA: [
-		{"nombre": "Caparazón de Emergencia", "costo": 2, "tipo": "defensa", "efecto": "inmune", "desc": "Inmune 1 turno (no ataca)", "valor": 1.0},
-		{"nombre": "Exoesqueleto Ancestral", "costo": 3, "tipo": "buff", "efecto": "armadura", "desc": "+4 Defensa 3 turnos", "valor": 4.0},
-		{"nombre": "Supervivencia Extrema", "costo": 4, "tipo": "heal", "efecto": "regen", "desc": "+30% Turgencia + cura", "valor": 0.3},
+		{"nombre": "Embestida Quitinosa", "costo": 3, "tipo": "melee", "efecto": "penetrar", "desc": "Ignora 50% armadura. x1.5", "valor": 1.5},
+		{"nombre": "Aura de Asco", "costo": 2, "tipo": "social", "efecto": "miedo", "desc": "Enemigo pierde turno (asco)", "valor": 1.0},
+		{"nombre": "Caparazón de Emergencia", "costo": 4, "tipo": "utilidad", "efecto": "inmune", "desc": "Inmune 1 turno. No atacas.", "valor": 1.0},
 	],
 	Taxon.AVISPA: [
-		{"nombre": "Picada Frenética", "costo": 4, "tipo": "daño", "efecto": "multi", "desc": "3 ataques al 60%", "valor": 0.6},
-		{"nombre": "Mandíbula de Acero", "costo": 3, "tipo": "daño", "efecto": "penetrar", "desc": "Ignora armadura. x1.5", "valor": 1.5},
-		{"nombre": "Feromona Dominante", "costo": 5, "tipo": "debuff", "efecto": "miedo", "desc": "Enemigo pierde turno", "valor": 1.0},
+		{"nombre": "Picada Frenética", "costo": 4, "tipo": "melee", "efecto": "multi", "desc": "3 ataques al 60%", "valor": 0.6},
+		{"nombre": "Feromona de Guerra", "costo": 3, "tipo": "social", "efecto": "miedo", "desc": "Enemigo pierde turno (terror)", "valor": 1.0},
+		{"nombre": "Mandíbula de Acero", "costo": 3, "tipo": "melee", "efecto": "penetrar", "desc": "Ignora armadura. x1.8", "valor": 1.8},
 	],
 	Taxon.GARRAPATA: [
-		{"nombre": "Anclaje Vital", "costo": 3, "tipo": "drain", "efecto": "drenar", "desc": "Drena 10% HP/turno x3", "valor": 0.1},
-		{"nombre": "Exoesqueleto Ancestral", "costo": 3, "tipo": "buff", "efecto": "armadura", "desc": "+4 Defensa 3 turnos", "valor": 4.0},
-		{"nombre": "Metamorfosis", "costo": 5, "tipo": "buff", "efecto": "metamorfosis", "desc": "+2 todos stats 2 turnos", "valor": 2.0},
+		{"nombre": "Anclaje Vital", "costo": 3, "tipo": "melee", "efecto": "drenar", "desc": "Drena 15% HP enemigo", "valor": 0.15},
+		{"nombre": "Presión Parasitaria", "costo": 2, "tipo": "social", "efecto": "stun", "desc": "Enemigo aturdido 1 turno", "valor": 1.0},
+		{"nombre": "Exoesqueleto Ancestral", "costo": 4, "tipo": "utilidad", "efecto": "armadura", "desc": "+4 Defensa 3 turnos", "valor": 4.0},
 	],
 	Taxon.CHINCHE: [
-		{"nombre": "Decreto Real", "costo": 2, "tipo": "debuff", "efecto": "lento", "desc": "Enemigo ataca último", "valor": 1.0},
-		{"nombre": "Feromona Dominante", "costo": 5, "tipo": "debuff", "efecto": "miedo", "desc": "Enemigo pierde turno", "valor": 1.0},
-		{"nombre": "Parásito Neural", "costo": 4, "tipo": "debuff", "efecto": "confuso", "desc": "30% se ataca a sí mismo", "valor": 0.3},
+		{"nombre": "Mordida Nocturna", "costo": 3, "tipo": "melee", "efecto": "drenar", "desc": "Drena 10% HP + heal", "valor": 0.1},
+		{"nombre": "Decreto Real", "costo": 2, "tipo": "social", "efecto": "confuso", "desc": "Enemigo se golpea solo", "valor": 1.0},
+		{"nombre": "Sábanas de Seda", "costo": 3, "tipo": "utilidad", "efecto": "evasion", "desc": "+35% evasión 2 turnos", "valor": 0.35},
 	],
 	Taxon.MARIPOSA: [
-		{"nombre": "Polvo Cegador", "costo": 2, "tipo": "debuff", "efecto": "ciego", "desc": "-80% Precisión 2 turnos", "valor": 0.8},
-		{"nombre": "Aleteo Frenético", "costo": 3, "tipo": "buff", "efecto": "velocidad", "desc": "+5 Velocidad 3 turnos", "valor": 5.0},
-		{"nombre": "Mirada Morpho", "costo": 4, "tipo": "debuff", "efecto": "stun", "desc": "Aturdido 1 turno", "valor": 1.0},
+		{"nombre": "Polvo Cegador", "costo": 2, "tipo": "melee", "efecto": "veneno", "desc": "3 daño/turno + ciego", "valor": 3.0},
+		{"nombre": "Mirada Morpho", "costo": 3, "tipo": "social", "efecto": "stun", "desc": "Hipnotiza. Pierde 2 turnos.", "valor": 2.0},
+		{"nombre": "Aleteo Dimensional", "costo": 4, "tipo": "utilidad", "efecto": "esquiva", "desc": "Esquiva 100% próximo ataque", "valor": 1.0},
 	],
 	Taxon.ARANA: [
-		{"nombre": "Red de Contención", "costo": 4, "tipo": "debuff", "efecto": "inmovil", "desc": "Inmoviliza 2 turnos", "valor": 2.0},
-		{"nombre": "Tejeduría de Éter", "costo": 3, "tipo": "heal", "efecto": "regen", "desc": "+20% Turgencia", "valor": 0.2},
-		{"nombre": "Necrosis Clandestina", "costo": 5, "tipo": "daño", "efecto": "veneno", "desc": "5 daño/turno x4", "valor": 5.0},
+		{"nombre": "Necrosis Clandestina", "costo": 4, "tipo": "melee", "efecto": "veneno", "desc": "6 daño/turno ×3 (agravado)", "valor": 6.0},
+		{"nombre": "Red de Contención", "costo": 3, "tipo": "social", "efecto": "stun", "desc": "Inmoviliza 2 turnos", "valor": 2.0},
+		{"nombre": "Tejeduría de Éter", "costo": 3, "tipo": "utilidad", "efecto": "regen", "desc": "+25% Turgencia", "valor": 0.25},
 	],
 	Taxon.ESCORPION: [
-		{"nombre": "Golpe de Pinza", "costo": 5, "tipo": "daño", "efecto": "critico", "desc": "Daño x2.5 ignora armadura", "valor": 2.5},
-		{"nombre": "Sombra de Pinza", "costo": 3, "tipo": "buff", "efecto": "sigilo", "desc": "Próximo ataque = crítico", "valor": 2.0},
-		{"nombre": "Ultravioleta y Abismo", "costo": 4, "tipo": "debuff", "efecto": "ciego", "desc": "-80% Precisión 2 turnos", "valor": 0.8},
+		{"nombre": "Golpe de Pinza", "costo": 5, "tipo": "melee", "efecto": "critico", "desc": "Daño x2.5 ignora armadura", "valor": 2.5},
+		{"nombre": "Ultravioleta y Abismo", "costo": 3, "tipo": "social", "efecto": "miedo", "desc": "Terror puro. Pierde turno.", "valor": 1.0},
+		{"nombre": "Sombra de Pinza", "costo": 3, "tipo": "utilidad", "efecto": "sigilo", "desc": "Próximo ataque = crítico x2", "valor": 2.0},
 	],
 	Taxon.VINCHUCA: [
-		{"nombre": "Mordida Silenciosa", "costo": 3, "tipo": "daño", "efecto": "robar", "desc": "Daño x1.5 + roba item", "valor": 1.5},
-		{"nombre": "Veneno Silencioso", "costo": 2, "tipo": "daño", "efecto": "veneno", "desc": "3 daño/turno x5", "valor": 3.0},
-		{"nombre": "Regalo de Chagas", "costo": 4, "tipo": "daño", "efecto": "agravado", "desc": "Agravado + -5% Esencia", "valor": 2.0},
+		{"nombre": "Mordida Silenciosa", "costo": 3, "tipo": "melee", "efecto": "robar", "desc": "Daño x1.5 + roba item", "valor": 1.5},
+		{"nombre": "Regalo de Chagas", "costo": 4, "tipo": "social", "efecto": "veneno", "desc": "Veneno social: -2 stats/turno", "valor": 2.0},
+		{"nombre": "Desvanecimiento", "costo": 2, "tipo": "utilidad", "efecto": "esquiva", "desc": "Invisible. Esquiva 100%.", "valor": 1.0},
 	],
 	Taxon.MOSCA: [
-		{"nombre": "Invocar Larva", "costo": 4, "tipo": "summon", "efecto": "larva", "desc": "Aliado 3 turnos (4 daño/t)", "valor": 4.0},
-		{"nombre": "Necro-Larva", "costo": 3, "tipo": "heal", "efecto": "drenar_muerto", "desc": "Si mata: +50% Turgencia", "valor": 0.5},
-		{"nombre": "Gólem de Basural", "costo": 6, "tipo": "summon", "efecto": "golem", "desc": "Escudo absorbe 30 daño", "valor": 30.0},
+		{"nombre": "Invocar Larva", "costo": 4, "tipo": "melee", "efecto": "larva", "desc": "Aliado: 5 daño/turno ×3", "valor": 5.0},
+		{"nombre": "Olor a Muerte", "costo": 2, "tipo": "social", "efecto": "miedo", "desc": "Hedor. Enemigo pierde turno.", "valor": 1.0},
+		{"nombre": "Gólem de Basural", "costo": 5, "tipo": "utilidad", "efecto": "golem", "desc": "Escudo absorbe 30 daño", "valor": 30.0},
 	],
 	Taxon.SANGUIJUELA: [
-		{"nombre": "Éxtasis Tóxico", "costo": 3, "tipo": "debuff", "efecto": "stun", "desc": "Pierde turno + 20% Hemo", "valor": 0.2},
-		{"nombre": "Camuflaje Adaptativo", "costo": 2, "tipo": "buff", "efecto": "sigilo", "desc": "Invisible 2 turnos", "valor": 2.0},
-		{"nombre": "Anestesia Extática", "costo": 4, "tipo": "drain", "efecto": "drenar", "desc": "Drena 15% HP + Adicto", "valor": 0.15},
+		{"nombre": "Éxtasis Tóxico", "costo": 3, "tipo": "melee", "efecto": "drenar", "desc": "Drena 12% HP + adicción", "valor": 0.12},
+		{"nombre": "Anestesia Extática", "costo": 3, "tipo": "social", "efecto": "stun", "desc": "Placer paralizante. Pierde turno.", "valor": 1.0},
+		{"nombre": "Camuflaje Adaptativo", "costo": 2, "tipo": "utilidad", "efecto": "evasion", "desc": "+45% evasión 2 turnos", "valor": 0.45},
 	],
 	Taxon.POLILLA: [
-		{"nombre": "Visión del Foco", "costo": 2, "tipo": "info", "efecto": "revelar", "desc": "Revela stats + debilidades", "valor": 1.0},
-		{"nombre": "Polvo de Ala", "costo": 3, "tipo": "buff", "efecto": "evasion", "desc": "+50% Evasión 3 turnos", "valor": 0.5},
-		{"nombre": "Síndrome del Foco", "costo": 4, "tipo": "debuff", "efecto": "confuso", "desc": "Enemigo se daña solo", "valor": 1.0},
+		{"nombre": "Rayo Lunar", "costo": 3, "tipo": "melee", "efecto": "critico", "desc": "Daño x2 (luz concentrada)", "valor": 2.0},
+		{"nombre": "Síndrome del Foco", "costo": 3, "tipo": "social", "efecto": "confuso", "desc": "Enemigo se daña solo (hipnosis)", "valor": 1.0},
+		{"nombre": "Polvo de Ala", "costo": 2, "tipo": "utilidad", "efecto": "evasion", "desc": "+50% evasión 1 turno", "valor": 0.5},
 	],
 	Taxon.PULGA: [
-		{"nombre": "Salto Dimensional", "costo": 1, "tipo": "buff", "efecto": "esquiva", "desc": "Esquiva próximo ataque", "valor": 1.0},
-		{"nombre": "Espejismo de Alas", "costo": 3, "tipo": "buff", "efecto": "evasion", "desc": "50% fallo enemigo 3 turnos", "valor": 0.5},
-		{"nombre": "Truco de la Moneda", "costo": 2, "tipo": "daño", "efecto": "aleatorio", "desc": "50%: daño x3 o fallo", "valor": 3.0},
+		{"nombre": "Salto Demoledor", "costo": 3, "tipo": "melee", "efecto": "critico", "desc": "Impacto cinético x2", "valor": 2.0},
+		{"nombre": "Truco de la Moneda", "costo": 2, "tipo": "social", "efecto": "aleatorio", "desc": "50%: daño x3 o fallo total", "valor": 3.0},
+		{"nombre": "Salto Dimensional", "costo": 1, "tipo": "utilidad", "efecto": "esquiva", "desc": "Esquiva 100% próximo ataque", "valor": 1.0},
 	],
 	Taxon.TIPULA: [
-		{"nombre": "Autotomía Táctica", "costo": 2, "tipo": "buff", "efecto": "esquiva", "desc": "Esquiva 100% + -10% Prec", "valor": 1.0},
-		{"nombre": "Ocelo Ancestral", "costo": 3, "tipo": "info", "efecto": "revelar", "desc": "Ve HP real + próximo ataque", "valor": 1.0},
-		{"nombre": "Extracción del Terror", "costo": 4, "tipo": "heal", "efecto": "terror_heal", "desc": "Sana 25% del miedo enemigo", "valor": 0.25},
+		{"nombre": "Autotomía Táctica", "costo": 2, "tipo": "melee", "efecto": "multi", "desc": "Sacrifica pata: 2 golpes x1.2", "valor": 1.2},
+		{"nombre": "Ocelo Ancestral", "costo": 3, "tipo": "social", "efecto": "revelar", "desc": "Lee mente: revela stats + debuff -2", "valor": 2.0},
+		{"nombre": "Extracción del Terror", "costo": 4, "tipo": "utilidad", "efecto": "terror_heal", "desc": "Absorbe miedo: +30% Turgencia", "valor": 0.3},
 	],
 }
 
@@ -236,6 +237,13 @@ var nombre_plaga: String = ""
 
 # Esencia de Taxón (El Silencio Verde)
 var esencia: float = 100.0  # 0 = Marioneta (Game Over)
+
+# Antenas Sociales (0-10) — indicador de socialización en combate
+# Si solo pegas sin socializar, bajan. Si socializas, suben.
+# 0 antenas = el hongo avanza (-5% Esencia por combate)
+# 10 antenas = bonus social (+2 a tiradas de Danza)
+var antenas: int = 5  # Empieza en 5/10
+const ANTENAS_MAX: int = 10
 
 # Recursos vitales
 var turgencia_actual: float = 100.0
@@ -293,6 +301,7 @@ func reset() -> void:
 	taxon_actual = Taxon.ZANCUDO
 	nombre_plaga = ""
 	esencia = 100.0
+	antenas = 5
 	turgencia_actual = 100.0
 	turgencia_max = 100.0
 	hemolinfa_actual = 50.0
@@ -465,6 +474,30 @@ func _mostrar_asimilado() -> void:
 	vbox.add_child(btn)
 	
 	scene_tree.current_scene.add_child(fin)
+
+# ===== SISTEMA DE ANTENAS SOCIALES =====
+func ganar_antena(razon: String) -> void:
+	if antenas < ANTENAS_MAX:
+		antenas += 1
+		print("🐜 +1 Antena: %s [%d/%d]" % [razon, antenas, ANTENAS_MAX])
+	if antenas >= ANTENAS_MAX:
+		modificar_esencia(2.0, "Antenas al máximo — el hongo retrocede")
+
+func perder_antena(razon: String) -> void:
+	if antenas > 0:
+		antenas -= 1
+		print("🐜 -1 Antena: %s [%d/%d]" % [razon, antenas, ANTENAS_MAX])
+	if antenas <= 0:
+		modificar_esencia(-5.0, "Sin antenas — violencia pura. El Cordyceps celebra.")
+		print("🍄 ¡ALERTA! Antenas en 0. El hongo avanza. Socializa o serás asimilado.")
+
+func get_bonus_antenas() -> int:
+	## Bonus a tiradas sociales según nivel de antenas
+	if antenas >= 9: return 3
+	if antenas >= 7: return 2
+	if antenas >= 5: return 1
+	if antenas >= 3: return 0
+	return -2  # Penalización si estás muy bajo
 
 # ===== ACCIONES QUE AFECTAN ESENCIA =====
 func accion_matar_sin_justificacion() -> void:

@@ -447,15 +447,28 @@ func _craftear_anclaje() -> void:
 	bg.color = Color(0, 0, 0, 0.95)
 	fin.add_child(bg)
 	
-	# Reproducir video final si existe
-	if ResourceLoader.exists("res://video/final demo escorpion.mp4"):
-		var video = VideoStreamPlayer.new()
-		video.stream = load("res://video/final demo escorpion.mp4")
-		video.anchor_right = 1.0
-		video.anchor_bottom = 1.0
-		video.expand = true
-		fin.add_child(video)
-		video.play()
+	# Reproducir video final si existe (carga directa sin reimportar)
+	var video_loaded = false
+	var video_paths = [
+		"res://video/final demo escorpion.ogv",
+		"res://video/final demo escorpion.mp4",
+	]
+	for vpath in video_paths:
+		if FileAccess.file_exists(vpath):
+			var video = VideoStreamPlayer.new()
+			if vpath.ends_with(".ogv"):
+				var stream = VideoStreamTheora.new()
+				stream.file = vpath
+				video.stream = stream
+			else:
+				video.stream = load(vpath)
+			video.anchor_right = 1.0
+			video.anchor_bottom = 1.0
+			video.expand = true
+			fin.add_child(video)
+			video.play()
+			video_loaded = true
+			break
 	
 	var vbox = VBoxContainer.new()
 	vbox.anchor_left = 0.5

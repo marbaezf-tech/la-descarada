@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://4hsl6x3kxyre"
-path="res://.godot/imported/2d_polilla_sedante.png.png-4cf5a91ad33a69d5173ec6776f178498.ctex"
+uid="uid://dicg3o2i0ifip"
+path="res://.godot/imported/2d_garrapata_salvaje.png-63f4d12b2c0b7fabc2a6998a5874217d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://imagenes/Enemigos/2d_polilla_sedante.png.png"
-dest_files=["res://.godot/imported/2d_polilla_sedante.png.png-4cf5a91ad33a69d5173ec6776f178498.ctex"]
+source_file="res://imagenes/Enemigos/2d_garrapata_salvaje.png"
+dest_files=["res://.godot/imported/2d_garrapata_salvaje.png-63f4d12b2c0b7fabc2a6998a5874217d.ctex"]
 
 [params]
 

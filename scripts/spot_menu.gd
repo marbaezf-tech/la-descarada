@@ -55,13 +55,13 @@ func _ready() -> void:
 	hbox.add_child(btn_explorar)
 	
 	btn_cazar = Button.new()
-	btn_cazar.text = "🩸 Diezmo"
+	btn_cazar.text = "🩸 Cazar"
 	btn_cazar.visible = _spot_type in ["cazar", "todos"]
 	btn_cazar.pressed.connect(_on_cazar)
 	hbox.add_child(btn_cazar)
 	
 	btn_lotear = Button.new()
-	btn_lotear.text = "💰 Cobrar"
+	btn_lotear.text = "💰 Saquear"
 	btn_lotear.visible = _spot_type in ["lotear", "todos"]
 	btn_lotear.pressed.connect(_on_lotear)
 	hbox.add_child(btn_lotear)
@@ -87,16 +87,16 @@ func _on_explorar() -> void:
 
 func _on_cazar() -> void:
 	var enemies = [
-		{"name": "Garrapata Salvaje", "hp": 30.0, "fue": 4.0, "agi": 3.0, "def": 2.0},
-		{"name": "Cucaracha Carroñera", "hp": 20.0, "fue": 3.0, "agi": 5.0, "def": 1.0},
-		{"name": "Polilla Sedante", "hp": 15.0, "fue": 2.0, "agi": 4.0, "def": 0.0},
+		{"name": "Garrapata Salvaje", "hp": 30.0, "fue": 4.0, "agi": 3.0, "def": 2.0, "fer": 2.0, "cri": 3.0, "sen": 4.0},
+		{"name": "Cucaracha Carroñera", "hp": 20.0, "fue": 3.0, "agi": 5.0, "def": 1.0, "fer": 1.0, "cri": 6.0, "sen": 5.0},
+		{"name": "Polilla Sedante", "hp": 15.0, "fue": 2.0, "agi": 4.0, "def": 0.0, "fer": 6.0, "cri": 4.0, "sen": 8.0},
 	]
 	var enemy = enemies[randi() % enemies.size()]
 	closed.emit()
 	var combat = CanvasLayer.new()
 	combat.layer = 20
 	combat.set_script(load("res://scripts/combat_manager.gd"))
-	combat.setup_enemy(enemy["name"], enemy["hp"], enemy["fue"], enemy["agi"], enemy["def"])
+	combat.setup_enemy(enemy["name"], enemy["hp"], enemy["fue"], enemy["agi"], enemy["def"], enemy["fer"], enemy["cri"], enemy["sen"])
 	combat.combat_ended.connect(_on_combat_ended)
 	get_tree().current_scene.add_child(combat)
 	queue_free()

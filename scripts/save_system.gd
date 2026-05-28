@@ -1,4 +1,4 @@
-extends Node
+﻿extends Node
 ## SaveSystem — Guardar y cargar progreso
 ## Tecla F5 para guardar, F9 para cargar
 
@@ -8,8 +8,8 @@ func guardar() -> void:
 	var data: Dictionary = {
 		"nivel": GameManager.nivel,
 		"experiencia": GameManager.experiencia,
-		"quitina_actual": GameManager.quitina_actual,
-		"quitina_max": GameManager.quitina_max,
+		"turgencia_actual": GameManager.turgencia_actual,
+		"turgencia_max": GameManager.turgencia_max,
 		"hemolinfa_actual": GameManager.hemolinfa_actual,
 		"hemolinfa_max": GameManager.hemolinfa_max,
 		"esencia": GameManager.esencia,
@@ -47,8 +47,8 @@ func cargar() -> bool:
 	
 	GameManager.nivel = int(data.get("nivel", 1))
 	GameManager.experiencia = float(data.get("experiencia", 0))
-	GameManager.quitina_actual = float(data.get("quitina_actual", 100))
-	GameManager.quitina_max = float(data.get("quitina_max", 100))
+	GameManager.turgencia_actual = float(data.get("turgencia_actual", 100))
+	GameManager.turgencia_max = float(data.get("turgencia_max", 100))
 	GameManager.hemolinfa_actual = float(data.get("hemolinfa_actual", 50))
 	GameManager.hemolinfa_max = float(data.get("hemolinfa_max", 50))
 	GameManager.esencia = float(data.get("esencia", 100))
@@ -61,7 +61,7 @@ func cargar() -> bool:
 	GameManager.stats = data.get("stats", {})
 	
 	# Emitir señales para actualizar HUD
-	GameManager.quitina_changed.emit(GameManager.quitina_actual, GameManager.quitina_max)
+	GameManager.turgencia_changed.emit(GameManager.turgencia_actual, GameManager.turgencia_max)
 	GameManager.hemolinfa_changed.emit(GameManager.hemolinfa_actual, GameManager.hemolinfa_max)
 	GameManager.esencia_changed.emit(GameManager.esencia)
 	

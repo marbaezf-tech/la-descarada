@@ -20,6 +20,9 @@ var enemy_fuerza: float = 0.0
 var enemy_agilidad: float = 0.0
 var enemy_defensa: float = 0.0
 
+# Tracking de socialización en este combate
+var _turnos_sin_social: int = 0  # Si llega a 3, pierde antena
+
 var enemy_name_label: Label
 var enemy_hp_bar: ProgressBar
 var enemy_hp_label: Label
@@ -29,6 +32,7 @@ var player_name_label: Label
 var log_label: RichTextLabel
 var btn_atacar: Button
 var btn_habilidad: Button
+var btn_danza: Button
 var btn_huir: Button
 
 # Avatares
@@ -48,13 +52,22 @@ const ENEMY_COLORS: Dictionary = {
 	"Polilla Sedante": Color(0.6, 0.6, 0.8),
 }
 
-func setup_enemy(p_name: String, hp: float, fuerza: float, agilidad: float, defensa: float) -> void:
+func setup_enemy(p_name: String, hp: float, fuerza: float, agilidad: float, defensa: float, fer: float = -1.0, cri: float = -1.0, sen: float = -1.0) -> void:
 	enemy_name = p_name
 	enemy_hp = hp
 	enemy_hp_max = hp
 	enemy_fuerza = fuerza
 	enemy_agilidad = agilidad
 	enemy_defensa = defensa
+	# Stats sociales: usar valores explícitos o generar automáticamente
+	if fer >= 0:
+		enemy_feromonas = fer
+		enemy_cripsis = cri
+		enemy_sensilios = sen
+	else:
+		enemy_feromonas = clampf(fuerza * 0.4 + randf_range(1, 3), 2, 8)
+		enemy_cripsis = clampf(agilidad * 0.6 + randf_range(0, 2), 2, 8)
+		enemy_sensilios = clampf((fuerza + agilidad) * 0.3 + randf_range(1, 2), 2, 8)
 
 func _ready() -> void:
 	_build_ui()
@@ -178,6 +191,24 @@ func _build_ui() -> void:
 	hemo_label.add_theme_color_override("font_color", Color(0.3, 0.6, 1.0))
 	player_info_vbox.add_child(hemo_label)
 	
+	# Antenas Sociales
+	var antenas_text = ""
+	for i in range(GameManager.ANTENAS_MAX):
+		if i < GameManager.antenas:
+			antenas_text += "🐜"
+		else:
+			antenas_text += "·"
+	var antenas_label = Label.new()
+	antenas_label.text = antenas_text + " (%d/%d)" % [GameManager.antenas, GameManager.ANTENAS_MAX]
+	antenas_label.add_theme_font_size_override("font_size", 7)
+	if GameManager.antenas <= 2:
+		antenas_label.add_theme_color_override("font_color", Color(0.9, 0.2, 0.1))
+	elif GameManager.antenas >= 8:
+		antenas_label.add_theme_color_override("font_color", Color(0.2, 0.9, 0.3))
+	else:
+		antenas_label.add_theme_color_override("font_color", Color(0.7, 0.7, 0.4))
+	player_info_vbox.add_child(antenas_label)
+	
 	# === ZONA DE BOTONES (abajo-derecha) ===
 	var btn_panel = PanelContainer.new()
 	btn_panel.anchor_top = 0.6
@@ -206,6 +237,13 @@ func _build_ui() -> void:
 	btn_habilidad.add_theme_font_size_override("font_size", 11)
 	btn_habilidad.pressed.connect(_on_habilidad)
 	btn_vbox.add_child(btn_habilidad)
+	
+	var btn_danza = Button.new()
+	btn_danza.text = "🐜 Danza de Antenas"
+	btn_danza.custom_minimum_size = Vector2(0, 30)
+	btn_danza.add_theme_font_size_override("font_size", 11)
+	btn_danza.pressed.connect(_on_danza)
+	btn_vbox.add_child(btn_danza)
 	
 	btn_huir = Button.new()
 	btn_huir.text = "🏃 Retirada"
@@ -321,6 +359,7 @@ func _update_ui() -> void:
 func _set_buttons_enabled(enabled: bool) -> void:
 	btn_atacar.disabled = not enabled
 	btn_habilidad.disabled = not enabled
+	btn_danza.disabled = not enabled
 	btn_huir.disabled = not enabled
 
 func _log(text: String) -> void:
@@ -332,10 +371,37 @@ func _on_atacar() -> void:
 	_set_buttons_enabled(false)
 	var player_fuerza = GameManager.stats.get("torax", 5)
 	var arma_bonus = GameManager.stats.get("arma_equipada", 0)
-	var base_damage = (player_fuerza + arma_bonus) * 2.0 - enemy_defensa
+	var player_ganglios = GameManager.stats.get("ganglios", 5)
+	var player_sensilios = GameManager.stats.get("sensilios", 5)
+	# Evasión enemiga: GAN×3.5% + CRI×2.5% (cap 55%)
+	var enemy_evasion = minf(0.55, enemy_agilidad * 0.035 + enemy_cripsis * 0.025)
+	# Precisión del jugador reduce evasión: SEN×2%
+	var precision_bonus = player_sensilios * 0.02
+	var evasion_final = maxf(0.05, enemy_evasion - precision_bonus)
+	
+	# Check evasión
+	if randf() < evasion_final:
+		_log("💨 ¡%s esquivó tu ataque!" % enemy_name)
+		await get_tree().create_timer(0.5).timeout
+		_enemy_turn()
+		return
+	
+	var base_damage = (player_fuerza + arma_bonus) * 2.0 - enemy_defensa * 0.5
 	var damage = maxf(1.0, base_damage * randf_range(0.85, 1.15))
+	# Bonus de Danza de Antenas (Mimetismo victoria = crítico)
+	if GameManager.get_meta("danza_critico", false):
+		damage *= 2.0
+		GameManager.set_meta("danza_critico", false)
+		_log("🗡️💃 ¡GOLPE FANTASMA! Desde las sombras. (%.0f daño CRÍTICO)" % damage)
+	else:
+		_log("🗡️ Cortes de precisión. (%.0f daño)" % damage)
 	enemy_hp -= damage
-	_log("🗡️ Cortes de precisión. (%.0f daño)" % damage)
+	# Violencia sin socializar = antenas bajan
+	_turnos_sin_social += 1
+	if _turnos_sin_social >= 3:
+		_turnos_sin_social = 0
+		GameManager.perder_antena("3 turnos de violencia pura")
+		_log("   🐜 -1 Antena. El hongo nota tu brutalidad.")
 	_update_ui()
 	_check_enemy_death()
 
@@ -399,6 +465,29 @@ func _ejecutar_atavismo(atav: Dictionary, popup: PanelContainer) -> void:
 		return
 	
 	_log("🧬 %s activado." % atav["nombre"])
+	
+	# Efecto en antenas según naturaleza del atavismo
+	match atav["efecto"]:
+		"confuso", "revelar", "stun":
+			# Social/encantador → sube antenas
+			_turnos_sin_social = 0
+			GameManager.ganar_antena("Encantamiento: %s" % atav["nombre"])
+			_log("   🐜 +1 Antena. Diplomacia biológica.")
+		"miedo":
+			# Intimidar → baja antenas (violencia psicológica)
+			GameManager.perder_antena("Intimidación: %s" % atav["nombre"])
+			_log("   🐜 -1 Antena. El terror es violencia.")
+		"veneno", "drenar", "critico", "penetrar", "multi", "robar", "larva", "agravado":
+			# Melee oscuro → baja antenas
+			GameManager.perder_antena("Violencia: %s" % atav["nombre"])
+			_log("   🐜 -1 Antena. Brutalidad pura.")
+		"evasion", "esquiva", "armadura", "inmune", "regen", "golem", "sigilo", "terror_heal":
+			# Utilidad/evasión → neutral, no afecta
+			_turnos_sin_social = 0  # Al menos no es violencia
+		"aleatorio":
+			pass  # La moneda no cuenta
+		_:
+			pass
 	
 	var damage: float = 0.0
 	match atav["efecto"]:
@@ -517,6 +606,218 @@ func _on_huir() -> void:
 		_log("❌ ¡No puedes huir!")
 		_enemy_turn()
 
+# ===== DANZA DE ANTENAS — SISTEMA SOCIAL =====
+# Piedra-papel-tijera con 4 posturas químicas
+# Acecho > Exposición > Vibración > Mimetismo > Acecho (ciclo)
+
+const POSTURAS: Dictionary = {
+	"acecho": {"emoji": "🦷", "nombre": "Acecho", "stat": "torax", "desc": "Intimidar con fuerza bruta"},
+	"exposicion": {"emoji": "💐", "nombre": "Exposición", "stat": "feromonas", "desc": "Manipular con carisma"},
+	"mimetismo": {"emoji": "🫥", "nombre": "Mimetismo", "stat": "cripsis", "desc": "Evadir y observar"},
+	"vibracion": {"emoji": "📡", "nombre": "Vibración", "stat": "sensilios", "desc": "Leer y detectar"},
+}
+
+# Ventajas: key es fuerte contra value
+const POSTURA_VENTAJA: Dictionary = {
+	"acecho": "exposicion",
+	"exposicion": "vibracion",
+	"mimetismo": "acecho",
+	"vibracion": "mimetismo",
+}
+
+# Stats sociales del enemigo (basados en sus stats de combate)
+var enemy_feromonas: float = 3.0
+var enemy_cripsis: float = 4.0
+var enemy_sensilios: float = 5.0
+
+func _on_danza() -> void:
+	if state != CombatState.PLAYER_TURN: return
+	_show_danza_menu()
+
+func _show_danza_menu() -> void:
+	_set_buttons_enabled(false)
+	
+	var popup = PanelContainer.new()
+	popup.name = "DanzaPopup"
+	popup.anchor_left = 0.05
+	popup.anchor_top = 0.15
+	popup.anchor_right = 0.55
+	popup.anchor_bottom = 0.85
+	add_child(popup)
+	
+	var vbox = VBoxContainer.new()
+	vbox.add_theme_constant_override("separation", 6)
+	popup.add_child(vbox)
+	
+	var title = Label.new()
+	title.text = "💃 DANZA DE ANTENAS"
+	title.add_theme_font_size_override("font_size", 12)
+	title.add_theme_color_override("font_color", Color(1.0, 0.8, 0.3))
+	vbox.add_child(title)
+	
+	var desc = Label.new()
+	desc.text = "Elige tu postura química. Si ganas, el enemigo\npierde turno + sufre penalización."
+	desc.add_theme_font_size_override("font_size", 8)
+	desc.add_theme_color_override("font_color", Color(0.7, 0.7, 0.7))
+	desc.autowrap_mode = TextServer.AUTOWRAP_WORD
+	vbox.add_child(desc)
+	
+	for key in POSTURAS:
+		var postura = POSTURAS[key]
+		var stat_val = GameManager.stats.get(postura["stat"], 5)
+		var btn = Button.new()
+		btn.text = "%s %s (%s: %d) — %s" % [postura["emoji"], postura["nombre"], postura["stat"].to_upper().left(3), stat_val, postura["desc"]]
+		btn.add_theme_font_size_override("font_size", 9)
+		btn.pressed.connect(_ejecutar_danza.bind(key, popup))
+		vbox.add_child(btn)
+	
+	# Opción de gastar Instinto
+	if GameManager.instinto_actual > 0:
+		var instinto_label = Label.new()
+		instinto_label.text = "⚡ Instinto disponible: %d/%d (+3 al stat elegido)" % [GameManager.instinto_actual, GameManager.instinto_max]
+		instinto_label.add_theme_font_size_override("font_size", 8)
+		instinto_label.add_theme_color_override("font_color", Color(0.9, 0.6, 0.1))
+		vbox.add_child(instinto_label)
+	
+	var btn_cancel = Button.new()
+	btn_cancel.text = "← Cancelar"
+	btn_cancel.add_theme_font_size_override("font_size", 9)
+	btn_cancel.pressed.connect(func():
+		popup.queue_free()
+		_set_buttons_enabled(true)
+	)
+	vbox.add_child(btn_cancel)
+
+func _ejecutar_danza(postura_key: String, popup: PanelContainer) -> void:
+	popup.queue_free()
+	state = CombatState.ANIMATING
+	
+	var postura = POSTURAS[postura_key]
+	var player_stat = GameManager.stats.get(postura["stat"], 5)
+	
+	# Enemigo elige postura aleatoria (con tendencia a su stat más alto)
+	var enemy_postura_key = _enemy_choose_postura()
+	var enemy_postura = POSTURAS[enemy_postura_key]
+	var enemy_stat_val = _get_enemy_social_stat(enemy_postura["stat"])
+	
+	_log("\n💃 ¡DANZA DE ANTENAS!")
+	_log("   Tú: %s %s (%s: %d)" % [postura["emoji"], postura["nombre"], postura["stat"].left(3).to_upper(), player_stat])
+	_log("   %s: %s %s (%s: %d)" % [enemy_name, enemy_postura["emoji"], enemy_postura["nombre"], enemy_postura["stat"].left(3).to_upper(), enemy_stat_val])
+	
+	# Resolver ventaja/desventaja
+	var ventaja_player = POSTURA_VENTAJA.get(postura_key, "") == enemy_postura_key
+	var ventaja_enemy = POSTURA_VENTAJA.get(enemy_postura_key, "") == postura_key
+	
+	var bonus_player: int = 0
+	var bonus_enemy: int = 0
+	
+	if ventaja_player:
+		bonus_player = 3
+		_log("   ✨ ¡Ventaja! Tu %s aplasta su %s. (+3)" % [postura["nombre"], enemy_postura["nombre"]])
+	elif ventaja_enemy:
+		bonus_enemy = 3
+		_log("   ⚠️ Desventaja. Su %s contrarresta tu %s. (+3 enemigo)" % [enemy_postura["nombre"], postura["nombre"]])
+	else:
+		_log("   ⚖️ Posturas neutrales. Puro stat vs stat.")
+	
+	# Tirada: stat + bonus + variación aleatoria (±2)
+	var roll_player = player_stat + bonus_player + randi_range(-2, 2)
+	var roll_enemy = int(enemy_stat_val) + bonus_enemy + randi_range(-2, 2)
+	
+	_log("   🎲 Tirada: %d vs %d" % [roll_player, roll_enemy])
+	
+	if roll_player >= roll_enemy:
+		# Victoria social
+		_log("   🏆 ¡VICTORIA SOCIAL!")
+		_apply_danza_victory(postura_key)
+	else:
+		# Derrota social
+		_log("   💀 Derrota social.")
+		_apply_danza_defeat(enemy_postura_key)
+	
+	_update_ui()
+	
+	# Después de la danza, turno del enemigo (si no fue aturdido)
+	if roll_player >= roll_enemy:
+		# Enemigo pierde turno por la danza
+		await get_tree().create_timer(0.8).timeout
+		state = CombatState.PLAYER_TURN
+		_set_buttons_enabled(true)
+		_log("— Tu turno. El enemigo está desconcertado.")
+	else:
+		await get_tree().create_timer(0.6).timeout
+		_enemy_turn()
+
+func _apply_danza_victory(postura_key: String) -> void:
+	# Socializar sube antenas y resetea contador de violencia
+	_turnos_sin_social = 0
+	GameManager.ganar_antena("Victoria en Danza de Antenas")
+	_log("   🐜 +1 Antena. La diplomacia te fortalece.")
+	match postura_key:
+		"acecho":
+			var dmg = GameManager.stats.get("torax", 5) * 0.5
+			enemy_hp -= dmg
+			_log("   → Intimidación brutal. %.0f daño psíquico. Enemigo tiembla." % dmg)
+		"exposicion":
+			enemy_fuerza = maxf(enemy_fuerza - 2, 1)
+			enemy_defensa = maxf(enemy_defensa - 1, 0)
+			_log("   → Manipulación exitosa. -2 Fuerza, -1 Defensa al enemigo.")
+		"mimetismo":
+			_log("   → Desapareces de su percepción. Próximo ataque = crítico.")
+			# Marcar próximo ataque como crítico
+			GameManager.set_meta("danza_critico", true)
+		"vibracion":
+			_log("   → Lees su frecuencia. Stats: HP:%d/%d | Fue:%d | Agi:%d | Def:%d" % [enemy_hp, enemy_hp_max, enemy_fuerza, enemy_agilidad, enemy_defensa])
+			var heal = GameManager.turgencia_max * 0.1
+			GameManager.curar(heal)
+			_log("   → La calma te regenera. +%.0f Turgencia." % heal)
+	GameManager.modificar_esencia(2.0, "Victoria social — la diplomacia fortalece")
+
+func _apply_danza_defeat(enemy_postura_key: String) -> void:
+	match enemy_postura_key:
+		"acecho":
+			var dmg = enemy_fuerza * 0.8
+			GameManager.recibir_dano(dmg)
+			_log("   → Te intimida. %.0f daño por estrés. Tu quitina cruje." % dmg)
+		"exposicion":
+			GameManager.modificar_esencia(-3.0, "Manipulado socialmente")
+			_log("   → Te manipuló. -3%% Esencia. El verde se alimenta de tu vergüenza.")
+		"mimetismo":
+			enemy_agilidad += 2
+			_log("   → Se escabulle. +2 Agilidad enemiga. Más difícil de golpear.")
+		"vibracion":
+			_log("   → Lee tus debilidades. Próximo ataque enemigo = crítico.")
+
+func _enemy_choose_postura() -> String:
+	# El enemigo elige basándose en su stat más alto
+	var stats_map = {
+		"acecho": enemy_fuerza,
+		"exposicion": enemy_feromonas,
+		"mimetismo": enemy_cripsis,
+		"vibracion": enemy_sensilios,
+	}
+	
+	# 60% elige su mejor stat, 40% aleatorio
+	if randf() < 0.6:
+		var best_key = "acecho"
+		var best_val = 0.0
+		for key in stats_map:
+			if stats_map[key] > best_val:
+				best_val = stats_map[key]
+				best_key = key
+		return best_key
+	else:
+		var keys = stats_map.keys()
+		return keys[randi() % keys.size()]
+
+func _get_enemy_social_stat(stat_name: String) -> float:
+	match stat_name:
+		"torax": return enemy_fuerza
+		"feromonas": return enemy_feromonas
+		"cripsis": return enemy_cripsis
+		"sensilios": return enemy_sensilios
+	return 5.0
+
 func _check_enemy_death() -> void:
 	if enemy_hp <= 0:
 		enemy_hp = 0
@@ -546,7 +847,35 @@ func _check_enemy_death() -> void:
 
 func _enemy_turn() -> void:
 	state = CombatState.ENEMY_TURN
-	var base_damage = enemy_fuerza * 1.5 - GameManager.stats.get("quitina_base", 4) - GameManager.stats.get("armadura_equipada", 0)
+	
+	# El enemigo decide: atacar (físico) o provocar (social)
+	# Probabilidad de provocar = FER / (FER + TOR) — enemigos sociales provocan más
+	var chance_provocar = enemy_feromonas / (enemy_feromonas + enemy_fuerza + 0.1)
+	
+	if randf() < chance_provocar:
+		# TURNO SOCIAL del enemigo
+		_enemy_provocar()
+		return
+	
+	# TURNO FÍSICO del enemigo
+	# Evasión del jugador: GAN×3.5% + CRI×2.5% (cap 55%)
+	var player_gan = GameManager.stats.get("ganglios", 5)
+	var player_cri = GameManager.stats.get("cripsis", 5)
+	var player_evasion = minf(0.55, player_gan * 0.035 + player_cri * 0.025)
+	# Precisión enemiga reduce evasión
+	var enemy_precision = enemy_sensilios * 0.02
+	var evasion_final = maxf(0.05, player_evasion - enemy_precision)
+	
+	if randf() < evasion_final:
+		var phrases = ENEMY_PHRASES.get(enemy_name, ["¡Muere!"])
+		_log("💨 Esquivaste el ataque de %s." % enemy_name)
+		await get_tree().create_timer(0.4).timeout
+		state = CombatState.PLAYER_TURN
+		_set_buttons_enabled(true)
+		_log("— Tu turno.")
+		return
+	
+	var base_damage = enemy_fuerza * 1.5 - GameManager.stats.get("quitina_base", 4) * 0.5 - GameManager.stats.get("armadura_equipada", 0)
 	var damage = maxf(1.0, base_damage * randf_range(0.85, 1.15))
 	GameManager.recibir_dano(damage)
 	var phrases = ENEMY_PHRASES.get(enemy_name, ["¡Muere!"])
@@ -560,6 +889,61 @@ func _enemy_turn() -> void:
 		state = CombatState.PLAYER_TURN
 		_set_buttons_enabled(true)
 		_log("— Tu turno.")
+
+# Frases de provocación del enemigo (por tipo)
+const ENEMY_PROVOCACIONES: Dictionary = {
+	"Garrapata Salvaje": [
+		{"frase": "🦷 \"¡Eres tan lento que me da sueño!\"", "efecto": "debuff_gan", "valor": -1},
+		{"frase": "💐 \"Hueles a presa fácil, cariño...\"", "efecto": "debuff_cri", "valor": -1},
+	],
+	"Cucaracha Carroñera": [
+		{"frase": "🦷 \"¡Yo sobreviví al zapatazo divino! ¿Tú qué?\"", "efecto": "debuff_tor", "valor": -1},
+		{"frase": "💐 \"Tu inventario es basura. Como tú.\"", "efecto": "debuff_fer", "valor": -1},
+	],
+	"Polilla Sedante": [
+		{"frase": "📡 \"Shhh... siento tu miedo. Es delicioso.\"", "efecto": "debuff_sen", "valor": -1},
+		{"frase": "💐 \"La luz me dijo que no vales nada...\"", "efecto": "debuff_gan", "valor": -2},
+	],
+}
+
+func _enemy_provocar() -> void:
+	var provocaciones = ENEMY_PROVOCACIONES.get(enemy_name, [
+		{"frase": "🦷 \"¡No me das miedo, insecto!\"", "efecto": "debuff_tor", "valor": -1},
+	])
+	var prov = provocaciones[randi() % provocaciones.size()]
+	
+	_log("🗣️ %s provoca:" % enemy_name)
+	_log("   %s" % prov["frase"])
+	
+	# El jugador puede resistir con Feromonas o Sensilios
+	var resistencia = GameManager.stats.get("feromonas", 3) + GameManager.stats.get("sensilios", 5)
+	var dificultad = enemy_feromonas + enemy_sensilios
+	
+	if resistencia + randi_range(-2, 2) >= dificultad:
+		_log("   😤 Resistes la provocación. No te afecta.")
+	else:
+		# Aplicar debuff
+		match prov["efecto"]:
+			"debuff_tor":
+				GameManager.stats["torax"] = max(GameManager.stats.get("torax", 5) + prov["valor"], 1)
+				_log("   😰 Te intimida. -%d Tórax." % abs(prov["valor"]))
+			"debuff_gan":
+				GameManager.stats["ganglios"] = max(GameManager.stats.get("ganglios", 5) + prov["valor"], 1)
+				_log("   😰 Te desconcentra. -%d Ganglios." % abs(prov["valor"]))
+			"debuff_cri":
+				GameManager.stats["cripsis"] = max(GameManager.stats.get("cripsis", 5) + prov["valor"], 1)
+				_log("   😰 Te expone. -%d Cripsis." % abs(prov["valor"]))
+			"debuff_sen":
+				GameManager.stats["sensilios"] = max(GameManager.stats.get("sensilios", 5) + prov["valor"], 1)
+				_log("   😰 Te nubla. -%d Sensilios." % abs(prov["valor"]))
+			"debuff_fer":
+				GameManager.stats["feromonas"] = max(GameManager.stats.get("feromonas", 3) + prov["valor"], 1)
+				_log("   😰 Te humilla. -%d Feromonas." % abs(prov["valor"]))
+	
+	await get_tree().create_timer(0.5).timeout
+	state = CombatState.PLAYER_TURN
+	_set_buttons_enabled(true)
+	_log("— Tu turno. ¿Respondes con golpes o con palabras?")
 
 func _end_combat(victory: bool) -> void:
 	state = CombatState.ENDED
