@@ -73,7 +73,7 @@ func _build_ui() -> void:
 	
 	# --- ENEMIGO: arriba-derecha ---
 	var enemy_container = VBoxContainer.new()
-	enemy_container.position = Vector2(350, 15)
+	enemy_container.position = Vector2(320, 15)
 	enemy_container.custom_minimum_size = Vector2(200, 0)
 	battle_zone.add_child(enemy_container)
 	
@@ -82,6 +82,7 @@ func _build_ui() -> void:
 	enemy_name_label.text = "🎯 %s" % enemy_name
 	enemy_name_label.add_theme_font_size_override("font_size", 11)
 	enemy_name_label.add_theme_color_override("font_color", Color(1, 0.3, 0.3))
+	enemy_name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	enemy_container.add_child(enemy_name_label)
 	
 	# HP bar enemigo
@@ -95,11 +96,12 @@ func _build_ui() -> void:
 	enemy_hp_label = Label.new()
 	enemy_hp_label.text = "HP: %d/%d" % [enemy_hp, enemy_hp_max]
 	enemy_hp_label.add_theme_font_size_override("font_size", 9)
+	enemy_hp_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	enemy_container.add_child(enemy_hp_label)
 	
-	# Avatar enemigo (arriba-derecha)
+	# Avatar enemigo (centrado, debajo de su HP)
 	enemy_avatar = _create_avatar(enemy_name, true)
-	enemy_avatar.position = Vector2(420, 50)
+	enemy_avatar.position = Vector2(370, 60)
 	battle_zone.add_child(enemy_avatar)
 	
 	# --- JUGADOR: abajo-izquierda ---
@@ -196,7 +198,7 @@ func _build_ui() -> void:
 
 func _create_avatar(char_name: String, is_enemy: bool) -> Control:
 	var container = Control.new()
-	container.custom_minimum_size = Vector2(64, 64)
+	container.custom_minimum_size = Vector2(48, 48)
 	
 	# Intentar cargar imagen del enemigo
 	var img_name = char_name.to_lower().replace(" ", "_").replace("á","a").replace("é","e").replace("í","i").replace("ó","o").replace("ú","u").replace("ñ","n")
@@ -211,7 +213,7 @@ func _create_avatar(char_name: String, is_enemy: bool) -> Control:
 		if ResourceLoader.exists(img_path):
 			var sprite = TextureRect.new()
 			sprite.texture = load(img_path)
-			sprite.size = Vector2(64, 64)
+			sprite.size = Vector2(48, 48)
 			sprite.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 			sprite.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 			container.add_child(sprite)
@@ -220,14 +222,14 @@ func _create_avatar(char_name: String, is_enemy: bool) -> Control:
 	
 	if not loaded:
 		var rect = ColorRect.new()
-		rect.size = Vector2(64, 64)
+		rect.size = Vector2(48, 48)
 		rect.color = ENEMY_COLORS.get(char_name, Color(0.4, 0.2, 0.2))
 		container.add_child(rect)
 		
 		var emoji_label = Label.new()
 		emoji_label.text = "👾" if is_enemy else "🦟"
-		emoji_label.position = Vector2(15, 12)
-		emoji_label.add_theme_font_size_override("font_size", 24)
+		emoji_label.position = Vector2(10, 8)
+		emoji_label.add_theme_font_size_override("font_size", 20)
 		container.add_child(emoji_label)
 	
 	return container
