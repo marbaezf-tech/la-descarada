@@ -199,16 +199,25 @@ func _create_avatar(char_name: String, is_enemy: bool) -> Control:
 	container.custom_minimum_size = Vector2(80, 80)
 	
 	# Intentar cargar imagen del enemigo
-	var img_name = char_name.to_lower().replace(" ", "_").replace("á","a").replace("é","e").replace("í","i").replace("ó","o").replace("ú","u")
-	var img_path = "res://imagenes/2d_%s.png" % img_name
+	var img_name = char_name.to_lower().replace(" ", "_").replace("á","a").replace("é","e").replace("í","i").replace("ó","o").replace("ú","u").replace("ñ","n")
+	var paths_to_try = [
+		"res://imagenes/Enemigos/2d_%s.png" % img_name,
+		"res://imagenes/2d_%s.png" % img_name,
+		"res://imagenes/%s.png" % img_name,
+	]
 	
-	if ResourceLoader.exists(img_path):
-		var sprite = TextureRect.new()
-		sprite.texture = load(img_path)
-		sprite.custom_minimum_size = Vector2(80, 80)
-		sprite.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-		container.add_child(sprite)
-	else:
+	var loaded = false
+	for img_path in paths_to_try:
+		if ResourceLoader.exists(img_path):
+			var sprite = TextureRect.new()
+			sprite.texture = load(img_path)
+			sprite.custom_minimum_size = Vector2(80, 80)
+			sprite.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+			container.add_child(sprite)
+			loaded = true
+			break
+	
+	if not loaded:
 		# Placeholder cuadrado
 		var rect = ColorRect.new()
 		rect.custom_minimum_size = Vector2(80, 80)
@@ -216,7 +225,6 @@ func _create_avatar(char_name: String, is_enemy: bool) -> Control:
 		rect.color = ENEMY_COLORS.get(char_name, Color(0.4, 0.2, 0.2))
 		container.add_child(rect)
 		
-		# Emoji centrado en el placeholder
 		var emoji_label = Label.new()
 		emoji_label.text = "👾" if is_enemy else "🦟"
 		emoji_label.position = Vector2(25, 20)
