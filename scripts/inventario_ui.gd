@@ -1,10 +1,11 @@
-extends CanvasLayer
+﻿extends CanvasLayer
 ## InventarioUI — Pantalla de inventario (tecla I)
 
 var panel: PanelContainer
 var items_container: VBoxContainer
 var title_label: Label
 var close_btn: Button
+var _confirm_popup: PanelContainer = null
 
 func _ready() -> void:
 	layer = 30
@@ -14,10 +15,6 @@ func _ready() -> void:
 	panel.anchor_top = 0.05
 	panel.anchor_right = 0.9
 	panel.anchor_bottom = 0.95
-	panel.offset_left = 0
-	panel.offset_top = 0
-	panel.offset_right = 0
-	panel.offset_bottom = 0
 	add_child(panel)
 	
 	var vbox = VBoxContainer.new()
@@ -37,7 +34,6 @@ func _ready() -> void:
 	close_btn.pressed.connect(_cerrar)
 	header.add_child(close_btn)
 	
-	# Separator
 	vbox.add_child(HSeparator.new())
 	
 	# Scroll container para items
@@ -50,7 +46,6 @@ func _ready() -> void:
 	items_container.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	scroll.add_child(items_container)
 	
-	# Poblar items
 	_refresh_items()
 
 func _refresh_items() -> void:
@@ -79,8 +74,7 @@ func _refresh_items() -> void:
 	equip_armor.add_theme_color_override("font_color", Color(0.7, 0.7, 0.7) if armadura_val == 0 else Color(0.9, 0.9, 0.9))
 	items_container.add_child(equip_armor)
 	
-	var sep = HSeparator.new()
-	items_container.add_child(sep)
+	items_container.add_child(HSeparator.new())
 	
 	# Items del inventario
 	if GameManager.inventario.is_empty():
@@ -102,20 +96,27 @@ func _refresh_items() -> void:
 		
 		var tipo = item.get("tipo", "")
 		
-		# Botón Usar (consumibles)
+		# Botón Usar (consumibles) — con confirmación
 		if tipo == "consumible":
 			var btn_usar = Button.new()
 			btn_usar.text = "Usar"
 			btn_usar.add_theme_font_size_override("font_size", 9)
-			btn_usar.pressed.connect(_usar_item.bind(i))
+			btn_usar.pressed.connect(_confirmar_usar.bind(i))
 			row.add_child(btn_usar)
 		
 		# Botón Equipar (armas y armaduras)
-		if tipo in ["arma_cc", "arma_dist", "armadura"]:
+		if tipo in ["arma", "arma_cc", "arma_dist", "armadura"]:
 			var btn_equip = Button.new()
-			btn_equip.text = "Equipar"
-			btn_equip.add_theme_font_size_override("font_size", 9)
-			btn_equip.pressed.connect(_equipar_item.bind(i))
+			var is_equipped = _is_item_equipped(item)
+			if is_equipped:
+				btn_equip.text = "✅ Equipado"
+				btn_equip.add_theme_font_size_override("font_size", 9)
+				btn_equip.add_theme_color_override("font_color", Color(0.2, 0.9, 0.3))
+				btn_equip.disabled = true
+			else:
+				btn_equip.text = "Equipar"
+				btn_equip.add_theme_font_size_override("font_size", 9)
+				btn_equip.pressed.connect(_confirmar_equipar.bind(i))
 			row.add_child(btn_equip)
 		
 		# Botón Tirar
@@ -127,30 +128,27 @@ func _refresh_items() -> void:
 		
 		items_container.add_child(row)
 	
-	# Footer con conteo
+	# Footer
 	var footer = Label.new()
 	footer.text = "\n📦 %d/%d items" % [GameManager.inventario.size(), GameManager.INVENTARIO_MAX]
 	footer.add_theme_font_size_override("font_size", 10)
 	footer.add_theme_color_override("font_color", Color(0.6, 0.8, 0.6))
 	items_container.add_child(footer)
 	
-	# Botón de Crafteo del Anclaje
-	var craft_sep = HSeparator.new()
-	items_container.add_child(craft_sep)
-	
+	# Crafteo
+	items_container.add_child(HSeparator.new())
 	var craft_title = Label.new()
 	craft_title.text = "🔧 CRAFTEO — Anclaje de Fibra"
 	craft_title.add_theme_font_size_override("font_size", 11)
 	craft_title.add_theme_color_override("font_color", Color(0.2, 0.9, 0.9))
 	items_container.add_child(craft_title)
 	
-	# Contar materiales
 	var sedas = _contar_material("Seda de Fibra de Carbono")
 	var cobres = _contar_material("Nervio de Cobre")
 	var hemo_ok = GameManager.hemolinfa_actual >= 15.0
 	
 	var req_label = Label.new()
-	req_label.text = "  🕸️ Seda: %d/3  |  ⚡ Cobre: %d/1  |  💧 Hemolinfa: %s" % [sedas, cobres, "✅" if hemo_ok else "❌ (necesitas 15)"]
+	req_label.text = "  🕸️ Seda: %d/3  |  ⚡ Cobre: %d/1  |  💧 Hemolinfa: %s" % [sedas, cobres, "✅" if hemo_ok else "❌ (15)"]
 	req_label.add_theme_font_size_override("font_size", 9)
 	items_container.add_child(req_label)
 	
@@ -161,52 +159,158 @@ func _refresh_items() -> void:
 	btn_craft.pressed.connect(_craftear_anclaje)
 	items_container.add_child(btn_craft)
 
-func _cerrar() -> void:
-	queue_free()
+func _is_item_equipped(item: Dictionary) -> bool:
+	var tipo = item.get("tipo", "")
+	var bonus_atk = item.get("bonus_ataque", item.get("valor", 0))
+	var bonus_def = item.get("bonus_defensa", item.get("valor", 0))
+	if tipo in ["arma", "arma_cc", "arma_dist"]:
+		return GameManager.stats.get("arma_equipada", 0) == bonus_atk
+	elif tipo == "armadura":
+		return GameManager.stats.get("armadura_equipada", 0) == bonus_def
+	return false
 
+# === CONFIRMACIONES ===
+func _confirmar_usar(index: int) -> void:
+	var item = GameManager.inventario[index]
+	_show_confirm(
+		"¿Usar %s %s?" % [item.get("emoji",""), item.get("nombre","")],
+		item.get("desc", ""),
+		func(): _usar_item(index)
+	)
+
+func _confirmar_equipar(index: int) -> void:
+	var item = GameManager.inventario[index]
+	var tipo = item.get("tipo", "")
+	var slot = "Arma" if tipo in ["arma", "arma_cc", "arma_dist"] else "Armadura"
+	var current = GameManager.stats.get("arma_equipada", 0) if slot == "Arma" else GameManager.stats.get("armadura_equipada", 0)
+	var msg = "¿Equipar %s %s?" % [item.get("emoji",""), item.get("nombre","")]
+	if current > 0:
+		msg = "¿Reemplazar %s actual (+%d) por %s?" % [slot, current, item.get("nombre","")]
+	_show_confirm(msg, item.get("desc", ""), func(): _equipar_item(index))
+
+func _show_confirm(title: String, desc: String, on_confirm: Callable) -> void:
+	if _confirm_popup:
+		_confirm_popup.queue_free()
+	
+	_confirm_popup = PanelContainer.new()
+	_confirm_popup.anchor_left = 0.2
+	_confirm_popup.anchor_top = 0.35
+	_confirm_popup.anchor_right = 0.8
+	_confirm_popup.anchor_bottom = 0.65
+	add_child(_confirm_popup)
+	
+	var vbox = VBoxContainer.new()
+	vbox.add_theme_constant_override("separation", 8)
+	_confirm_popup.add_child(vbox)
+	
+	var lbl_title = Label.new()
+	lbl_title.text = title
+	lbl_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	lbl_title.add_theme_font_size_override("font_size", 12)
+	lbl_title.autowrap_mode = TextServer.AUTOWRAP_WORD
+	vbox.add_child(lbl_title)
+	
+	var lbl_desc = Label.new()
+	lbl_desc.text = desc
+	lbl_desc.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	lbl_desc.add_theme_font_size_override("font_size", 9)
+	lbl_desc.add_theme_color_override("font_color", Color(0.6, 0.6, 0.6))
+	lbl_desc.autowrap_mode = TextServer.AUTOWRAP_WORD
+	vbox.add_child(lbl_desc)
+	
+	var hbox = HBoxContainer.new()
+	hbox.alignment = BoxContainer.ALIGNMENT_CENTER
+	hbox.add_theme_constant_override("separation", 20)
+	vbox.add_child(hbox)
+	
+	var btn_si = Button.new()
+	btn_si.text = "✅ Sí"
+	btn_si.add_theme_font_size_override("font_size", 11)
+	btn_si.pressed.connect(func():
+		_confirm_popup.queue_free()
+		_confirm_popup = null
+		on_confirm.call()
+	)
+	hbox.add_child(btn_si)
+	
+	var btn_no = Button.new()
+	btn_no.text = "❌ No"
+	btn_no.add_theme_font_size_override("font_size", 11)
+	btn_no.pressed.connect(func():
+		_confirm_popup.queue_free()
+		_confirm_popup = null
+	)
+	hbox.add_child(btn_no)
+
+# === ACCIONES ===
 func _usar_item(index: int) -> void:
 	var item = GameManager.inventario[index]
 	var nombre = item.get("nombre", "")
+	var efecto = item.get("efecto", "")
+	var cantidad = item.get("cantidad", 0)
 	
-	# Efectos de consumibles
-	match nombre:
-		"Hemolinfa Fresca":
-			GameManager.hemolinfa_actual = minf(GameManager.hemolinfa_actual + GameManager.hemolinfa_max * 0.2, GameManager.hemolinfa_max)
+	match efecto:
+		"hemolinfa":
+			GameManager.hemolinfa_actual = minf(GameManager.hemolinfa_actual + cantidad, GameManager.hemolinfa_max)
 			GameManager.hemolinfa_changed.emit(GameManager.hemolinfa_actual, GameManager.hemolinfa_max)
-		"Gota de Miel":
-			GameManager.curar(GameManager.quitina_max * 0.3)
-		"Hoja de Menta":
-			GameManager.curar(GameManager.quitina_max * 0.1)
-		"Cristal de Cafeína":
-			GameManager.stats["agilidad"] = GameManager.stats.get("agilidad", 5) + 2
-		"Adrenalina de Avispa":
-			GameManager.stats["fuerza"] = GameManager.stats.get("fuerza", 5) + 3
+		"turgencia":
+			GameManager.curar(cantidad)
+		"buff_total":
+			GameManager.stats["torax"] = GameManager.stats.get("torax", 5) + 2
+			GameManager.stats["ganglios"] = GameManager.stats.get("ganglios", 5) + 2
+			GameManager.curar(cantidad)
 		_:
-			GameManager.curar(GameManager.quitina_max * 0.15)
+			# Fallback por nombre (items viejos)
+			match nombre:
+				"Hemolinfa Fresca":
+					GameManager.hemolinfa_actual = minf(GameManager.hemolinfa_actual + GameManager.hemolinfa_max * 0.2, GameManager.hemolinfa_max)
+					GameManager.hemolinfa_changed.emit(GameManager.hemolinfa_actual, GameManager.hemolinfa_max)
+				"Gota de Miel":
+					GameManager.curar(GameManager.turgencia_max * 0.3)
+				"Hoja de Menta":
+					GameManager.curar(GameManager.turgencia_max * 0.1)
+				_:
+					GameManager.curar(GameManager.turgencia_max * 0.15)
 	
-	print("💊 Usado: %s %s" % [item.get("emoji",""), nombre])
+	_show_notification("💊 %s usado" % nombre, Color(0.3, 0.8, 1.0))
 	GameManager.remover_item(index)
 	_refresh_items()
 
 func _equipar_item(index: int) -> void:
 	var item = GameManager.inventario[index]
 	var tipo = item.get("tipo", "")
-	var valor = item.get("valor", 0)
+	var bonus_atk = item.get("bonus_ataque", item.get("valor", 0))
+	var bonus_def = item.get("bonus_defensa", item.get("valor", 0))
 	
-	if tipo == "arma_cc" or tipo == "arma_dist":
-		GameManager.stats["arma_equipada"] = valor
-		print("⚔️ Equipado: %s %s (+%d daño)" % [item.get("emoji",""), item.get("nombre",""), valor])
+	if tipo in ["arma", "arma_cc", "arma_dist"]:
+		GameManager.stats["arma_equipada"] = bonus_atk
+		_show_notification("⚔️ %s equipado (+%d daño)" % [item.get("nombre",""), bonus_atk], Color(0.2, 1.0, 0.4))
 	elif tipo == "armadura":
-		GameManager.stats["armadura_equipada"] = valor
-		print("🛡️ Equipado: %s %s (+%d defensa)" % [item.get("emoji",""), item.get("nombre",""), valor])
+		GameManager.stats["armadura_equipada"] = bonus_def
+		_show_notification("🛡️ %s equipado (+%d defensa)" % [item.get("nombre",""), bonus_def], Color(0.2, 1.0, 0.4))
 	
 	_refresh_items()
 
 func _tirar_item(index: int) -> void:
 	var item = GameManager.inventario[index]
-	print("🗑️ Descartado: %s %s" % [item.get("emoji",""), item.get("nombre","")])
+	_show_notification("🗑️ %s descartado" % item.get("nombre",""), Color(0.8, 0.3, 0.3))
 	GameManager.remover_item(index)
 	_refresh_items()
+
+func _show_notification(text: String, color: Color) -> void:
+	var notif = Label.new()
+	notif.text = text
+	notif.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	notif.add_theme_font_size_override("font_size", 11)
+	notif.add_theme_color_override("font_color", color)
+	notif.anchor_left = 0.2
+	notif.anchor_right = 0.8
+	notif.anchor_top = 0.92
+	add_child(notif)
+	get_tree().create_timer(1.5).timeout.connect(func(): if is_instance_valid(notif): notif.queue_free())
+
+func _cerrar() -> void:
+	queue_free()
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("inventario"):
@@ -229,13 +333,10 @@ func _remover_material(nombre: String, cantidad: int) -> void:
 		i -= 1
 
 func _craftear_anclaje() -> void:
-	# Consumir materiales
 	_remover_material("Seda de Fibra de Carbono", 3)
 	_remover_material("Nervio de Cobre", 1)
 	GameManager.hemolinfa_actual -= 15.0
 	GameManager.hemolinfa_changed.emit(GameManager.hemolinfa_actual, GameManager.hemolinfa_max)
-	
-	# Cerrar inventario y mostrar pantalla de fin de demo
 	queue_free()
 	
 	var fin = CanvasLayer.new()
@@ -278,7 +379,10 @@ func _craftear_anclaje() -> void:
 	
 	var btn = Button.new()
 	btn.text = "Volver al Menú"
-	btn.pressed.connect(func(): get_tree().change_scene_to_file("res://menu.tscn"))
+	btn.pressed.connect(func():
+		GameManager.reset()
+		get_tree().change_scene_to_file("res://menu.tscn")
+	)
 	vbox.add_child(btn)
 	
 	get_tree().current_scene.add_child(fin)
