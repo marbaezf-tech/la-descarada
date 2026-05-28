@@ -1,6 +1,12 @@
 ﻿extends Node
 ## LootSystem — Genera items aleatorios por tier
 ## Plaga: La Descarada
+##
+## DOCUMENTACIÓN:
+## - Tiers de loot: https://marbaezf-tech.github.io/plaga-wiki/sistemas.html#loot
+## - Catálogo de equipo: https://marbaezf-tech.github.io/plaga-wiki/sistemas.html#equipo
+## - Fusión: https://marbaezf-tech.github.io/plaga-wiki/sistemas.html#fusion
+## - Trazabilidad: https://marbaezf-tech.github.io/plaga-wiki/trazabilidad.html
 
 const LOOT_TABLE: Dictionary = {
 	"comun": {

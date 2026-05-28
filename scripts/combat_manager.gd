@@ -1,6 +1,12 @@
 ﻿extends CanvasLayer
 ## CombatManager — Combate por turnos estilo Pokémon
 ## Prota de espalda abajo-izquierda, Enemigo de frente arriba-derecha
+##
+## DOCUMENTACIÓN:
+## - Fórmulas de combate: https://marbaezf-tech.github.io/plaga-wiki/sistemas.html
+## - Spawn table: https://marbaezf-tech.github.io/plaga-wiki/sistemas.html#spawn
+## - Bestiario: https://marbaezf-tech.github.io/plaga-wiki/bestiario.html
+## - Trazabilidad: https://marbaezf-tech.github.io/plaga-wiki/trazabilidad.html
 
 signal combat_ended(victory: bool)
 

@@ -1,12 +1,18 @@
-extends Node
+﻿extends Node
 ## GameManager — Autoload Singleton
 ## Plaga: La Descarada
 ## Controla el estado global del juego: Taxón, Esencia, Recursos, Inventario
+##
+## DOCUMENTACIÓN:
+## - Sistemas de combate: https://marbaezf-tech.github.io/plaga-wiki/sistemas.html
+## - Esencia/Silencio Verde: https://marbaezf-tech.github.io/plaga-wiki/sistemas.html#esencia
+## - Grados de Estabilidad: https://marbaezf-tech.github.io/plaga-wiki/sistemas.html#grados
+## - Trazabilidad: https://marbaezf-tech.github.io/plaga-wiki/trazabilidad.html
 
 # ===== SEÑALES =====
 signal esencia_changed(new_value: float)
 signal recurso_changed(new_value: float)
-signal quitina_changed(current: float, max_val: float)
+signal turgencia_changed(current: float, max_val: float)
 signal hemolinfa_changed(current: float, max_val: float)
 signal marioneta_triggered()  # Game Over — Silencio Verde ganó
 signal defecto_activated(taxon_id: String, message: String)
@@ -15,7 +21,7 @@ signal defecto_activated(taxon_id: String, message: String)
 enum Taxon {
 	ZANCUDO, CUCARACHA, AVISPA, GARRAPATA, CHINCHE,
 	MARIPOSA, ARANA, ESCORPION, VINCHUCA, MOSCA,
-	SANGUIJUELA, POLILLA, PULGA
+	SANGUIJUELA, POLILLA, PULGA, TIPULA
 }
 
 const TAXON_DATA: Dictionary = {
@@ -24,7 +30,7 @@ const TAXON_DATA: Dictionary = {
 		"emoji": "🦟",
 		"recurso_nombre": "Sangre Fresca",
 		"defecto_nombre": "Sobrecarga de Buffer",
-		"stats_base": {"fuerza": 5, "agilidad": 7, "resistencia": 4, "percepcion": 6, "sigilo": 8, "carisma": 3},
+		"stats_base": {"torax": 5, "ganglios": 7, "quitina_base": 4, "sensilios": 6, "cripsis": 8, "feromonas": 3},
 		"recurso_max": 100.0,
 		"faccion": "El Enjambre Negro"
 	},
@@ -33,7 +39,7 @@ const TAXON_DATA: Dictionary = {
 		"emoji": "🪳",
 		"recurso_nombre": "Bio-Residuos",
 		"defecto_nombre": "Aura de Asco",
-		"stats_base": {"fuerza": 6, "agilidad": 5, "resistencia": 9, "percepcion": 7, "sigilo": 6, "carisma": 1},
+		"stats_base": {"torax": 6, "ganglios": 5, "quitina_base": 9, "sensilios": 7, "cripsis": 6, "feromonas": 1},
 		"recurso_max": 120.0,
 		"faccion": "Los Parásitos Libres"
 	},
@@ -42,7 +48,7 @@ const TAXON_DATA: Dictionary = {
 		"emoji": "🐝",
 		"recurso_nombre": "Carne Dulce y Azúcar",
 		"defecto_nombre": "Frenesí de Asado",
-		"stats_base": {"fuerza": 8, "agilidad": 7, "resistencia": 5, "percepcion": 4, "sigilo": 3, "carisma": 4},
+		"stats_base": {"torax": 8, "ganglios": 7, "quitina_base": 5, "sensilios": 4, "cripsis": 3, "feromonas": 4},
 		"recurso_max": 80.0,
 		"faccion": "Los Sueltos"
 	},
@@ -51,7 +57,7 @@ const TAXON_DATA: Dictionary = {
 		"emoji": "🕷️",
 		"recurso_nombre": "Plasma Estancado",
 		"defecto_nombre": "Anclaje Pesado",
-		"stats_base": {"fuerza": 7, "agilidad": 2, "resistencia": 10, "percepcion": 5, "sigilo": 4, "carisma": 2},
+		"stats_base": {"torax": 7, "ganglios": 2, "quitina_base": 10, "sensilios": 5, "cripsis": 4, "feromonas": 2},
 		"recurso_max": 150.0,
 		"faccion": "Los Sueltos"
 	},
@@ -60,7 +66,7 @@ const TAXON_DATA: Dictionary = {
 		"emoji": "🛏️",
 		"recurso_nombre": "Sangre Premium",
 		"defecto_nombre": "Paladar Fino",
-		"stats_base": {"fuerza": 3, "agilidad": 4, "resistencia": 4, "percepcion": 6, "sigilo": 7, "carisma": 9},
+		"stats_base": {"torax": 3, "ganglios": 4, "quitina_base": 4, "sensilios": 6, "cripsis": 7, "feromonas": 9},
 		"recurso_max": 60.0,
 		"faccion": "La Colmena"
 	},
@@ -69,7 +75,7 @@ const TAXON_DATA: Dictionary = {
 		"emoji": "🦋",
 		"recurso_nombre": "Néctar Fermentado",
 		"defecto_nombre": "Alas de Cristal",
-		"stats_base": {"fuerza": 2, "agilidad": 9, "resistencia": 2, "percepcion": 7, "sigilo": 5, "carisma": 10},
+		"stats_base": {"torax": 2, "ganglios": 9, "quitina_base": 2, "sensilios": 7, "cripsis": 5, "feromonas": 10},
 		"recurso_max": 70.0,
 		"faccion": "La Colmena"
 	},
@@ -78,16 +84,16 @@ const TAXON_DATA: Dictionary = {
 		"emoji": "🕸️",
 		"recurso_nombre": "Hemolinfa",
 		"defecto_nombre": "Fobia Social",
-		"stats_base": {"fuerza": 4, "agilidad": 5, "resistencia": 5, "percepcion": 9, "sigilo": 7, "carisma": 1},
+		"stats_base": {"torax": 4, "ganglios": 5, "quitina_base": 5, "sensilios": 9, "cripsis": 7, "feromonas": 1},
 		"recurso_max": 90.0,
 		"faccion": "La Colmena"
 	},
 	Taxon.ESCORPION: {
 		"nombre": "Escorpión",
 		"emoji": "🦂",
-		"recurso_nombre": "Quitina",
+		"recurso_nombre": "Turgencia",
 		"defecto_nombre": "Fotofobia Humillante",
-		"stats_base": {"fuerza": 8, "agilidad": 4, "resistencia": 8, "percepcion": 5, "sigilo": 6, "carisma": 3},
+		"stats_base": {"torax": 8, "ganglios": 4, "quitina_base": 8, "sensilios": 5, "cripsis": 6, "feromonas": 3},
 		"recurso_max": 100.0,
 		"faccion": "El Enjambre Negro"
 	},
@@ -96,7 +102,7 @@ const TAXON_DATA: Dictionary = {
 		"emoji": "🗡️",
 		"recurso_nombre": "Sangre Inoculada",
 		"defecto_nombre": "Digestión Traicionera",
-		"stats_base": {"fuerza": 5, "agilidad": 6, "resistencia": 5, "percepcion": 8, "sigilo": 10, "carisma": 2},
+		"stats_base": {"torax": 5, "ganglios": 6, "quitina_base": 5, "sensilios": 8, "cripsis": 10, "feromonas": 2},
 		"recurso_max": 80.0,
 		"faccion": "Los Parásitos Libres"
 	},
@@ -105,7 +111,7 @@ const TAXON_DATA: Dictionary = {
 		"emoji": "🪰",
 		"recurso_nombre": "Necromasa",
 		"defecto_nombre": "Olor a Muerte",
-		"stats_base": {"fuerza": 4, "agilidad": 6, "resistencia": 5, "percepcion": 7, "sigilo": 2, "carisma": 5},
+		"stats_base": {"torax": 4, "ganglios": 6, "quitina_base": 5, "sensilios": 7, "cripsis": 2, "feromonas": 5},
 		"recurso_max": 110.0,
 		"faccion": "Los Parásitos Libres"
 	},
@@ -114,7 +120,7 @@ const TAXON_DATA: Dictionary = {
 		"emoji": "💉",
 		"recurso_nombre": "Toxinas y Filtros",
 		"defecto_nombre": "Adicción Espiritual",
-		"stats_base": {"fuerza": 3, "agilidad": 4, "resistencia": 6, "percepcion": 6, "sigilo": 5, "carisma": 8},
+		"stats_base": {"torax": 3, "ganglios": 4, "quitina_base": 6, "sensilios": 6, "cripsis": 5, "feromonas": 8},
 		"recurso_max": 90.0,
 		"faccion": "Los Parásitos Libres"
 	},
@@ -123,7 +129,7 @@ const TAXON_DATA: Dictionary = {
 		"emoji": "🌙",
 		"recurso_nombre": "Fotones",
 		"defecto_nombre": "Atracción Fatal",
-		"stats_base": {"fuerza": 3, "agilidad": 7, "resistencia": 3, "percepcion": 10, "sigilo": 4, "carisma": 6},
+		"stats_base": {"torax": 3, "ganglios": 7, "quitina_base": 3, "sensilios": 10, "cripsis": 4, "feromonas": 6},
 		"recurso_max": 80.0,
 		"faccion": "Neutral"
 	},
@@ -132,9 +138,18 @@ const TAXON_DATA: Dictionary = {
 		"emoji": "⚡",
 		"recurso_nombre": "Flujo Cinético",
 		"defecto_nombre": "Hiperactividad Crónica",
-		"stats_base": {"fuerza": 4, "agilidad": 10, "resistencia": 3, "percepcion": 6, "sigilo": 5, "carisma": 5},
+		"stats_base": {"torax": 4, "ganglios": 10, "quitina_base": 3, "sensilios": 6, "cripsis": 5, "feromonas": 5},
 		"recurso_max": 70.0,
 		"faccion": "Los Sueltos"
+	},
+	Taxon.TIPULA: {
+		"nombre": "Típula",
+		"emoji": "🦟",
+		"recurso_nombre": "Calor Robado",
+		"defecto_nombre": "Cristal Ambulante",
+		"stats_base": {"torax": 3, "ganglios": 8, "quitina_base": 2, "sensilios": 9, "cripsis": 7, "feromonas": 6},
+		"recurso_max": 60.0,
+		"faccion": "Los Parásitos Libres"
 	}
 }
 
@@ -146,11 +161,15 @@ var nombre_plaga: String = ""
 var esencia: float = 100.0  # 0 = Marioneta (Game Over)
 
 # Recursos vitales
-var quitina_actual: float = 100.0
-var quitina_max: float = 100.0
+var turgencia_actual: float = 100.0
+var turgencia_max: float = 100.0
 var hemolinfa_actual: float = 50.0
 var hemolinfa_max: float = 50.0
 var recurso_taxon: float = 50.0
+
+# Instinto (Willpower — chispazos ganglionares para esfuerzos supremos)
+var instinto_actual: int = 5
+var instinto_max: int = 5
 
 # Stats
 var stats: Dictionary = {}
@@ -185,12 +204,37 @@ func inicializar_plaga(taxon: Taxon, nombre: String) -> void:
 	var data = TAXON_DATA[taxon]
 	stats = data["stats_base"].duplicate()
 	recurso_taxon = data["recurso_max"] * 0.5  # Empieza al 50%
-	quitina_max = 80.0 + stats["resistencia"] * 4.0
-	quitina_actual = quitina_max
-	hemolinfa_max = 30.0 + stats["percepcion"] * 4.0
+	turgencia_max = 80.0 + stats["quitina_base"] * 4.0
+	turgencia_actual = turgencia_max
+	hemolinfa_max = 30.0 + stats["sensilios"] * 4.0
 	hemolinfa_actual = hemolinfa_max
 	esencia = 100.0
 	print("🦟 Plaga inicializada: %s [%s]" % [nombre, data["nombre"]])
+
+func reset() -> void:
+	## Resetea todo el estado del juego para volver al menú limpio
+	taxon_actual = Taxon.ZANCUDO
+	nombre_plaga = ""
+	esencia = 100.0
+	turgencia_actual = 100.0
+	turgencia_max = 100.0
+	hemolinfa_actual = 50.0
+	hemolinfa_max = 50.0
+	recurso_taxon = 50.0
+	stats = {}
+	inventario = []
+	reputacion = {
+		"La Colmena": 0,
+		"El Enjambre Negro": 0,
+		"Los Sueltos": 0,
+		"Los Parásitos Libres": 0
+	}
+	zona_actual = "El Laboratorio"
+	zonas_descubiertas = []
+	experiencia = 0.0
+	nivel = 1
+	turnos_quieto = 0
+	print("🔄 GameManager reseteado")
 
 # ===== SISTEMA DE ESENCIA (SILENCIO VERDE) =====
 func modificar_esencia(cantidad: float, razon: String) -> void:
@@ -273,7 +317,7 @@ func esta_hambriento() -> bool:
 # ===== SISTEMA DE COMBATE =====
 func calcular_velocidad() -> float:
 	## Velocidad (Iniciativa) = (Agilidad + Percepción) / 2
-	return (stats.get("agilidad", 5) + stats.get("percepcion", 5)) / 2.0
+	return (stats.get("ganglios", 5) + stats.get("sensilios", 5)) / 2.0
 
 func usar_habilidad_taxon(objetivo_agilidad: float) -> Dictionary:
 	## Habilidad del Zancudo: Micro-Inyección de Parálisis
@@ -295,16 +339,16 @@ func usar_habilidad_taxon(objetivo_agilidad: float) -> Dictionary:
 	}
 
 func recibir_dano(cantidad: float) -> void:
-	quitina_actual = maxf(quitina_actual - cantidad, 0.0)
-	quitina_changed.emit(quitina_actual, quitina_max)
-	if quitina_actual <= 0.0:
-		print("💀 Quitina agotada — la Plaga cae")
+	turgencia_actual = maxf(turgencia_actual - cantidad, 0.0)
+	turgencia_changed.emit(turgencia_actual, turgencia_max)
+	if turgencia_actual <= 0.0:
+		print("💀 Turgencia agotada — la Plaga cae")
 
 func curar(cantidad: float) -> void:
-	quitina_actual = minf(quitina_actual + cantidad, quitina_max)
-	quitina_changed.emit(quitina_actual, quitina_max)
+	turgencia_actual = minf(turgencia_actual + cantidad, turgencia_max)
+	turgencia_changed.emit(turgencia_actual, turgencia_max)
 	# Defecto Zancudo: Sobrecarga de Buffer
-	if taxon_actual == Taxon.ZANCUDO and quitina_actual > quitina_max * 0.8:
+	if taxon_actual == Taxon.ZANCUDO and turgencia_actual > turgencia_max * 0.8:
 		defecto_activated.emit("ZANCUDO", "Te hinchaste demasiado. Velocidad reducida. Un golpe crítico y EXPLOTAS.")
 
 func gastar_hemolinfa(cantidad: float) -> bool:
@@ -333,13 +377,13 @@ func ganar_exp(cantidad: float) -> void:
 	if experiencia >= exp_para_subir:
 		experiencia -= exp_para_subir
 		nivel += 1
-		quitina_max += 5.0
+		turgencia_max += 5.0
 		hemolinfa_max += 3.0
-		quitina_actual = quitina_max
+		turgencia_actual = turgencia_max
 		hemolinfa_actual = hemolinfa_max
-		quitina_changed.emit(quitina_actual, quitina_max)
+		turgencia_changed.emit(turgencia_actual, turgencia_max)
 		hemolinfa_changed.emit(hemolinfa_actual, hemolinfa_max)
-		print("⬆️ ¡NIVEL %d! Quitina max: %.0f | Hemolinfa max: %.0f" % [nivel, quitina_max, hemolinfa_max])
+		print("⬆️ ¡NIVEL %d! Turgencia max: %.0f | Hemolinfa max: %.0f" % [nivel, turgencia_max, hemolinfa_max])
 
 # ===== REPUTACIÓN =====
 func modificar_reputacion(faccion: String, cantidad: int) -> void:
