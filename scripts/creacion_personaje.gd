@@ -128,8 +128,6 @@ func _ready() -> void:
 	subtitle.autowrap_mode = TextServer.AUTOWRAP_WORD
 	right_vbox.add_child(subtitle)
 	
-	right_vbox.add_child(HSeparator.new())
-	
 	# Grid de Taxones (3 columnas para que quepan mejor)
 	var grid = GridContainer.new()
 	grid.columns = 3
@@ -148,8 +146,6 @@ func _ready() -> void:
 		grid.add_child(btn)
 		taxon_buttons.append(btn)
 	
-	right_vbox.add_child(HSeparator.new())
-	
 	# Nombre del personaje
 	var name_hbox = HBoxContainer.new()
 	right_vbox.add_child(name_hbox)
@@ -164,8 +160,6 @@ func _ready() -> void:
 	nombre_input.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	nombre_input.add_theme_font_size_override("font_size", 10)
 	name_hbox.add_child(nombre_input)
-	
-	right_vbox.add_child(HSeparator.new())
 	
 	# Ficha preview
 	ficha_label = RichTextLabel.new()
