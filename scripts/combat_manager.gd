@@ -70,25 +70,22 @@ func _build_ui() -> void:
 	battle_zone.offset_bottom = 200
 	add_child(battle_zone)
 	
-	# --- ENEMIGO: imagen de fondo + stats a la derecha ---
-	# Avatar enemigo como fondo de la zona de batalla
+	# --- ENEMIGO: imagen de fondo centrada ---
 	enemy_avatar = _create_avatar_fullscreen(enemy_name)
 	battle_zone.add_child(enemy_avatar)
 	
-	# Stats del enemigo (derecha, sobre la imagen)
+	# --- Stats enemigo: arriba-derecha ---
 	var enemy_container = VBoxContainer.new()
-	enemy_container.position = Vector2(460, 15)
+	enemy_container.position = Vector2(460, 10)
 	enemy_container.custom_minimum_size = Vector2(170, 0)
 	battle_zone.add_child(enemy_container)
 	
-	# Nombre enemigo
 	enemy_name_label = Label.new()
 	enemy_name_label.text = "🎯 %s" % enemy_name
 	enemy_name_label.add_theme_font_size_override("font_size", 11)
 	enemy_name_label.add_theme_color_override("font_color", Color(1, 0.3, 0.3))
 	enemy_container.add_child(enemy_name_label)
 	
-	# HP bar enemigo
 	enemy_hp_bar = ProgressBar.new()
 	enemy_hp_bar.custom_minimum_size = Vector2(150, 10)
 	enemy_hp_bar.max_value = enemy_hp_max
@@ -101,37 +98,36 @@ func _build_ui() -> void:
 	enemy_hp_label.add_theme_font_size_override("font_size", 9)
 	enemy_container.add_child(enemy_hp_label)
 	
-	# --- JUGADOR: abajo-izquierda ---
-	var player_container = VBoxContainer.new()
-	player_container.position = Vector2(100, 130)
-	player_container.custom_minimum_size = Vector2(200, 0)
+	# --- Jugador: abajo-izquierda (foto + HP) ---
+	var player_container = HBoxContainer.new()
+	player_container.position = Vector2(10, 130)
+	player_container.add_theme_constant_override("separation", 8)
 	battle_zone.add_child(player_container)
 	
-	# Nombre jugador
+	player_avatar = _create_player_avatar()
+	player_container.add_child(player_avatar)
+	
+	var player_stats_vbox = VBoxContainer.new()
+	player_container.add_child(player_stats_vbox)
+	
 	player_name_label = Label.new()
 	var taxon_data = GameManager.TAXON_DATA[GameManager.taxon_actual]
 	player_name_label.text = "%s %s" % [taxon_data["emoji"], GameManager.nombre_plaga]
 	player_name_label.add_theme_font_size_override("font_size", 11)
 	player_name_label.add_theme_color_override("font_color", Color(0.3, 1, 0.5))
-	player_container.add_child(player_name_label)
+	player_stats_vbox.add_child(player_name_label)
 	
-	# HP bar jugador
 	player_hp_bar = ProgressBar.new()
-	player_hp_bar.custom_minimum_size = Vector2(160, 10)
+	player_hp_bar.custom_minimum_size = Vector2(120, 10)
 	player_hp_bar.max_value = GameManager.turgencia_max
 	player_hp_bar.value = GameManager.turgencia_actual
 	player_hp_bar.show_percentage = false
-	player_container.add_child(player_hp_bar)
+	player_stats_vbox.add_child(player_hp_bar)
 	
 	player_hp_label = Label.new()
 	player_hp_label.text = "HP: %d/%d" % [GameManager.turgencia_actual, GameManager.turgencia_max]
 	player_hp_label.add_theme_font_size_override("font_size", 9)
-	player_container.add_child(player_hp_label)
-	
-	# Avatar jugador (DE ESPALDA, al lado izquierdo de la barra de HP)
-	player_avatar = _create_player_avatar()
-	player_avatar.position = Vector2(15, 115)
-	battle_zone.add_child(player_avatar)
+	player_stats_vbox.add_child(player_hp_label)
 	
 	# === ZONA DE COMANDOS (abajo ~40%) ===
 	var cmd_panel = PanelContainer.new()
@@ -143,48 +139,44 @@ func _build_ui() -> void:
 	cmd_panel.offset_bottom = -10
 	add_child(cmd_panel)
 	
-	var cmd_vbox = VBoxContainer.new()
-	cmd_vbox.add_theme_constant_override("separation", 4)
-	cmd_panel.add_child(cmd_vbox)
+	var cmd_hbox = HBoxContainer.new()
+	cmd_hbox.add_theme_constant_override("separation", 10)
+	cmd_panel.add_child(cmd_hbox)
 	
-	# Log de combate
+	# Log de combate (izquierda)
 	log_label = RichTextLabel.new()
-	log_label.custom_minimum_size = Vector2(0, 70)
+	log_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	log_label.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	log_label.scroll_following = true
 	log_label.add_theme_font_size_override("normal_font_size", 9)
-	cmd_vbox.add_child(log_label)
+	cmd_hbox.add_child(log_label)
 	
-	# Separador
-	cmd_vbox.add_child(HSeparator.new())
-	
-	# Botones de acción (Atacar / Atavismo / Retirada)
-	var btn_grid = GridContainer.new()
-	btn_grid.columns = 3
-	btn_grid.add_theme_constant_override("h_separation", 8)
-	btn_grid.add_theme_constant_override("v_separation", 4)
-	cmd_vbox.add_child(btn_grid)
+	# Botones de acción (derecha, vertical)
+	var btn_vbox = VBoxContainer.new()
+	btn_vbox.custom_minimum_size = Vector2(140, 0)
+	btn_vbox.add_theme_constant_override("separation", 6)
+	cmd_hbox.add_child(btn_vbox)
 	
 	btn_atacar = Button.new()
 	btn_atacar.text = "⚔️ Atacar"
-	btn_atacar.custom_minimum_size = Vector2(130, 28)
+	btn_atacar.custom_minimum_size = Vector2(130, 30)
 	btn_atacar.add_theme_font_size_override("font_size", 11)
 	btn_atacar.pressed.connect(_on_atacar)
-	btn_grid.add_child(btn_atacar)
+	btn_vbox.add_child(btn_atacar)
 	
 	btn_habilidad = Button.new()
 	btn_habilidad.text = "🧬 Atavismo"
-	btn_habilidad.custom_minimum_size = Vector2(130, 28)
+	btn_habilidad.custom_minimum_size = Vector2(130, 30)
 	btn_habilidad.add_theme_font_size_override("font_size", 11)
 	btn_habilidad.pressed.connect(_on_habilidad)
-	btn_grid.add_child(btn_habilidad)
+	btn_vbox.add_child(btn_habilidad)
 	
 	btn_huir = Button.new()
 	btn_huir.text = "🏃 Retirada"
-	btn_huir.custom_minimum_size = Vector2(130, 28)
+	btn_huir.custom_minimum_size = Vector2(130, 30)
 	btn_huir.add_theme_font_size_override("font_size", 11)
 	btn_huir.pressed.connect(_on_huir)
-	btn_grid.add_child(btn_huir)
+	btn_vbox.add_child(btn_huir)
 
 func _create_avatar_fullscreen(char_name: String) -> TextureRect:
 	var img_name = char_name.to_lower().replace(" ", "_").replace("á","a").replace("é","e").replace("í","i").replace("ó","o").replace("ú","u").replace("ñ","n")
