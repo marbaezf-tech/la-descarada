@@ -337,8 +337,8 @@ func _craftear_anclaje() -> void:
 	_remover_material("Nervio de Cobre", 1)
 	GameManager.hemolinfa_actual -= 15.0
 	GameManager.hemolinfa_changed.emit(GameManager.hemolinfa_actual, GameManager.hemolinfa_max)
-	queue_free()
 	
+	# Crear pantalla de fin ANTES de liberar el inventario
 	var fin = CanvasLayer.new()
 	fin.layer = 50
 	var bg = ColorRect.new()
@@ -386,3 +386,6 @@ func _craftear_anclaje() -> void:
 	vbox.add_child(btn)
 	
 	get_tree().current_scene.add_child(fin)
+	
+	# Liberar inventario DESPUÉS de agregar la pantalla de fin
+	queue_free()
