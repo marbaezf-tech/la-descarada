@@ -24,7 +24,6 @@ var log_label: RichTextLabel
 var btn_atacar: Button
 var btn_habilidad: Button
 var btn_huir: Button
-var btn_item: Button
 
 # Avatares
 var player_avatar: Control
@@ -159,9 +158,9 @@ func _build_ui() -> void:
 	# Separador
 	cmd_vbox.add_child(HSeparator.new())
 	
-	# Botones de acción (2x2 grid estilo Pokémon)
+	# Botones de acción (Atacar / Atavismo / Retirada)
 	var btn_grid = GridContainer.new()
-	btn_grid.columns = 2
+	btn_grid.columns = 3
 	btn_grid.add_theme_constant_override("h_separation", 8)
 	btn_grid.add_theme_constant_override("v_separation", 4)
 	cmd_vbox.add_child(btn_grid)
@@ -179,13 +178,6 @@ func _build_ui() -> void:
 	btn_habilidad.add_theme_font_size_override("font_size", 11)
 	btn_habilidad.pressed.connect(_on_habilidad)
 	btn_grid.add_child(btn_habilidad)
-	
-	btn_item = Button.new()
-	btn_item.text = "🎒 Ítem"
-	btn_item.custom_minimum_size = Vector2(130, 28)
-	btn_item.add_theme_font_size_override("font_size", 11)
-	btn_item.disabled = true  # TODO: implementar uso de items en combate
-	btn_grid.add_child(btn_item)
 	
 	btn_huir = Button.new()
 	btn_huir.text = "🏃 Retirada"
