@@ -74,6 +74,14 @@ func _build_ui() -> void:
 	enemy_avatar = _create_avatar_fullscreen(enemy_name)
 	battle_zone.add_child(enemy_avatar)
 	
+	# --- Log de combate: arriba-izquierda ---
+	log_label = RichTextLabel.new()
+	log_label.position = Vector2(10, 10)
+	log_label.size = Vector2(250, 100)
+	log_label.scroll_following = true
+	log_label.add_theme_font_size_override("normal_font_size", 9)
+	battle_zone.add_child(log_label)
+	
 	# --- Stats enemigo: arriba-derecha ---
 	var enemy_container = VBoxContainer.new()
 	enemy_container.position = Vector2(460, 10)
@@ -129,51 +137,38 @@ func _build_ui() -> void:
 	player_hp_label.add_theme_font_size_override("font_size", 9)
 	player_stats_vbox.add_child(player_hp_label)
 	
-	# === ZONA DE COMANDOS (abajo ~40%) ===
-	var cmd_panel = PanelContainer.new()
-	cmd_panel.anchor_top = 0.55
-	cmd_panel.anchor_right = 1.0
-	cmd_panel.anchor_bottom = 1.0
-	cmd_panel.offset_left = 10
-	cmd_panel.offset_right = -10
-	cmd_panel.offset_bottom = -10
-	add_child(cmd_panel)
+	# === ZONA DE BOTONES (abajo-derecha) ===
+	var btn_panel = PanelContainer.new()
+	btn_panel.anchor_top = 0.6
+	btn_panel.anchor_left = 0.55
+	btn_panel.anchor_right = 1.0
+	btn_panel.anchor_bottom = 1.0
+	btn_panel.offset_left = 10
+	btn_panel.offset_right = -10
+	btn_panel.offset_bottom = -10
+	add_child(btn_panel)
 	
-	var cmd_hbox = HBoxContainer.new()
-	cmd_hbox.add_theme_constant_override("separation", 10)
-	cmd_panel.add_child(cmd_hbox)
-	
-	# Log de combate (izquierda)
-	log_label = RichTextLabel.new()
-	log_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	log_label.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	log_label.scroll_following = true
-	log_label.add_theme_font_size_override("normal_font_size", 9)
-	cmd_hbox.add_child(log_label)
-	
-	# Botones de acción (derecha, vertical)
 	var btn_vbox = VBoxContainer.new()
-	btn_vbox.custom_minimum_size = Vector2(140, 0)
 	btn_vbox.add_theme_constant_override("separation", 6)
-	cmd_hbox.add_child(btn_vbox)
+	btn_panel.add_child(btn_vbox)
 	
 	btn_atacar = Button.new()
 	btn_atacar.text = "⚔️ Atacar"
-	btn_atacar.custom_minimum_size = Vector2(130, 30)
+	btn_atacar.custom_minimum_size = Vector2(0, 30)
 	btn_atacar.add_theme_font_size_override("font_size", 11)
 	btn_atacar.pressed.connect(_on_atacar)
 	btn_vbox.add_child(btn_atacar)
 	
 	btn_habilidad = Button.new()
 	btn_habilidad.text = "🧬 Atavismo"
-	btn_habilidad.custom_minimum_size = Vector2(130, 30)
+	btn_habilidad.custom_minimum_size = Vector2(0, 30)
 	btn_habilidad.add_theme_font_size_override("font_size", 11)
 	btn_habilidad.pressed.connect(_on_habilidad)
 	btn_vbox.add_child(btn_habilidad)
 	
 	btn_huir = Button.new()
 	btn_huir.text = "🏃 Retirada"
-	btn_huir.custom_minimum_size = Vector2(130, 30)
+	btn_huir.custom_minimum_size = Vector2(0, 30)
 	btn_huir.add_theme_font_size_override("font_size", 11)
 	btn_huir.pressed.connect(_on_huir)
 	btn_vbox.add_child(btn_huir)
