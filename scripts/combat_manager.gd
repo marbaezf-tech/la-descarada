@@ -99,9 +99,8 @@ func _build_ui() -> void:
 	enemy_hp_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	enemy_container.add_child(enemy_hp_label)
 	
-	# Avatar enemigo (centrado, debajo de su HP)
-	enemy_avatar = _create_avatar(enemy_name, true)
-	enemy_avatar.position = Vector2(370, 60)
+	# Avatar enemigo (FULLSCREEN para test — ver dónde está el bicho en la imagen)
+	enemy_avatar = _create_avatar_fullscreen(enemy_name)
 	battle_zone.add_child(enemy_avatar)
 	
 	# --- JUGADOR: abajo-izquierda ---
@@ -195,6 +194,23 @@ func _build_ui() -> void:
 	btn_huir.add_theme_font_size_override("font_size", 11)
 	btn_huir.pressed.connect(_on_huir)
 	btn_grid.add_child(btn_huir)
+
+func _create_avatar_fullscreen(char_name: String) -> TextureRect:
+	var img_name = char_name.to_lower().replace(" ", "_").replace("á","a").replace("é","e").replace("í","i").replace("ó","o").replace("ú","u").replace("ñ","n")
+	var paths_to_try = [
+		"res://imagenes/Enemigos/2d_%s.png" % img_name,
+		"res://imagenes/2d_%s.png" % img_name,
+	]
+	var sprite = TextureRect.new()
+	for img_path in paths_to_try:
+		if ResourceLoader.exists(img_path):
+			sprite.texture = load(img_path)
+			break
+	sprite.anchor_right = 1.0
+	sprite.anchor_bottom = 1.0
+	sprite.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	sprite.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	return sprite
 
 func _create_avatar(char_name: String, is_enemy: bool) -> Control:
 	var container = Control.new()
