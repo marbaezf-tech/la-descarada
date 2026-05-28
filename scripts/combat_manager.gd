@@ -71,10 +71,15 @@ func _build_ui() -> void:
 	battle_zone.offset_bottom = 200
 	add_child(battle_zone)
 	
-	# --- ENEMIGO: arriba-derecha ---
+	# --- ENEMIGO: imagen de fondo + stats a la derecha ---
+	# Avatar enemigo como fondo de la zona de batalla
+	enemy_avatar = _create_avatar_fullscreen(enemy_name)
+	battle_zone.add_child(enemy_avatar)
+	
+	# Stats del enemigo (derecha, sobre la imagen)
 	var enemy_container = VBoxContainer.new()
-	enemy_container.position = Vector2(320, 15)
-	enemy_container.custom_minimum_size = Vector2(200, 0)
+	enemy_container.position = Vector2(460, 15)
+	enemy_container.custom_minimum_size = Vector2(170, 0)
 	battle_zone.add_child(enemy_container)
 	
 	# Nombre enemigo
@@ -82,12 +87,11 @@ func _build_ui() -> void:
 	enemy_name_label.text = "🎯 %s" % enemy_name
 	enemy_name_label.add_theme_font_size_override("font_size", 11)
 	enemy_name_label.add_theme_color_override("font_color", Color(1, 0.3, 0.3))
-	enemy_name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	enemy_container.add_child(enemy_name_label)
 	
 	# HP bar enemigo
 	enemy_hp_bar = ProgressBar.new()
-	enemy_hp_bar.custom_minimum_size = Vector2(160, 10)
+	enemy_hp_bar.custom_minimum_size = Vector2(150, 10)
 	enemy_hp_bar.max_value = enemy_hp_max
 	enemy_hp_bar.value = enemy_hp
 	enemy_hp_bar.show_percentage = false
@@ -96,12 +100,7 @@ func _build_ui() -> void:
 	enemy_hp_label = Label.new()
 	enemy_hp_label.text = "HP: %d/%d" % [enemy_hp, enemy_hp_max]
 	enemy_hp_label.add_theme_font_size_override("font_size", 9)
-	enemy_hp_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	enemy_container.add_child(enemy_hp_label)
-	
-	# Avatar enemigo (FULLSCREEN para test — ver dónde está el bicho en la imagen)
-	enemy_avatar = _create_avatar_fullscreen(enemy_name)
-	battle_zone.add_child(enemy_avatar)
 	
 	# --- JUGADOR: abajo-izquierda ---
 	var player_container = VBoxContainer.new()
