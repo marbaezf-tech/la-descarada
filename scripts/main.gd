@@ -1,4 +1,4 @@
-extends Node2D
+﻿extends Node2D
 ## Main — Construye toda la escena por código
 ## Plaga: La Descarada — Sin escenas instanciadas para evitar problemas de UID
 
@@ -156,15 +156,15 @@ func _create_hud() -> void:
 	vbox.name = "VBox"
 	panel.add_child(vbox)
 	
-	# Quitina
+	# Turgencia
 	var q_label = Label.new()
-	q_label.name = "QuitinaLabel"
-	q_label.text = "🛡️ Quitina: --"
+	q_label.name = "TurgenciaLabel"
+	q_label.text = "🛡️ Turgencia: --"
 	q_label.add_theme_font_size_override("font_size", 9)
 	vbox.add_child(q_label)
 	
 	var q_bar = ProgressBar.new()
-	q_bar.name = "QuitinaBar"
+	q_bar.name = "TurgenciaBar"
 	q_bar.custom_minimum_size = Vector2(0, 8)
 	q_bar.max_value = 100
 	q_bar.value = 100
@@ -220,11 +220,18 @@ func _create_hud() -> void:
 
 
 var _inventario_abierto: bool = false
+var _bestiario_abierto: bool = false
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("inventario") and not _inventario_abierto:
+	if event.is_action_pressed("inventario") and not _inventario_abierto and not _bestiario_abierto:
 		_inventario_abierto = true
 		var inv = CanvasLayer.new()
 		inv.set_script(load("res://scripts/inventario_ui.gd"))
 		inv.tree_exited.connect(func(): _inventario_abierto = false)
 		add_child(inv)
+	elif event.is_action_pressed("bestiario") and not _bestiario_abierto and not _inventario_abierto:
+		_bestiario_abierto = true
+		var best = CanvasLayer.new()
+		best.set_script(load("res://scripts/bestiario_ui.gd"))
+		best.tree_exited.connect(func(): _bestiario_abierto = false)
+		add_child(best)

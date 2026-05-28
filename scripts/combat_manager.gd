@@ -370,6 +370,12 @@ func _check_enemy_death() -> void:
 		enemy_hp = 0
 		_update_ui()
 		_log("\n💀 %s cae. Biomasa asegurada." % enemy_name)
+		# Registrar en bestiario
+		var vencidos = GameManager.get_meta("enemigos_vencidos", []) as Array
+		if not enemy_name in vencidos:
+			vencidos.append(enemy_name)
+			GameManager.set_meta("enemigos_vencidos", vencidos)
+			_log("   📕 ¡Nueva entrada en el Bestiario!")
 		var loot = LootSystem.generar_loot()
 		if "Araña" in enemy_name or "Polilla" in enemy_name:
 			var seda = {"nombre": "Seda de Fibra de Carbono", "emoji": "🕸️", "tipo": "material", "valor": 2, "tier": "raro", "desc": "Robada del cadáver. Material para el Anclaje."}
