@@ -104,7 +104,7 @@ func _build_ui() -> void:
 	
 	# --- JUGADOR: abajo-izquierda ---
 	var player_container = VBoxContainer.new()
-	player_container.position = Vector2(20, 120)
+	player_container.position = Vector2(100, 130)
 	player_container.custom_minimum_size = Vector2(200, 0)
 	battle_zone.add_child(player_container)
 	
@@ -129,9 +129,9 @@ func _build_ui() -> void:
 	player_hp_label.add_theme_font_size_override("font_size", 9)
 	player_container.add_child(player_hp_label)
 	
-	# Avatar jugador (abajo-izquierda, DE ESPALDA)
+	# Avatar jugador (DE ESPALDA, al lado izquierdo de la barra de HP)
 	player_avatar = _create_player_avatar()
-	player_avatar.position = Vector2(60, 80)
+	player_avatar.position = Vector2(15, 115)
 	battle_zone.add_child(player_avatar)
 	
 	# === ZONA DE COMANDOS (abajo ~40%) ===
@@ -230,22 +230,25 @@ func _create_player_avatar() -> Control:
 	container.custom_minimum_size = Vector2(80, 80)
 	
 	# Intentar cargar imagen de espalda del protagonista
-	var back_path = "res://imagenes/2d_prota_back.png"
-	var alt_path = "res://assets/sprites/zancudo_back.png"
+	var paths_to_try = [
+		"res://imagenes/2d_prota_back.png",
+		"res://imagenes/zancudo masked back.png",
+		"res://imagenes/zancudo masked 1 chibi back - copia.png",
+		"res://assets/sprites/zancudo_back.png"
+	]
 	
-	if ResourceLoader.exists(back_path):
-		var sprite = TextureRect.new()
-		sprite.texture = load(back_path)
-		sprite.custom_minimum_size = Vector2(80, 80)
-		sprite.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-		container.add_child(sprite)
-	elif ResourceLoader.exists(alt_path):
-		var sprite = TextureRect.new()
-		sprite.texture = load(alt_path)
-		sprite.custom_minimum_size = Vector2(80, 80)
-		sprite.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-		container.add_child(sprite)
-	else:
+	var loaded = false
+	for img_path in paths_to_try:
+		if ResourceLoader.exists(img_path):
+			var sprite = TextureRect.new()
+			sprite.texture = load(img_path)
+			sprite.custom_minimum_size = Vector2(80, 80)
+			sprite.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+			container.add_child(sprite)
+			loaded = true
+			break
+	
+	if not loaded:
 		# Placeholder verde (prota de espalda)
 		var rect = ColorRect.new()
 		rect.custom_minimum_size = Vector2(80, 80)
