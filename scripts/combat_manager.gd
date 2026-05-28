@@ -79,6 +79,7 @@ func _build_ui() -> void:
 	log_label.position = Vector2(10, 10)
 	log_label.size = Vector2(250, 100)
 	log_label.scroll_following = true
+	log_label.scroll_active = false
 	log_label.add_theme_font_size_override("normal_font_size", 9)
 	battle_zone.add_child(log_label)
 	
