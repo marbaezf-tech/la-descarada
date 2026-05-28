@@ -6,35 +6,95 @@ var _intro_playing: bool = false
 
 func _ready() -> void:
 	# Intentar reproducir intro si existe
-	if ResourceLoader.exists("res://assets/video/intro.ogv"):
+	var has_video = ResourceLoader.exists("res://assets/video/intro.ogv") or ResourceLoader.exists("res://video/video Trailer torneo 1.mp4") or ResourceLoader.exists("res://assets/video/video Trailer torneo 1.mp4")
+	if has_video:
 		_play_intro()
 	else:
 		_build_menu()
 
 func _play_intro() -> void:
 	_intro_playing = true
+	_play_video_sequence()
+
+var _video_queue: Array = []
+var _current_video_player: VideoStreamPlayer = null
+
+func _play_video_sequence() -> void:
+	# Buscar videos en orden: trailer 1, pantalla intermedia, trailer 2
+	_video_queue = []
 	
-	var video_player = VideoStreamPlayer.new()
-	video_player.name = "IntroVideo"
-	video_player.stream = load("res://assets/video/intro.ogv")
-	video_player.anchor_right = 1.0
-	video_player.anchor_bottom = 1.0
-	video_player.expand = true
-	video_player.finished.connect(_on_intro_finished)
-	add_child(video_player)
-	video_player.play()
+	var videos_to_check = [
+		"res://assets/video/intro.ogv",
+		"res://video/video Trailer torneo 1.mp4",
+		"res://assets/video/video Trailer torneo 1.mp4",
+	]
 	
-	# Label "Presiona para saltar"
-	var skip_label = Label.new()
-	skip_label.name = "SkipLabel"
-	skip_label.text = "Presiona cualquier tecla para saltar"
-	skip_label.anchor_left = 0.5
-	skip_label.anchor_top = 0.9
-	skip_label.anchor_right = 0.5
-	skip_label.offset_left = -120
-	skip_label.add_theme_font_size_override("font_size", 9)
-	skip_label.add_theme_color_override("font_color", Color(0.5, 0.5, 0.5, 0.6))
-	add_child(skip_label)
+	# Video 1
+	for v in videos_to_check:
+		if ResourceLoader.exists(v):
+			_video_queue.append({"tipo": "video", "path": v})
+			break
+	
+	# Pantalla intermedia
+	_video_queue.append({"tipo": "texto", "msg": "🦂 El Escorpión rompió el balance en v0.2.0\n\n\"Invicto. 100% winrate. 2600 victorias.\nLos desarrolladores están trabajando en un nerf.\"\n\n— Ramazzottius, bostezando"})
+	
+	# Video 2
+	var videos2 = [
+		"res://video/video Trailer torneo 2.mp4",
+		"res://assets/video/video Trailer torneo 2.mp4",
+	]
+	for v in videos2:
+		if ResourceLoader.exists(v):
+			_video_queue.append({"tipo": "video", "path": v})
+			break
+	
+	_play_next_in_queue()
+
+func _play_next_in_queue() -> void:
+	if _video_queue.is_empty():
+		_on_intro_finished()
+		return
+	
+	var item = _video_queue.pop_front()
+	
+	if item["tipo"] == "video":
+		_current_video_player = VideoStreamPlayer.new()
+		_current_video_player.name = "IntroVideo"
+		_current_video_player.stream = load(item["path"])
+		_current_video_player.anchor_right = 1.0
+		_current_video_player.anchor_bottom = 1.0
+		_current_video_player.expand = true
+		_current_video_player.finished.connect(_on_video_piece_finished)
+		add_child(_current_video_player)
+		_current_video_player.play()
+	elif item["tipo"] == "texto":
+		var panel = ColorRect.new()
+		panel.name = "IntroVideo"
+		panel.anchor_right = 1.0
+		panel.anchor_bottom = 1.0
+		panel.color = Color(0.02, 0.02, 0.04, 1)
+		add_child(panel)
+		
+		var label = Label.new()
+		label.text = item["msg"]
+		label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		label.anchor_left = 0.1
+		label.anchor_top = 0.2
+		label.anchor_right = 0.9
+		label.anchor_bottom = 0.8
+		label.autowrap_mode = TextServer.AUTOWRAP_WORD
+		label.add_theme_font_size_override("font_size", 14)
+		label.add_theme_color_override("font_color", Color(0.9, 0.7, 0.2))
+		panel.add_child(label)
+		
+		# Auto-avanzar después de 4 segundos
+		get_tree().create_timer(4.0).timeout.connect(_on_video_piece_finished)
+
+func _on_video_piece_finished() -> void:
+	var old = get_node_or_null("IntroVideo")
+	if old: old.queue_free()
+	_play_next_in_queue()
 
 func _on_intro_finished() -> void:
 	_intro_playing = false
