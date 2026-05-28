@@ -106,36 +106,70 @@ func _build_ui() -> void:
 	enemy_hp_label.add_theme_font_size_override("font_size", 9)
 	enemy_container.add_child(enemy_hp_label)
 	
-	# --- Jugador: abajo-izquierda (foto + HP) ---
-	var player_container = HBoxContainer.new()
-	player_container.position = Vector2(10, 130)
-	player_container.add_theme_constant_override("separation", 8)
-	battle_zone.add_child(player_container)
+	# --- Jugador: abajo-izquierda (foto + HP + equipo + atavismos) ---
+	var player_panel = PanelContainer.new()
+	player_panel.anchor_top = 0.6
+	player_panel.anchor_left = 0.0
+	player_panel.anchor_right = 0.55
+	player_panel.anchor_bottom = 1.0
+	player_panel.offset_left = 10
+	player_panel.offset_bottom = -10
+	add_child(player_panel)
+	
+	var player_hbox = HBoxContainer.new()
+	player_hbox.add_theme_constant_override("separation", 8)
+	player_panel.add_child(player_hbox)
 	
 	player_avatar = _create_player_avatar()
-	player_container.add_child(player_avatar)
+	player_hbox.add_child(player_avatar)
 	
-	var player_stats_vbox = VBoxContainer.new()
-	player_container.add_child(player_stats_vbox)
+	var player_info_vbox = VBoxContainer.new()
+	player_info_vbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	player_info_vbox.add_theme_constant_override("separation", 2)
+	player_hbox.add_child(player_info_vbox)
 	
+	# Nombre + HP
 	player_name_label = Label.new()
 	var taxon_data = GameManager.TAXON_DATA[GameManager.taxon_actual]
 	player_name_label.text = "%s %s" % [taxon_data["emoji"], GameManager.nombre_plaga]
-	player_name_label.add_theme_font_size_override("font_size", 11)
+	player_name_label.add_theme_font_size_override("font_size", 10)
 	player_name_label.add_theme_color_override("font_color", Color(0.3, 1, 0.5))
-	player_stats_vbox.add_child(player_name_label)
+	player_info_vbox.add_child(player_name_label)
 	
 	player_hp_bar = ProgressBar.new()
-	player_hp_bar.custom_minimum_size = Vector2(120, 10)
+	player_hp_bar.custom_minimum_size = Vector2(100, 8)
 	player_hp_bar.max_value = GameManager.turgencia_max
 	player_hp_bar.value = GameManager.turgencia_actual
 	player_hp_bar.show_percentage = false
-	player_stats_vbox.add_child(player_hp_bar)
+	player_info_vbox.add_child(player_hp_bar)
 	
 	player_hp_label = Label.new()
 	player_hp_label.text = "HP: %d/%d" % [GameManager.turgencia_actual, GameManager.turgencia_max]
-	player_hp_label.add_theme_font_size_override("font_size", 9)
-	player_stats_vbox.add_child(player_hp_label)
+	player_hp_label.add_theme_font_size_override("font_size", 8)
+	player_info_vbox.add_child(player_hp_label)
+	
+	# Equipo actual
+	var arma_val = GameManager.stats.get("arma_equipada", 0)
+	var armadura_val = GameManager.stats.get("armadura_equipada", 0)
+	var equip_label = Label.new()
+	equip_label.text = "🗡️+%d  🛡️+%d" % [arma_val, armadura_val]
+	equip_label.add_theme_font_size_override("font_size", 8)
+	equip_label.add_theme_color_override("font_color", Color(0.8, 0.7, 0.3))
+	player_info_vbox.add_child(equip_label)
+	
+	# Atavismos disponibles
+	var atavismos_label = Label.new()
+	atavismos_label.text = "🧬 Micro-Inyección (3 Hemo)"
+	atavismos_label.add_theme_font_size_override("font_size", 8)
+	atavismos_label.add_theme_color_override("font_color", Color(0.5, 0.8, 1.0))
+	player_info_vbox.add_child(atavismos_label)
+	
+	# Hemolinfa actual
+	var hemo_label = Label.new()
+	hemo_label.text = "💧 Hemolinfa: %d/%d" % [GameManager.hemolinfa_actual, GameManager.hemolinfa_max]
+	hemo_label.add_theme_font_size_override("font_size", 8)
+	hemo_label.add_theme_color_override("font_color", Color(0.3, 0.6, 1.0))
+	player_info_vbox.add_child(hemo_label)
 	
 	# === ZONA DE BOTONES (abajo-derecha) ===
 	var btn_panel = PanelContainer.new()
