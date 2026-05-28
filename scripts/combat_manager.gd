@@ -341,19 +341,164 @@ func _on_atacar() -> void:
 
 func _on_habilidad() -> void:
 	if state != CombatState.PLAYER_TURN: return
-	state = CombatState.ANIMATING
+	# Mostrar submenú de atavismos
+	_show_atavismo_menu()
+
+func _show_atavismo_menu() -> void:
+	var atavismos = GameManager.obtener_atavismos()
+	if atavismos.is_empty():
+		_log("❌ No tienes atavismos disponibles.")
+		return
+	
 	_set_buttons_enabled(false)
-	var result = GameManager.usar_habilidad_taxon(enemy_agilidad)
-	if not result["exito"]:
-		_log("❌ %s" % result["mensaje"])
+	
+	var popup = PanelContainer.new()
+	popup.name = "AtavismoPopup"
+	popup.anchor_left = 0.1
+	popup.anchor_top = 0.3
+	popup.anchor_right = 0.5
+	popup.anchor_bottom = 0.7
+	add_child(popup)
+	
+	var vbox = VBoxContainer.new()
+	vbox.add_theme_constant_override("separation", 6)
+	popup.add_child(vbox)
+	
+	var title = Label.new()
+	title.text = "🧬 Elige Atavismo:"
+	title.add_theme_font_size_override("font_size", 11)
+	title.add_theme_color_override("font_color", Color(0.3, 0.8, 1.0))
+	vbox.add_child(title)
+	
+	for atav in atavismos:
+		var btn = Button.new()
+		var can_use = GameManager.hemolinfa_actual >= atav["costo"]
+		btn.text = "%s (%d 💧) — %s" % [atav["nombre"], atav["costo"], atav["desc"]]
+		btn.add_theme_font_size_override("font_size", 9)
+		btn.disabled = not can_use
+		btn.pressed.connect(_ejecutar_atavismo.bind(atav, popup))
+		vbox.add_child(btn)
+	
+	var btn_cancel = Button.new()
+	btn_cancel.text = "← Cancelar"
+	btn_cancel.add_theme_font_size_override("font_size", 9)
+	btn_cancel.pressed.connect(func():
+		popup.queue_free()
+		_set_buttons_enabled(true)
+	)
+	vbox.add_child(btn_cancel)
+
+func _ejecutar_atavismo(atav: Dictionary, popup: PanelContainer) -> void:
+	popup.queue_free()
+	state = CombatState.ANIMATING
+	
+	if not GameManager.gastar_hemolinfa(atav["costo"]):
+		_log("❌ Hemolinfa insuficiente.")
 		state = CombatState.PLAYER_TURN
 		_set_buttons_enabled(true)
 		return
-	_log("🧬 Atavismo activado. Neuro-bloqueador inyectado.")
-	enemy_agilidad *= 0.5
-	var damage = GameManager.stats.get("torax", 5) * 1.5
-	enemy_hp -= damage
-	_log("   → Daño: %.0f" % damage)
+	
+	_log("🧬 %s activado." % atav["nombre"])
+	
+	var damage: float = 0.0
+	match atav["efecto"]:
+		"paralisis":
+			enemy_agilidad *= atav["valor"]
+			_log("   → Enemigo paralizado. -50%% Agilidad.")
+		"mutacion":
+			damage = GameManager.stats.get("torax", 5) * atav["valor"]
+			enemy_hp -= damage
+			enemy_defensa = maxf(enemy_defensa - 1, 0)
+			_log("   → Mutación grotesca. %.0f daño. -1 Defensa." % damage)
+		"enjambre":
+			GameManager.stats["torax"] = GameManager.stats.get("torax", 5) + int(atav["valor"])
+			GameManager.modificar_esencia(-3.0, "Llamada del Enjambre")
+			_log("   → +3 Tórax. El enjambre responde. -3%% Esencia.")
+		"inmune":
+			_log("   → Caparazón activado. Inmune este turno.")
+		"armadura":
+			GameManager.stats["armadura_equipada"] = GameManager.stats.get("armadura_equipada", 0) + int(atav["valor"])
+			_log("   → +%d Defensa temporal." % int(atav["valor"]))
+		"regen":
+			var heal_amount = GameManager.turgencia_max * atav["valor"]
+			GameManager.curar(heal_amount)
+			_log("   → Regenera %.0f Turgencia." % heal_amount)
+		"multi":
+			for i in range(3):
+				var hit = GameManager.stats.get("torax", 5) * atav["valor"] * randf_range(0.85, 1.15)
+				enemy_hp -= hit
+				damage += hit
+			_log("   → 3 golpes. %.0f daño total." % damage)
+		"penetrar":
+			damage = GameManager.stats.get("torax", 5) * atav["valor"] * 2.0
+			enemy_hp -= damage
+			_log("   → Ignora armadura. %.0f daño." % damage)
+		"miedo":
+			_log("   → Enemigo aterrorizado. Pierde próximo turno.")
+		"drenar":
+			damage = enemy_hp_max * atav["valor"]
+			enemy_hp -= damage
+			GameManager.curar(damage)
+			_log("   → Drena %.0f HP del enemigo." % damage)
+		"critico":
+			damage = GameManager.stats.get("torax", 5) * atav["valor"] * 2.0
+			enemy_hp -= damage
+			_log("   → ¡CRÍTICO! %.0f daño devastador." % damage)
+		"veneno":
+			damage = atav["valor"] * 3.0
+			enemy_hp -= damage
+			_log("   → Veneno inyectado. %.0f daño inmediato." % damage)
+		"stun":
+			_log("   → Enemigo aturdido. Pierde turno.")
+		"robar":
+			damage = GameManager.stats.get("torax", 5) * atav["valor"]
+			enemy_hp -= damage
+			_log("   → Mordida silenciosa. %.0f daño." % damage)
+		"revelar":
+			_log("   → Stats: HP:%d/%d | Fue:%d | Agi:%d | Def:%d" % [enemy_hp, enemy_hp_max, enemy_fuerza, enemy_agilidad, enemy_defensa])
+		"esquiva":
+			_log("   → Esquiva garantizada para el próximo ataque.")
+		"evasion":
+			_log("   → Evasión aumentada. Enemigo fallará más.")
+		"aleatorio":
+			if randf() > 0.5:
+				damage = GameManager.stats.get("torax", 5) * atav["valor"] * 2.0
+				enemy_hp -= damage
+				_log("   → ¡JACKPOT! %.0f daño." % damage)
+			else:
+				_log("   → ¡Fallo total! La moneda cayó mal.")
+		"terror_heal":
+			var heal_amount = GameManager.turgencia_max * atav["valor"]
+			GameManager.curar(heal_amount)
+			_log("   → Absorbe miedo. +%.0f Turgencia." % heal_amount)
+		"sigilo":
+			_log("   → Invisible. Próximo ataque será crítico.")
+		"velocidad":
+			_log("   → Velocidad extrema. Casi intocable.")
+		"confuso":
+			damage = enemy_fuerza * 2.0
+			enemy_hp -= damage
+			_log("   → Enemigo confuso. Se golpea solo. %.0f daño." % damage)
+		"larva":
+			damage = atav["valor"] * 3.0
+			enemy_hp -= damage
+			_log("   → Larva invocada. Ataca por %.0f daño." % damage)
+		"golem":
+			GameManager.curar(atav["valor"])
+			_log("   → Gólem de basura absorbe daño. +%.0f escudo." % atav["valor"])
+		"metamorfosis":
+			GameManager.stats["torax"] = GameManager.stats.get("torax", 5) + int(atav["valor"])
+			GameManager.stats["ganglios"] = GameManager.stats.get("ganglios", 5) + int(atav["valor"])
+			_log("   → Metamorfosis. +%d a todos los stats." % int(atav["valor"]))
+		"agravado":
+			damage = GameManager.stats.get("torax", 5) * atav["valor"] * 1.5
+			enemy_hp -= damage
+			_log("   → Daño agravado. %.0f. No se regenera." % damage)
+		_:
+			damage = GameManager.stats.get("torax", 5) * 1.5
+			enemy_hp -= damage
+			_log("   → Efecto aplicado. %.0f daño." % damage)
+	
 	_update_ui()
 	_check_enemy_death()
 

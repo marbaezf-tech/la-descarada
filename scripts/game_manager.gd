@@ -153,6 +153,83 @@ const TAXON_DATA: Dictionary = {
 	}
 }
 
+# ===== ATAVISMOS POR TAXÓN =====
+const ATAVISMOS_DATA: Dictionary = {
+	Taxon.ZANCUDO: [
+		{"nombre": "Micro-Inyección", "costo": 3, "tipo": "debuff", "efecto": "paralisis", "desc": "-50% Agilidad enemigo 2 turnos", "valor": 0.5},
+		{"nombre": "Vicisitud", "costo": 4, "tipo": "daño", "efecto": "mutacion", "desc": "Daño x2 + deforma (-1 Def)", "valor": 2.0},
+		{"nombre": "Llamada del Enjambre", "costo": 5, "tipo": "buff", "efecto": "enjambre", "desc": "+3 Tórax 3 turnos. -3% Esencia", "valor": 3.0},
+	],
+	Taxon.CUCARACHA: [
+		{"nombre": "Caparazón de Emergencia", "costo": 2, "tipo": "defensa", "efecto": "inmune", "desc": "Inmune 1 turno (no ataca)", "valor": 1.0},
+		{"nombre": "Exoesqueleto Ancestral", "costo": 3, "tipo": "buff", "efecto": "armadura", "desc": "+4 Defensa 3 turnos", "valor": 4.0},
+		{"nombre": "Supervivencia Extrema", "costo": 4, "tipo": "heal", "efecto": "regen", "desc": "+30% Turgencia + cura", "valor": 0.3},
+	],
+	Taxon.AVISPA: [
+		{"nombre": "Picada Frenética", "costo": 4, "tipo": "daño", "efecto": "multi", "desc": "3 ataques al 60%", "valor": 0.6},
+		{"nombre": "Mandíbula de Acero", "costo": 3, "tipo": "daño", "efecto": "penetrar", "desc": "Ignora armadura. x1.5", "valor": 1.5},
+		{"nombre": "Feromona Dominante", "costo": 5, "tipo": "debuff", "efecto": "miedo", "desc": "Enemigo pierde turno", "valor": 1.0},
+	],
+	Taxon.GARRAPATA: [
+		{"nombre": "Anclaje Vital", "costo": 3, "tipo": "drain", "efecto": "drenar", "desc": "Drena 10% HP/turno x3", "valor": 0.1},
+		{"nombre": "Exoesqueleto Ancestral", "costo": 3, "tipo": "buff", "efecto": "armadura", "desc": "+4 Defensa 3 turnos", "valor": 4.0},
+		{"nombre": "Metamorfosis", "costo": 5, "tipo": "buff", "efecto": "metamorfosis", "desc": "+2 todos stats 2 turnos", "valor": 2.0},
+	],
+	Taxon.CHINCHE: [
+		{"nombre": "Decreto Real", "costo": 2, "tipo": "debuff", "efecto": "lento", "desc": "Enemigo ataca último", "valor": 1.0},
+		{"nombre": "Feromona Dominante", "costo": 5, "tipo": "debuff", "efecto": "miedo", "desc": "Enemigo pierde turno", "valor": 1.0},
+		{"nombre": "Parásito Neural", "costo": 4, "tipo": "debuff", "efecto": "confuso", "desc": "30% se ataca a sí mismo", "valor": 0.3},
+	],
+	Taxon.MARIPOSA: [
+		{"nombre": "Polvo Cegador", "costo": 2, "tipo": "debuff", "efecto": "ciego", "desc": "-80% Precisión 2 turnos", "valor": 0.8},
+		{"nombre": "Aleteo Frenético", "costo": 3, "tipo": "buff", "efecto": "velocidad", "desc": "+5 Velocidad 3 turnos", "valor": 5.0},
+		{"nombre": "Mirada Morpho", "costo": 4, "tipo": "debuff", "efecto": "stun", "desc": "Aturdido 1 turno", "valor": 1.0},
+	],
+	Taxon.ARANA: [
+		{"nombre": "Red de Contención", "costo": 4, "tipo": "debuff", "efecto": "inmovil", "desc": "Inmoviliza 2 turnos", "valor": 2.0},
+		{"nombre": "Tejeduría de Éter", "costo": 3, "tipo": "heal", "efecto": "regen", "desc": "+20% Turgencia", "valor": 0.2},
+		{"nombre": "Necrosis Clandestina", "costo": 5, "tipo": "daño", "efecto": "veneno", "desc": "5 daño/turno x4", "valor": 5.0},
+	],
+	Taxon.ESCORPION: [
+		{"nombre": "Golpe de Pinza", "costo": 5, "tipo": "daño", "efecto": "critico", "desc": "Daño x2.5 ignora armadura", "valor": 2.5},
+		{"nombre": "Sombra de Pinza", "costo": 3, "tipo": "buff", "efecto": "sigilo", "desc": "Próximo ataque = crítico", "valor": 2.0},
+		{"nombre": "Ultravioleta y Abismo", "costo": 4, "tipo": "debuff", "efecto": "ciego", "desc": "-80% Precisión 2 turnos", "valor": 0.8},
+	],
+	Taxon.VINCHUCA: [
+		{"nombre": "Mordida Silenciosa", "costo": 3, "tipo": "daño", "efecto": "robar", "desc": "Daño x1.5 + roba item", "valor": 1.5},
+		{"nombre": "Veneno Silencioso", "costo": 2, "tipo": "daño", "efecto": "veneno", "desc": "3 daño/turno x5", "valor": 3.0},
+		{"nombre": "Regalo de Chagas", "costo": 4, "tipo": "daño", "efecto": "agravado", "desc": "Agravado + -5% Esencia", "valor": 2.0},
+	],
+	Taxon.MOSCA: [
+		{"nombre": "Invocar Larva", "costo": 4, "tipo": "summon", "efecto": "larva", "desc": "Aliado 3 turnos (4 daño/t)", "valor": 4.0},
+		{"nombre": "Necro-Larva", "costo": 3, "tipo": "heal", "efecto": "drenar_muerto", "desc": "Si mata: +50% Turgencia", "valor": 0.5},
+		{"nombre": "Gólem de Basural", "costo": 6, "tipo": "summon", "efecto": "golem", "desc": "Escudo absorbe 30 daño", "valor": 30.0},
+	],
+	Taxon.SANGUIJUELA: [
+		{"nombre": "Éxtasis Tóxico", "costo": 3, "tipo": "debuff", "efecto": "stun", "desc": "Pierde turno + 20% Hemo", "valor": 0.2},
+		{"nombre": "Camuflaje Adaptativo", "costo": 2, "tipo": "buff", "efecto": "sigilo", "desc": "Invisible 2 turnos", "valor": 2.0},
+		{"nombre": "Anestesia Extática", "costo": 4, "tipo": "drain", "efecto": "drenar", "desc": "Drena 15% HP + Adicto", "valor": 0.15},
+	],
+	Taxon.POLILLA: [
+		{"nombre": "Visión del Foco", "costo": 2, "tipo": "info", "efecto": "revelar", "desc": "Revela stats + debilidades", "valor": 1.0},
+		{"nombre": "Polvo de Ala", "costo": 3, "tipo": "buff", "efecto": "evasion", "desc": "+50% Evasión 3 turnos", "valor": 0.5},
+		{"nombre": "Síndrome del Foco", "costo": 4, "tipo": "debuff", "efecto": "confuso", "desc": "Enemigo se daña solo", "valor": 1.0},
+	],
+	Taxon.PULGA: [
+		{"nombre": "Salto Dimensional", "costo": 1, "tipo": "buff", "efecto": "esquiva", "desc": "Esquiva próximo ataque", "valor": 1.0},
+		{"nombre": "Espejismo de Alas", "costo": 3, "tipo": "buff", "efecto": "evasion", "desc": "50% fallo enemigo 3 turnos", "valor": 0.5},
+		{"nombre": "Truco de la Moneda", "costo": 2, "tipo": "daño", "efecto": "aleatorio", "desc": "50%: daño x3 o fallo", "valor": 3.0},
+	],
+	Taxon.TIPULA: [
+		{"nombre": "Autotomía Táctica", "costo": 2, "tipo": "buff", "efecto": "esquiva", "desc": "Esquiva 100% + -10% Prec", "valor": 1.0},
+		{"nombre": "Ocelo Ancestral", "costo": 3, "tipo": "info", "efecto": "revelar", "desc": "Ve HP real + próximo ataque", "valor": 1.0},
+		{"nombre": "Extracción del Terror", "costo": 4, "tipo": "heal", "efecto": "terror_heal", "desc": "Sana 25% del miedo enemigo", "valor": 0.25},
+	],
+}
+
+func obtener_atavismos() -> Array:
+	return ATAVISMOS_DATA.get(taxon_actual, [])
+
 # ===== ESTADO DEL JUGADOR =====
 var taxon_actual: Taxon = Taxon.ZANCUDO
 var nombre_plaga: String = ""
