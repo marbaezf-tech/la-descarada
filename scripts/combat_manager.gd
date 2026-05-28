@@ -196,7 +196,7 @@ func _build_ui() -> void:
 
 func _create_avatar(char_name: String, is_enemy: bool) -> Control:
 	var container = Control.new()
-	container.custom_minimum_size = Vector2(80, 80)
+	container.custom_minimum_size = Vector2(64, 64)
 	
 	# Intentar cargar imagen del enemigo
 	var img_name = char_name.to_lower().replace(" ", "_").replace("á","a").replace("é","e").replace("í","i").replace("ó","o").replace("ú","u").replace("ñ","n")
@@ -211,24 +211,23 @@ func _create_avatar(char_name: String, is_enemy: bool) -> Control:
 		if ResourceLoader.exists(img_path):
 			var sprite = TextureRect.new()
 			sprite.texture = load(img_path)
-			sprite.custom_minimum_size = Vector2(80, 80)
+			sprite.size = Vector2(64, 64)
 			sprite.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+			sprite.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 			container.add_child(sprite)
 			loaded = true
 			break
 	
 	if not loaded:
-		# Placeholder cuadrado
 		var rect = ColorRect.new()
-		rect.custom_minimum_size = Vector2(80, 80)
-		rect.size = Vector2(80, 80)
+		rect.size = Vector2(64, 64)
 		rect.color = ENEMY_COLORS.get(char_name, Color(0.4, 0.2, 0.2))
 		container.add_child(rect)
 		
 		var emoji_label = Label.new()
 		emoji_label.text = "👾" if is_enemy else "🦟"
-		emoji_label.position = Vector2(25, 20)
-		emoji_label.add_theme_font_size_override("font_size", 28)
+		emoji_label.position = Vector2(15, 12)
+		emoji_label.add_theme_font_size_override("font_size", 24)
 		container.add_child(emoji_label)
 	
 	return container
