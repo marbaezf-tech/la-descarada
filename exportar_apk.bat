@@ -1,12 +1,12 @@
 @echo off
 echo ============================================
-echo   PLAGA: LA DESCARADA - Exportar APK v0.2.0
+echo   PLAGA: LA DESCARADA - Exportar APK v0.3.0
 echo ============================================
 echo.
 
 set GODOT="C:\Users\HardwareX\Downloads\Godot_v4.6.3-stable_win64.exe\Godot_v4.6.3-stable_win64.exe"
 set PROJECT="C:\Users\HardwareX\OneDrive\Documentos\descarada"
-set OUTPUT="C:\Users\HardwareX\OneDrive\Documentos\descarada\export\descarada_v0.2.0.apk"
+set OUTPUT="C:\Users\HardwareX\OneDrive\Documentos\descarada\export\descarada_v0.3.0.apk"
 
 echo [1/3] Verificando Godot...
 if not exist %GODOT% (
