@@ -1,7 +1,55 @@
 extends Control
 ## Menú Principal — Plaga: La Descarada
+## Si existe assets/video/intro.ogv, reproduce intro antes del menú
+
+var _intro_playing: bool = false
 
 func _ready() -> void:
+	# Intentar reproducir intro si existe
+	if ResourceLoader.exists("res://assets/video/intro.ogv"):
+		_play_intro()
+	else:
+		_build_menu()
+
+func _play_intro() -> void:
+	_intro_playing = true
+	
+	var video_player = VideoStreamPlayer.new()
+	video_player.name = "IntroVideo"
+	video_player.stream = load("res://assets/video/intro.ogv")
+	video_player.anchor_right = 1.0
+	video_player.anchor_bottom = 1.0
+	video_player.expand = true
+	video_player.finished.connect(_on_intro_finished)
+	add_child(video_player)
+	video_player.play()
+	
+	# Label "Presiona para saltar"
+	var skip_label = Label.new()
+	skip_label.name = "SkipLabel"
+	skip_label.text = "Presiona cualquier tecla para saltar"
+	skip_label.anchor_left = 0.5
+	skip_label.anchor_top = 0.9
+	skip_label.anchor_right = 0.5
+	skip_label.offset_left = -120
+	skip_label.add_theme_font_size_override("font_size", 9)
+	skip_label.add_theme_color_override("font_color", Color(0.5, 0.5, 0.5, 0.6))
+	add_child(skip_label)
+
+func _on_intro_finished() -> void:
+	_intro_playing = false
+	# Limpiar video
+	var video = get_node_or_null("IntroVideo")
+	if video: video.queue_free()
+	var skip = get_node_or_null("SkipLabel")
+	if skip: skip.queue_free()
+	_build_menu()
+
+func _unhandled_input(event: InputEvent) -> void:
+	if _intro_playing and event is InputEventKey and event.pressed:
+		_on_intro_finished()
+
+func _build_menu() -> void:
 	# Fondo
 	var bg = ColorRect.new()
 	bg.anchor_right = 1.0
@@ -70,7 +118,8 @@ func _ready() -> void:
 	center.add_child(credit)
 
 func _nueva_partida() -> void:
-	get_tree().change_scene_to_file("res://main.tscn")
+	GameManager.reset()
+	get_tree().change_scene_to_file("res://creacion.tscn")
 
 func _cargar_partida() -> void:
 	# Marcar que debe cargar al iniciar
