@@ -270,9 +270,71 @@ func _on_confirmar() -> void:
 	if nombre.is_empty():
 		nombre = "Plaga Anónima"
 	
+	# Mostrar selección de arquetipo antes de iniciar
+	_show_arquetipo_selection(nombre)
+
+func _show_arquetipo_selection(nombre: String) -> void:
+	# Ocultar el panel principal
+	var overlay = ColorRect.new()
+	overlay.anchor_right = 1.0
+	overlay.anchor_bottom = 1.0
+	overlay.color = Color(0.03, 0.04, 0.06, 0.95)
+	add_child(overlay)
+	
+	var vbox = VBoxContainer.new()
+	vbox.anchor_left = 0.1
+	vbox.anchor_top = 0.05
+	vbox.anchor_right = 0.9
+	vbox.anchor_bottom = 0.95
+	vbox.add_theme_constant_override("separation", 8)
+	add_child(vbox)
+	
+	var title = Label.new()
+	title.text = "🎭 ELIGE TU ARQUETIPO"
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	title.add_theme_font_size_override("font_size", 14)
+	title.add_theme_color_override("font_color", Color(0.9, 0.7, 0.2))
+	vbox.add_child(title)
+	
+	var sub = Label.new()
+	sub.text = "\"No es una clase. Es una actitud. Y toda actitud tiene consecuencias.\""
+	sub.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	sub.add_theme_font_size_override("font_size", 8)
+	sub.add_theme_color_override("font_color", Color(0.5, 0.5, 0.5))
+	vbox.add_child(sub)
+	
+	var arquetipos = [
+		{"nombre": "El Estratega", "emoji": "🧠", "bonus": "+2 Sensilios", "penal": "-1 Tórax", "desc": "Habilidades, sigilo, información. Piensa antes de actuar.", "stat_bonus": "sensilios", "stat_penal": "torax", "val_b": 2, "val_p": 1},
+		{"nombre": "El Ejecutor", "emoji": "💪", "bonus": "+2 Quitina", "penal": "-1 Feromonas", "desc": "Combate frontal, tanque. Golpea primero, pregunta después.", "stat_bonus": "quitina_base", "stat_penal": "feromonas", "val_b": 2, "val_p": 1},
+		{"nombre": "El Infiltrado", "emoji": "🗡️", "bonus": "+2 Cripsis", "penal": "-1 Quitina", "desc": "Ataques sorpresa, robo. Nadie te ve venir.", "stat_bonus": "cripsis", "stat_penal": "quitina_base", "val_b": 2, "val_p": 1},
+		{"nombre": "El Diplomático", "emoji": "💐", "bonus": "+2 Feromonas", "penal": "-1 Cripsis", "desc": "Comercio, NPCs, facciones. La lengua es más letal que el aguijón.", "stat_bonus": "feromonas", "stat_penal": "cripsis", "val_b": 2, "val_p": 1},
+	]
+	
+	for arq in arquetipos:
+		var btn = Button.new()
+		btn.text = "%s %s  [%s | %s]\n%s" % [arq["emoji"], arq["nombre"], arq["bonus"], arq["penal"], arq["desc"]]
+		btn.add_theme_font_size_override("font_size", 10)
+		btn.custom_minimum_size = Vector2(0, 40)
+		btn.pressed.connect(_confirmar_con_arquetipo.bind(nombre, arq))
+		vbox.add_child(btn)
+
+func _confirmar_con_arquetipo(nombre: String, arquetipo: Dictionary) -> void:
 	# Inicializar el juego con el taxón elegido
 	GameManager.reset()
 	GameManager.inicializar_plaga(taxon_seleccionado, nombre)
+	
+	# Aplicar bonus/penalización del arquetipo
+	GameManager.stats[arquetipo["stat_bonus"]] = GameManager.stats.get(arquetipo["stat_bonus"], 5) + arquetipo["val_b"]
+	GameManager.stats[arquetipo["stat_penal"]] = max(GameManager.stats.get(arquetipo["stat_penal"], 5) - arquetipo["val_p"], 1)
+	
+	# Recalcular derivados
+	GameManager.turgencia_max = 80.0 + GameManager.stats["quitina_base"] * 4.0
+	GameManager.turgencia_actual = GameManager.turgencia_max
+	GameManager.hemolinfa_max = 30.0 + GameManager.stats["sensilios"] * 4.0
+	GameManager.hemolinfa_actual = GameManager.hemolinfa_max
+	
+	# Guardar arquetipo elegido
+	GameManager.set_meta("arquetipo", arquetipo["nombre"])
 	
 	# Ir a la escena principal
 	get_tree().change_scene_to_file("res://main.tscn")
