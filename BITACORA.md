@@ -1,260 +1,616 @@
-# 🦟 BITÁCORA — Plaga: La Descarada
-**Proyecto:** `c:\Users\HardwareX\OneDrive\Documentos\descarada`
-**Motor:** Godot 4.6 — Mobile renderer — 640×360 viewport (escala 2x → 1280×720)
-**Plataforma objetivo:** Android (APK) + PC
-**Última actualización:** Mayo 2026 (semana 4)
+# 📋 BITÁCORA — Plaga: La Descarada
+
+## Proyecto
+- **Nombre:** Plaga: La Descarada
+- **Motor:** Godot Engine 4.6
+- **Género:** RPG Parodia / 3D Low Poly Exploración + 2D Combate por Turnos
+- **Estilo visual:** Cassette Beasts — overworld 3D, combate 2D sprite-based
+- **Inspiración:** Parodia de RPG de horror con insectos como especie dominante
+- **Target:** PC Windows (Forward Plus) — futuro port Switch
+- **Fecha inicio:** 26 Mayo 2026
+- **Wiki:** https://marbaezf-tech.github.io/plaga-wiki/
+- **Repo Wiki:** https://github.com/marbaezf-tech/plaga-wiki
+- **Repo Juego:** https://github.com/marbaezf-tech/la-descarada
 
 ---
 
-## 📁 ESTRUCTURA DEL PROYECTO
+## 📅 Sesión 1 — 26 Mayo 2026
 
+### Lore y Diseño de Mundo
+- [x] Definidos los 13 Taxones originales (insectos como clanes)
+- [x] Creados los Especímenes Alfa (fundadores) de cada Taxón
+- [x] Definidos Recursos únicos y Defectos Genéticos por Taxón
+- [x] Creada mitología fundacional: El Gran Éter (Carbonífero, 350M años)
+- [x] Creados 2 Progenitores Divinos: Meganeura y Arthropleura
+- [x] Creados 13 Semidioses (artrópodos extremófilos reales)
+- [x] Definidas 4 facciones: La Colmena, El Enjambre Negro, Los Sueltos, Los Parásitos Libres
+- [x] Creado sistema de degeneración: El Silencio Verde (Cordyceps)
+- [x] Mapeada ciudad el Gran Charco → El Gran Charco (10 zonas)
+- [x] Integrada fauna no-jugable (hormigas, abejas, termitas, mantis, escarabajos, etc.)
+- [x] Definido título oficial: "Plaga: La Descarada"
+- [x] Definido tono narrativo: cinismo, arrogancia, desfachatez
+- [x] Creados Los Sembradores (secta del Enjambre Negro) con 3 rituales
+- [x] Perspectiva del Linaje: opiniones entre los 13 taxones + Sembradores
+- [x] NeoPlaga: Era del Umbral (Año 20.000) — Holoceno agonizando, inicio glaciación
+- [x] Panteón de Progenitores: 13 dioses + El Primer Jardinero
+- [x] El Tardígrado (Ramazzottius, 530M años) como narrador omnisciente
+- [x] NPCs del Gran Charco (20+ personajes con motivaciones secretas)
+
+### Wiki (HTML estática — GitHub Pages)
+- [x] 39+ páginas HTML con estilo CSS oscuro responsive
+- [x] Servidor Express local (puerto 3001)
+- [x] Desplegada en GitHub Pages
+- [x] Páginas lore: gran-eter, progenitores, semidioses, caida, profecias, silencio-verde
+- [x] Páginas taxones: resumen + 13 páginas individuales
+- [x] Páginas mundo: facciones, sembradores, el Gran Charco, fauna, npcs, items, reliquias
+- [x] Páginas NeoPlaga: neoplaga, neoplaga-panteon, neoplaga-tardigrado, neoplaga-mundo, neoplaga-geografia
+- [x] Páginas referencia: sistemas, glosario, equivalencias, dashboard
+- [x] Narrador: Ramazzottius como voz omnisciente
+- [x] Sidebar unificado en todas las páginas
+
+### Demo Godot (Funcional)
+- [x] Proyecto Godot 4.6 creado y funcional
+- [x] GameManager + LootSystem + SaveSystem como Autoload
+- [x] 3 Spots interactivos con sprites reales (monitor, vaso, cable)
+- [x] Player con 6 sprites direccionales
+- [x] HUD con barras de Turgencia/Hemolinfa/Esencia/EXP
+- [x] Menú de Spot (Inspeccionar/Cazar/Saquear)
+- [x] Combate por turnos con 3 enemigos
+- [x] Inventario con Usar/Equipar/Tirar + Equipo visible
+- [x] Crafteo Anclaje de Fibra (fin de demo)
+- [x] Menú principal + Guardado/Cargado (F5/F9)
+- [x] Controles táctiles para Android
+- [x] Fondo real + sprites de spots
+- [x] Objetivo claro en pantalla
+- [x] APK exportada y subida a GitHub
+
+### Infraestructura
+- [x] Repo Git wiki: marbaezf-tech/plaga-wiki
+- [x] Repo Git juego: marbaezf-tech/la-descarada
+- [x] GitHub Pages activo
+- [x] APK Android exportada (Java 17 + Android SDK)
+- [x] Git configurado (user: marbaezf-tech)
+
+---
+
+## 📅 Sesión 2 — 27 Mayo 2026
+
+### Lore Expandido (con Gemini)
+- [x] 14° Taxón: Típulas — Los Impostores (equivalente a Salubri/Clan 14)
+- [x] 14° Semidiós: Youti Yuanshi — El Primer Padre (520M años, ancestro de todos los artrópodos)
+- [x] Doctrina de Youti: Resonancia del Primero (mecánica pasiva anti-fratricidio)
+- [x] Tabla de posturas de los 13 Semidioses ante Youti
+- [x] Paradoja narrativa: el pacifista que genera más guerra
+- [x] 14 Vocaciones del Gran Charco (roles narrativos/sociales fuera de combate)
+- [x] Debate Creyentes vs Escépticos vs Agnósticos vs Oportunistas
+- [x] NPC Doña Esperanza (Típula Cronista, Buscadora del Oso)
+- [x] Espiritrompa de las Típulas (dato real: no la enrollan como mariposas)
+- [x] Ocelo Ancestral (Tercer Ojo) — ve el miedo como calor infrarrojo
+- [x] Leyenda del Primer Ocelo (mito oral Típula)
+- [x] Equivalencia completa Típulas = Salubri (tabla comparativa)
+- [x] Fauna expandida: Blandos (caracoles, babosas, lombrices)
+- [x] Escarabajos Especiales: Charidotella (tortuga dorado), Chinitas, Pololos
+- [x] Nota de Ramazzottius sobre los Blandos y los Escarabajos como futuros Taxones
+- [x] 3 Atavismos por Taxón (14 taxones × 3 = 42 atavismos asignados)
+- [x] 14 Poderes Signature (nivel 3) con nombre, costo y efecto
+- [x] Relato "La Asfixia de los Dioses" (Ramazzottius, 252M años)
+- [x] Conflicto político: Batalla del Tubo Fluorescente (Rufino vs Roxana, Neo-Tunel Central)
+- [x] Ritual de Los Sembradores: "El Beso del Sombrero Fúngico" (3 pasos + mecánicas)
+- [x] Evento: Colmena Silenciosa llega al Gran Charco (reacciones de 4 facciones)
+- [x] Mecánica de Asfixia Ancestral (Tejeduría de Éter consume oxígeno de zona)
+
+### Renombramientos (Identidad Propia — 0 refs a VTM en código)
+- [x] Disciplinas → **Atavismos** (poderes heredados del Gran Éter)
+- [x] Stats genéricos → **Atributos Primordiales**:
+  - Fuerza → **Tórax** (TOR)
+  - Agilidad → **Ganglios** (GAN)
+  - Resistencia → **Quitina** (QUI) — como stat base
+  - Percepción → **Sensilios** (SEN)
+  - Sigilo → **Cripsis** (CRI)
+  - Carisma → **Feromonas** (FER)
+- [x] HP/Vida → **Turgencia** (presión de fluidos internos)
+- [x] Hemolinfa se mantiene (ya era correcto)
+- [x] Esencia de Taxón se mantiene (ya era correcto)
+- [x] Nuevo stat: **Instinto** (Willpower — chispazos ganglionares)
+- [x] Botón combate: "Inyección" → **"Atavismo"**
+- [x] Botón spot: "Diezmo" → **"Cazar"**
+- [x] Botón spot: "Cobrar" → **"Saquear"**
+
+### Código Godot (Nuevas Features)
+- [x] `GameManager.reset()` — limpia estado al volver al menú
+- [x] Fix "Volver al Menú" al completar demo (resetea GameManager)
+- [x] Típula agregada al enum + TAXON_DATA (14 taxones jugables)
+- [x] Pantalla de Creación de Personaje (`creacion_personaje.gd` + `creacion.tscn`)
+  - Selección de Taxón (grid 14 botones)
+  - Campo de nombre
+  - Ficha preview con Atributos Primordiales + Atavismos
+  - Botón "INOCULAR — Comenzar Conquista"
+- [x] Menú "Nueva Conquista" → va a creación de personaje (no directo al juego)
+- [x] Notificación "✅ Equipado" al equipar items en inventario
+- [x] Instinto como nuevo recurso vital (5/5 base)
+
+### Wiki Updates (Sesión 2)
+- [x] Típulas en sidebar de TODAS las páginas (40/41)
+- [x] Página taxon-tipulas.html expandida (Ocelo, Leyenda, Espiritrompa)
+- [x] Fauna.html: Blandos + Escarabajos Especiales
+- [x] Equivalencias.html: Típulas/Salubri + Atavismos + Tercer Ojo
+- [x] Sistemas.html: Tabla de Atavismos por Taxón + Poderes Signature
+- [x] Caida.html: Relato de Ramazzottius
+- [x] NPCs.html: Conflicto del Neo-Tunel Central
+- [x] Sembradores.html: Ritual del Sombrero Fúngico
+- [x] Colmena-silenciosa.html: Evento de llegada al sur
+- [x] Glosario.html: Atavismos definido
+- [x] Dashboard.html: Actualizado con pendientes reales
+- [x] Taxones.html: Típulas agregada a tabla + Progenitores
+
+### Fix Encoding (sistemas.html)
+- [x] Reescritura completa de `sistemas.html` con encoding UTF-8 correcto
+- [x] Eliminado todo mojibake (emojis como `?`, caracteres como `�`)
+- [x] Contenido intacto: combate, habilidades, atavismos, arquetipos, esencia, spawn, loot, equipamiento, reliquias, O2/Calor, Danza de Antenas
+- [x] Push a GitHub Pages
+
+### Sistema de Grados + Vestigios (Wiki)
+- [x] Sección "Grados de Estabilidad Genética" en sistemas.html (5 Grados, techos, Deglución 2.0, Misiones)
+- [x] Sección "Vestigios de los Antiguos" (5 reliquias consumibles: temporales + permanente)
+- [x] Push a GitHub Pages
+
+### UI Godot — Creación de Personaje + Combate Pokémon
+- [x] Creación de personaje rediseñada: avatar grande (placeholder color) + ficha + grid 3 columnas
+- [x] Avatar cambia al seleccionar taxón (carga `2d_*.png` si existe, sino placeholder)
+- [x] Combate rediseñado estilo Pokémon: prota espalda abajo-izq, enemigo frente arriba-der
+- [x] Barras HP de ambos combatientes visibles
+- [x] Grid 2x2 de botones (Atacar/Atavismo/Ítem/Retirada)
+- [x] Busca imágenes `2d_*.png` automáticamente para avatares
+- [x] Push a GitHub (repo juego)
+
+---
+
+---
+
+## 📅 Sesión 3 — 28 Mayo 2026
+
+### FFmpeg + Videos OGV
+- [x] FFmpeg 8.1.1 instalado en C:\ffmpeg\ (desde gyan.dev)
+- [x] Convertidos 3 videos MP4 → OGV (formato nativo Godot):
+  - video Trailer torneo 1.ogv (6.8 MB)
+  - video Trailer torneo 2.ogv (4.5 MB)
+  - final demo escorpion.ogv (5.9 MB)
+- [x] menu_principal.gd actualizado: prioriza OGV, fallback MP4
+- [x] inventario_ui.gd actualizado: video fin de demo usa OGV
+
+### Danza de Antenas — Sistema Social en Combate
+- [x] Botón "💃 Danza" agregado al menú de combate (4 botones: Atacar/Atavismo/Danza/Retirada)
+- [x] Menú de selección de postura (4 opciones con stats visibles)
+- [x] Mecánica piedra-papel-tijera: Acecho > Exposición > Vibración > Mimetismo > Acecho
+- [x] Resolución: stat + bonus ventaja (+3) + variación (±2)
+- [x] Victoria social: efecto según postura (daño psíquico / debuff / crítico / heal)
+- [x] Derrota social: penalización según postura enemiga
+- [x] Enemigo elige postura basándose en su stat más alto (60%) o aleatorio (40%)
+- [x] Stats sociales del enemigo generados automáticamente en setup_enemy()
+- [x] Bonus de Mimetismo: victoria social → próximo ataque físico = crítico
+- [x] Victoria social da +2% Esencia (la diplomacia fortalece)
+- [x] Simulador de duelos sociales (simulador_social.js) — 2000 rondas todos vs todos
+- [x] Página wiki torneo_social.html con ranking, dominancias y análisis cruzado
+- [x] Trazabilidad actualizada: Danza de Antenas → Finalizado
+
+### Resultados del Simulador Social
+- 👑 Mejor diplomático: 🦋 Mariposa (71.1% winrate — FER 10)
+- 💀 Peor diplomático: ⚡ Pulga (23.7% winrate — stats mediocres)
+- ⚖️ Balance cruzado confirmado: Escorpión (#1 PvP, #9 Social) vs Mariposa (#14 PvP, #1 Social)
+- 🗡️ Vinchuca es la más versátil (#2 Social + #5 PvP)
+- 📏 Spread social: 47.4% (intencional — refleja diferencias temáticas)
+
+### Sistema de Antenas Sociales (0-10)
+- [x] Barra de Antenas visible en combate (🐜🐜🐜🐜🐜·····)
+- [x] Atacar ×3 sin socializar → -1 antena
+- [x] Atavismo melee/intimidar → -1 antena (violencia oscura)
+- [x] Atavismo social (confuso/stun/revelar) → +1 antena (encantamiento)
+- [x] Atavismo utilidad (evasión/heal) → neutral
+- [x] Danza victoria → +1 antena
+- [x] Antenas = 0 → -5% Esencia + daño Cordyceps
+- [x] Antenas ≥ 9 → +3 bonus a tiradas de Danza
+- [x] Conexión con Silencio Verde: violencia pura = Cordyceps avanza
+
+### Rebalanceo de Stats (v2)
+- [x] Escorpión nerfeado: TOR 8→7, QUI 8→6
+- [x] Típula bufeada: SEN 9→10, CRI 7→8, FER 6→9
+- [x] Evasión en combate: GAN×3.5% + CRI×2.5% (cap 55%)
+- [x] Precisión: SEN×2% reduce evasión enemiga
+- [x] Jugador puede esquivar ataques enemigos
+
+### 42 Atavismos Rediseñados (Melee/Social/Utilidad)
+- [x] Cada taxón: 1 Melee + 1 Social + 1 Utilidad
+- [x] Melee baja antenas, Social sube, Utilidad neutral
+
+### Enemigo con IA Social
+- [x] Enemigo puede provocar (probabilidad = FER/(FER+TOR))
+- [x] Provocaciones con frases + debuff si no resistes
+- [x] Stats sociales (FER, CRI, SEN) en los 3 enemigos de la demo
+
+### Torneo PvP v2 (con Antenas)
+- [x] Spread: 17.6% (antes 100%). Escorpión 61.3%, Garrapata 43.7%
+- [x] Típula #4 (50.4%), Mariposa #6 (49.7%)
+- [x] Página wiki: torneo_pvp_v2.html
+
+### Wiki: Arquitectura UML (Mermaid.js)
+- [x] Diagrama de Clases, Flujo, Estados, Secuencia, Archivos
+- [x] Página: arquitectura.html
+
+### Wiki: QA
+- [x] 53 casos de prueba en 7 categorías
+- [x] Página: qa.html
+
+---
+
+---
+
+## 🔴 Pendientes (por categoría)
+
+### ⚔️ Combate
+- [x] 3 Atavismos funcionales por Taxón en combate (14×3 = 42 habilidades con submenú)
+- [x] Danza de Antenas — sistema de conflicto social (4 posturas) + botón en combate
+- [x] Pantalla Game Over cuando Turgencia llega a 0
+- [x] Pantalla "ASIMILADO" cuando Esencia llega a 0%
+
+### 🧬 Progresión
+- [x] Fases progresivas de infección (75% Susurros, 50% Parasitismo, 25% Dominación)
+- [ ] Grados de Estabilidad (I-V) — implementar `get_max_atributo()` y `get_max_atavismo()` en GameManager
+- [ ] Deglución 2.0 — mecánica de ascenso + Shock de Compatibilidad
+- [ ] Vestigios de los Antiguos — items consumibles que suben Grado temporal/permanente
+- [ ] Misiones de Estabilización — requisitos para ascender de Grado
+- [ ] Implementar Instinto en mecánicas (gastar para golpe crítico, resistir control)
+- [ ] Resonancia de Youti — mecánica pasiva anti-fratricidio
+- [ ] Costos de Atavismos escalados: base más alto (3→5, 4→6, 5→8), descuento -1 por Grado sobre I (mín 1)
+- [ ] Danza de Antenas cuesta 1 Instinto por intento. Si ganas, recuperas el Instinto. Si pierdes, lo pierdes.
+- [ ] Grado alto = +1 Instinto máximo (Grado I=5, Grado V=9)
+
+### 🎒 Inventario / Crafteo
+- [ ] Definir Atavismos Básicos vs Exclusivos de Grado Alto
+- [ ] Balancear NPCs y enemigos según techos de Grado
+- [ ] Estructura JSON de personaje (datos_biologicos, atributos_primordiales, atavismos_activos, estado_mental)
+
+### 🗺️ Exploración
+- [x] Límites del mapa (jugador no se sale de pantalla)
+- [x] Múltiples zonas del mapa (5 zonas: Laboratorio, Azotea, Sótano, Pasillo, Sala de Máquinas)
+- [x] Transiciones entre zonas con fade y conexiones coherentes
+- [x] Minimapa en HUD con posición actual
+- [ ] Migración a 3D Low Poly (spec creado, pendiente implementación)
+- [ ] Victoria Regia — nodo de escenario / flora del Gran Charco
+- [ ] Testear flujo completo: Menú → Creación → Juego → Fin Demo → Menú
+
+### 📕 Bestiario / Lore
+- [x] 3 taxones nuevos integrados al juego base (Escarabajo, Grillo, Mantis) con páginas wiki
+- [x] Organigrama político del Gran Charco (cronología, estructura de poder, conflictos)
+- [ ] Expandir organigrama con descripciones detalladas de todos los NPCs (estilo VTM/GoT)
+- [ ] Lore de enemigos del bestiario (generar con API Gemini cuando haya cuota)
+- [ ] Lore de Vestigios (generar con `generar_lore_vestigios.js`)
+
+### 🎨 Assets
+- [ ] Recortar imágenes de enemigos (quitar espacio vacío/tablero)
+- [ ] Generar 14 avatares de taxón (`2d_zancudo.png`, etc. — 128×128 transparente)
+- [ ] Generar `2d_prota_back.png` (prota de espalda para combate)
+- [ ] Audio placeholder (1 track exploración, 1 track combate)
+- [ ] Sprites reales generados por IA (14 taxones × 4 direcciones para mapa)
+
+### 💾 Sistema / Exportación
+- [x] Pantalla de selección de Arquetipo (Estratega/Ejecutor/Infiltrado/Diplomático)
+- [x] Sistema de diálogos con Dialogue Manager + AI cache (Gemini)
+- [x] NPC Vlad con diálogo ramificado y quest
+- [ ] Exportar .exe para Windows (requiere templates en Godot)
+- [ ] Eventos aleatorios cómicos
+- [ ] Sistema de quests (framework básico)
+- [ ] Animaciones de sprites
+
+### 📚 Lore Expandido / Novelas
+- [x] Lore crisis Año 20.000: Don Mosin Nagant + Directriz de Incubación Viva
+- [x] Escuadrón "Primera Sangre" + El Baqueano (Vinchuca guía)
+- [x] La Presa Cero: Larva de Escarabajo (justificación biológica)
+- [x] Los Cercenados: élite zancuda sin alas (camuflaje biológico)
+- [x] La Falsa Bandera: Típulas acusadas, diplomacia las salva
+- [x] Sistema Piedra-Papel-Tijera político (Escorpiones/Escarabajos vs Cucarachas/Abejas vs Zancudos/Vinchucas)
+- [x] Brainstorm 14 novelas por taxón (2 ideas por clan)
+- [x] Nuevos taxones DLC: Escarabajos, Grillos (Bardos), Mantis (Inquisidoras)
+- [ ] Desarrollar protagonista y sinopsis completa de cada novela
+- [ ] Prompt para generar sprites de Escarabajo, Grillo, Mantis (poly-gótico)
+### 🌡️ NeoPlaga (Futuro)
+- [ ] Sistema O₂ vs Calor (mecánica ambiental)
+- [ ] Colmena Silenciosa como evento/zona
+
+### 🎮 Taxones v1.0 (10 jugables) vs DLC (4 futuros)
+**Jugables en v1.0:**
+1. 🗡️ Vinchuca — Asesina invisible
+2. 🦟 Típula — Diplomática suprema
+3. 🌙 Polilla — Vidente/control
+4. 🦋 Mariposa — Social pura
+5. 🦂 Escorpión — Guerrero burst
+6. 🐝 Avispa — Berserker multi-hit
+7. ⚡ Pulga — Evasión maestra
+8. 🕸️ Araña — Emboscadora stun
+9. 🕷️ Garrapata — Tanque inmortal
+10. 🪰 Mosca — Nigromante
+
+**DLC / Expansión (v2.0+):**
+- 🦟 Zancudo — Pendiente rework identidad (SWAT biológico)
+- 🪳 Cucaracha — Se solapa con Garrapata (tanque)
+- 🛏️ Chinche — Se solapa con Típula (político)
+- 💉 Sanguijuela — Se solapa con Mosca (cultista)
+
+### 🌐 Multiplayer (Futuro)
+- [ ] Fase 1: PvP asíncrono — subir build a Firebase, matchmaking, ranking ELO (v0.5.0)
+- [ ] Fase 2: PvP tiempo real — lobby con código, Danza de Antenas 1v1, WebSocket (v0.7.0)
+- [ ] Fase 3: Co-op aventura 2-4 jugadores — exploración compartida, combate en equipo (v1.0.0)
+- [ ] network_manager.gd (Autoload — conexión, lobby, sync)
+- [ ] lobby_ui.gd (crear/unirse a sala con código)
+- [ ] player_sync.gd (sincronizar posición/estado)
+- [ ] combat_sync.gd (sincronizar acciones de combate por turno)
+- [ ] firebase_api.gd (auth + DB)
+- [ ] Danza de Antenas grupal (stats se suman en co-op)
+- [ ] Traición opcional (atacar aliado = -3 antenas, -10% Esencia)
+- [ ] Chat de feromonas (mensajes predefinidos in-game)
+
+### 🤖 Observaciones Gemini (Diagnóstico)
+#### Sugerencias priorizadas
+- [ ] Unificar línea de tiempo: definir si el jugador está en Presente o Año 20.000 (NeoPlaga = expansión/epílogo)
+- [ ] Mecánica activa de Silencio Verde: medidor de infección que suba con Reliquias/recursos impuros (100% = pierdes personaje)
+- [ ] Economía clara: definir recurso base (Biomasa/Hemolinfa) para subir stats Y sobornar en social
+- [ ] Sinergias de Facciones en combate: buff táctico si peleas junto a NPC de tu facción
+- [ ] Defectos Genéticos activos: se activan procedimentalmente en Danza (ej: Mosca pierde postura si hay basura)
+- [ ] Peligros de Entorno (O₂ vs Calor): zonas del mapa con efectos ambientales por taxón
+- [ ] Vocaciones con peso mecánico: NPCs dan quests solo si respetas su vocación
+- [ ] Bestiario PvE con social: intimidación funcione contra monstruos no pensantes
+- [ ] Polillas = monopolio de Profecías del 35%, Vinchucas = control de rumores/información
+- [ ] DLC "El Ascenso de los Blandos": humanos descubren la sociedad, fumigación masiva, cooperación entre facciones
+#### Bugs narrativos
+- [x] Fix Sanguijuelas: son Anélidos, no Artrópodos — tratadas como "Blandos Bastardos", intrusos evolutivos tolerados
+- [x] Fix Cordyceps geográfico: justificado como "cepa criogénica mutada" que se propaga por micelio subterráneo bajo hielo
+#### Balance (Torneo PvP v2)
+- [x] Rework Araña: TOR+2, 2 stuns + remate x2.5 (emboscadora)
+- [x] Rework Mosca: nigromante (larva tanque + espíritu + stun)
+- [x] Rework Pulga: pasivo "Evasión Maestra" (GAN×5.5%, cap 70%)
+- [x] Rework Garrapata: TOR+1, pasivo regen 3%/turno, Coraza +6 def
+- [x] Decisión: 10 taxones jugables en v1.0, 4 para DLC
+- [x] Ajustar creacion_personaje.gd para mostrar solo los 10 taxones de v1.0
+- [ ] Rework Zancudo para DLC: definir identidad "SWAT biológico"
+- [ ] Rework Cucaracha para DLC: diferenciar de Garrapata
+- [ ] Rework Chinche para DLC: diferenciar de Típula
+- [ ] Rework Sanguijuela para DLC: diferenciar de Mosca
+#### Diagnóstico Manual (Gemini v2)
+- [x] Crear página "Quick Start" — tutorial de combate en 3 pasos para nuevos jugadores
+- [x] Tabla consolidada de 42 atavismos en 1 sola página (comparar builds)
+- [ ] Cheat Sheet / Referencia rápida (stats, fórmulas, posturas en 1 página)
+- [x] Evaluar lanzar con 7-8 taxones jugables (resto = DLC/expansión) → Decisión: 10 taxones en v1.0, 4 para DLC
+- [ ] Diagrama de flujo visual del sistema de Antenas
+- [ ] Delimitar Moscas vs Sanguijuelas narrativamente (evitar solapamiento temático)
+- [ ] Tooltips en stats: Sensilios [Percepción], Ganglios [Reflejos], etc.
+- [ ] Definir identidad/caricatura única de cada taxón (1 frase + nicho narrativo + monopolio mecánico por clan)
+
+---
+
+## 🟡 Bloqueantes
+
+| # | Bloqueante | Impacto | Solución |
+|---|---|---|---|
+| 1 | ~~No hay proyecto Godot~~ ✅ | — | Creado completo |
+| 2 | Assets gráficos limitados | Sprites placeholder en algunos elementos | Generar con Gemini (prompts listos) |
+| 3 | ~~ngrok agotado~~ ✅ | — | GitHub Pages |
+| 4 | No hay assets de audio | Sin ambientación sonora | Baja prioridad para demo |
+| 5 | Templates .exe Windows | No se puede exportar PC | Descargar en Godot Editor |
+
+---
+
+## 📊 Métricas de Avance
+
+| Área | Completado | Total | % |
+|---|---|---|---|
+| Lore/Diseño | 48 | 48 | 100% |
+| Wiki | 53 | 53 | 100% |
+| Requirements | 14 | 14 | 100% |
+| Código Godot | 38 | 40 | 95% |
+| Assets Gráficos | 16 | 20 | 80% |
+| Audio/Video | 5 | 5 | 100% |
+| Exportación | 3 | 3 | 100% |
+| **TOTAL** | **177** | **183** | **97%** |
+
+---
+
+## 🧬 Referencia Rápida: Sistema de Stats
+
+### Atributos Primordiales
+| Abrev | Nombre | Función |
+|---|---|---|
+| TOR | Tórax | Potencia muscular, daño base |
+| GAN | Ganglios | Reflejos, evasión, velocidad |
+| QUI | Quitina | Dureza del exoesqueleto, absorción |
+| SEN | Sensilios | Detección sensorial, percepción |
+| CRI | Cripsis | Invisibilidad biológica, sigilo |
+| FER | Feromonas | Influencia química, manipulación social |
+
+### Recursos Vitales
+| Recurso | Función | Fórmula |
+|---|---|---|
+| Turgencia | HP — presión de fluidos | 80 + (QUI × 4) |
+| Hemolinfa | MP — energía para Atavismos | 30 + (SEN × 4) |
+| Esencia de Taxón | Cordura — 0% = Marioneta | Fija 100, baja por acciones |
+| Instinto | Willpower — esfuerzos supremos | Fijo 5/5 |
+
+### Fórmulas Derivadas
 ```
-descarada/
-├── main.tscn          ← Escena principal (El Laboratorio)
-├── menu.tscn          ← Menú principal
-├── creacion.tscn      ← Creación de personaje
-├── assets/
-│   └── sprites/       ← Sprites del zancudo (zancudo_front/back/left/right.png)
-├── imagenes/          ← Imágenes de enemigos, fondos, taxones
-│   └── Enemigos/      ← Imágenes 2d_ de enemigos
-├── scripts/           ← Todos los scripts GDScript
-├── video/             ← Trailers OGV (torneo 1, torneo 2, demo escorpión)
-└── export/            ← APKs exportados (v0.2.0, v0.3.0, latest)
+Velocidad = (GAN + SEN) / 2
+Daño = TOR + Arma - Defensa enemiga (±15%)
+Escape = (Velocidad propia / Velocidad enemiga) × 50%
 ```
 
 ---
 
-## 🎮 ESTADO ACTUAL DEL JUEGO
+## 📅 Sesión 4 — 30 Mayo 2026
 
-### Lo que funciona (implementado y jugable)
-- ✅ Menú principal con reproducción de trailers OGV en secuencia
-- ✅ Creación de personaje: selección de Taxón + nombre + arquetipo
-- ✅ Escena principal (El Laboratorio) construida por código en `main.gd`
-- ✅ Jugador con sprites direccionales (front/back-L/back-R/left/right)
-- ✅ Movimiento top-down 4 direcciones + joystick virtual para Android
-- ✅ 3 Spots interactivos: Monitor Holográfico, Vaso de Agua, Cable Expuesto
-- ✅ Sistema de combate por turnos completo (Atacar / Atavismo / Danza / Huir)
-- ✅ HUD con barras de Turgencia, Hemolinfa, Esencia, EXP
-- ✅ Inventario con uso, equipamiento, fusión de items y crafteo
-- ✅ Bestiario (se llena al vencer enemigos)
-- ✅ Sistema de guardado/carga (F5/F9, JSON en user://)
-- ✅ Game Over por Turgencia = 0 ("Quitina Quebrada")
-- ✅ Game Over por Esencia = 0 ("Asimilado" — Silencio Verde)
-- ✅ Pantalla de fin de demo al craftear el Anclaje de Fibra
-- ✅ Desbloqueo del Escorpión al completar la demo
-- ✅ Exportado como APK (v0.3.0)
-- ✅ **Mapa isométrico** generado por código — reemplaza imagen de fondo
-- ✅ **Sistema de zonas en cruz** — 5 zonas conectadas desde el Laboratorio central
-- ✅ **zona_base.gd** — clase base con sistema de 4 puertas, spawn contextual, painter's algorithm
-- ✅ **zona_laboratorio.gd** — zona central (12×12), 4 puertas (N/S/E/O)
-- ✅ **zona_pasillo.gd** — este del laboratorio, tonos tierra (refactorizado a zona_base)
-- ✅ **zona_azotea.gd** — norte, exterior expuesto, tonos azul-gris
-- ✅ **zona_sotano.gd** — sur, subterráneo infectado, tonos verde bioluminiscente
-- ✅ **zona_maquinas.gd** — oeste, industrial, tonos naranja-rojo
-- ✅ **Transición genérica** `_on_entrar_zona()` en main.gd — maneja todas las zonas con fade
-- ✅ **Spawn contextual** — `get_spawn_desde()` en zona_base ubica al jugador en la puerta correcta al volver
-- ✅ HUD muestra nombre de zona activa
+### Panel de Admin (Wiki Local)
+- [x] `server.js` extendido con sistema de autenticación por sesión (8 horas)
+- [x] `POST /api/login` — autentica con usuario/contraseña hasheada (SHA256)
+- [x] `POST /api/logout` y `GET /api/me` — gestión de sesión
+- [x] `POST /api/upload` — sube imagen a `wiki/img/` y copia a `descarada/assets/sprites/` si existe
+- [x] `GET /api/images` y `DELETE /api/images/:filename` — gestión de galería
+- [x] `POST /api/publish` — hace `git add img/ data/ → commit → push` a GitHub Pages
+- [x] `admin.html` — panel local con login, tabs: Imágenes / Criaturas / Objetos / Galería / Publicar
+- [x] Credenciales: `admin / Chachita123.` — contraseña guardada como hash, nunca en texto plano
+- [x] `admin.html` en `.gitignore` — nunca se sube al repo ni aparece en GitHub Pages
+- [x] Servidor bloquea `admin.html` y rutas `/api/` desde IPs externas (solo localhost)
+- [x] `.env` en `.gitignore` — secrets nunca en el repo
+- [x] `ABRIR_ADMIN.bat` — doble click abre servidor + browser automáticamente
 
-### Pendiente / En desarrollo
-- ⏳ Enemigos propios por zona (tabla de spawn diferente por zona)
-- ⏳ NPCs con diálogo
-- ⏳ Sistema de facciones activo (reputación existe pero no tiene consecuencias en juego)
-- ⏳ Imágenes 2D de enemigos (actualmente placeholders de color)
-- ⏳ Ajustar posiciones de Spots para que coincidan con el mapa isométrico
+### CRUD Criaturas y Objetos (Admin)
+- [x] `data/criaturas.json` — 17 criaturas (3 enemigos + 14 taxones jugables) con stats completos
+- [x] `data/objetos.json` — 9 objetos (armas, consumibles, materiales, crafteable)
+- [x] `GET/POST/PUT/DELETE /api/criaturas` — CRUD completo protegido por sesión
+- [x] `GET/POST/PUT/DELETE /api/objetos` — CRUD completo protegido por sesión
+- [x] Exportación automática a Godot: al guardar criatura/objeto, copia JSON a `descarada/data/`
+- [x] `bestiario.html` lee `data/criaturas.json` dinámicamente (reemplaza datos hardcodeados)
+- [x] `objetos-mapa.html` — nueva página pública de objetos del juego
 
----
+### Bestiario Admin (Local)
+- [x] `bestiario-admin.html` — versión editable del bestiario, solo accesible desde localhost
+- [x] Login con misma sesión que `admin.html`
+- [x] Botones ✏️ Editar y 🗑️ Eliminar en cada card de criatura
+- [x] Modal con formulario completo — campos distintos según tipo (enemigo vs taxón)
+- [x] Botón `+ Nueva Criatura` con formulario dinámico
+- [x] Filtros por tipo (Todos / Enemigos / Taxones) igual que bestiario público
+- [x] `bestiario-admin.html` en `.gitignore` — nunca se sube al repo
+- [x] Servidor bloquea `bestiario-admin.html` desde IPs externas
 
-## 🧬 TAXONES JUGABLES
+### Fix Godot — Migración proyecto `la-descarada`
+- [x] Detectado que `la-descarada` y `descarada` son dos proyectos distintos
+- [x] Migrados todos los scripts del sistema de zonas a `la-descarada`:
+  - `zona_base.gd` (clase base con `class_name ZonaBase`)
+  - `zona_laboratorio.gd`, `zona_pasillo.gd`, `zona_azotea.gd`, `zona_sotano.gd`, `zona_maquinas.gd`
+  - `main.gd`, `menu_principal.gd`, `creacion_personaje.gd`
+  - `save_system.gd`, `inventario_ui.gd`, `bestiario_ui.gd`, `touch_controls.gd`
+- [x] Escenas `menu.tscn`, `main.tscn`, `creacion.tscn` copiadas a `la-descarada`
+- [x] `project.godot` actualizado: `SaveSystem` en autoloads, inputs inventario/bestiario, `menu.tscn` como escena principal
+- [x] Fix `main.gd` línea 156: `var pos :=` → `var pos: Vector2 =` (inferencia de tipo con Variant)
+- [x] Fix `zona_base.gd`: todos los `:=` con `MAPA[0].size()` reemplazados por tipos explícitos `var cols: int = (MAPA[0] as Array).size()`
+- [x] Fix `zona_base.gd`: `pantalla_a_grid` con tipos explícitos en todas las variables
+- [x] `extends "res://scripts/zona_base.gd"` restaurado en todas las zonas (path directo, más confiable que `class_name` cuando el caché está vacío)
+- [x] `Camera2D` con zoom 2x agregada al player en `main.gd` (el mapa no se veía porque no había cámara)
+- [x] Mapa centrado en `Vector2.ZERO` (offset relativo al centro del mapa, no al viewport)
+- [x] Fondo `ColorRect` expandido a 4000×4000 para cubrir el mundo visible con cámara
+- [x] Título y objetivo de zona movidos a `CanvasLayer` (layer 5) para que no se muevan con la cámara
 
-14 taxones en total. 10 disponibles en v1.0, 4 reservados para DLC.
+### Estado actual del juego
+- El juego arranca, muestra HUD, título de zona y el sprite del jugador
+- El mapa isométrico aún no se renderiza visualmente (en investigación)
+- Sistema de zonas completo en código: 5 zonas conectadas (Laboratorio ↔ Pasillo, Azotea, Sótano, Sala de Máquinas)
 
-| Taxón | Emoji | Facción | Recurso | Defecto | Pasivo especial |
-|-------|-------|---------|---------|---------|-----------------|
-| Zancudo | 🦟 | El Enjambre Negro | Sangre Fresca | Sobrecarga de Buffer | — |
-| Cucaracha | 🪳 | Los Parásitos Libres | Bio-Residuos | Aura de Asco | — |
-| Avispa | 🐝 | Los Sueltos | Carne Dulce y Azúcar | Frenesí de Asado | — |
-| Garrapata | 🕷️ | Los Sueltos | Plasma Estancado | Anclaje Pesado | Regenera 3% HP/turno |
-| Chinche | 🛏️ | La Colmena | Sangre Premium | Paladar Fino | — |
-| Mariposa | 🦋 | La Colmena | Néctar Fermentado | Alas de Cristal | — |
-| Araña | 🕸️ | La Colmena | Hemolinfa | Fobia Social | — |
-| Escorpión | 🦂 | El Enjambre Negro | Turgencia | Fotofobia Humillante | — |
-| Vinchuca | 🗡️ | Los Parásitos Libres | Sangre Inoculada | Digestión Traicionera | — |
-| Mosca | 🪰 | Los Parásitos Libres | Necromasa | Olor a Muerte | — |
-| Sanguijuela | 💉 | Los Parásitos Libres | Toxinas y Filtros | Adicción Espiritual | — |
-| Polilla | 🌙 | Neutral | Fotones | Atracción Fatal | — |
-| Pulga | ⚡ | Los Sueltos | Flujo Cinético | Hiperactividad Crónica | Evasión maestra |
-| Típula | 🦟 | Los Parásitos Libres | Calor Robado | Cristal Ambulante | — |
-
-### Stats base (6 atributos primordiales)
-- **Tórax** — fuerza física, daño en combate
-- **Ganglios** — velocidad, iniciativa
-- **Quitina Base** → determina Turgencia máx (80 + quitina×4)
-- **Sensilios** → determina Hemolinfa máx (30 + sensilios×4), precisión
-- **Cripsis** — sigilo, evasión
-- **Feromonas** — carisma, social
-
-### Arquetipos (se eligen en creación)
-| Arquetipo | Bonus | Penalización |
-|-----------|-------|--------------|
-| El Estratega 🧠 | +2 Sensilios | -1 Tórax |
-| El Ejecutor 💪 | +2 Quitina | -1 Feromonas |
-| El Infiltrado 🗡️ | +2 Cripsis | -1 Quitina |
-| El Diplomático 💐 | +2 Feromonas | -1 Cripsis |
+### Pendientes inmediatos
+- [ ] Confirmar que mapa isométrico se renderiza correctamente con la cámara
+- [ ] Testear transición entre zonas
+- [ ] Testear flujo completo: Menú → Creación → Juego → Spots → Combate → Fin Demo
 
 ---
 
-## ⚔️ SISTEMA DE COMBATE
+## 📅 Sesión 5 — 30 Mayo 2026 (continuación)
 
-Combate por turnos estilo Pokémon. Prota de espalda (abajo-izq), enemigo de frente (arriba-der).
+### Fix crítico — Proyecto activo es `descarada`, no `la-descarada`
+- [x] Confirmado que Godot corre el proyecto `descarada` (no `la-descarada`)
+- [x] Todos los fixes aplicados al proyecto correcto `c:\Users\HardwareX\OneDrive\Documentos\descarada\`
 
-### Acciones disponibles
-1. **Atacar** — daño físico. Fórmula: `(Tórax + arma_equipada) × 2 - defensa_enemigo × 0.5`
-2. **Atavismo** — habilidades especiales del taxón (costo en Hemolinfa)
-3. **Danza de Antenas** — sistema social piedra-papel-tijera con 4 posturas
-4. **Retirada** — huir. Chance = `velocidad_jugador / velocidad_enemigo × 0.5`
+### Sistema de zonas — Mapa isométrico funcional
+- [x] `iso_map.gd` actualizado con las 4 puertas del laboratorio (N/S/E/O)
+- [x] `DESTINOS` y `LABELS` por tile: 5=norte/Azotea, 6=sur/Sótano, 7=este/Pasillo, 8=oeste/Máquinas
+- [x] `get_spawn_desde(desde)` — spawn en puerta opuesta al entrar desde otra zona
+- [x] `CharacterBody2D.MOTION_MODE_FLOATING` — fix movimiento top-down (antes bloqueado por gravedad)
+- [x] `Camera2D` zoom 2x agregada al player — mapa visible centrado en el jugador
+- [x] Fondo `ColorRect` 8000×8000 — cubre todo el mundo visible con cámara
+- [x] Título y objetivo en `CanvasLayer` layer 5 — no se mueven con la cámara
+- [x] Player busca IsoMap con `call_deferred` + grupo `iso_map` como fallback
 
-### Danza de Antenas (sistema social)
-4 posturas químicas en ciclo: Acecho > Exposición > Vibración > Mimetismo > Acecho
-- Ganar = +1 Antena + efecto especial según postura
-- Perder = penalización según postura enemiga
-- Antenas (0-10): si llegan a 0 → -5% Esencia por combate
+### 4 mapas de zonas secundarias (scripts independientes, sin herencia)
+- [x] `mapa_azotea.gd` — techo del edificio, azul-gris, solo puerta sur→Laboratorio, bordes peligrosos
+- [x] `mapa_sotano.gd` — subsuelo verde-negro, hongos bioluminiscentes, solo puerta norte→Laboratorio
+- [x] `mapa_pasillo.gd` — corredor marrón/hostil, solo puerta oeste→Laboratorio
+- [x] `mapa_maquinas.gd` — sala industrial naranja-rojo, calderas, solo puerta este→Laboratorio
+- [x] Cada zona tiene su propio layout, paleta de colores y spots únicos
 
-### Enemigos actuales (El Laboratorio)
-| Enemigo | HP | Fuerza | Agilidad | Defensa | Aparición |
-|---------|-----|--------|----------|---------|-----------|
-| Garrapata Salvaje | 30 | 4 | 3 | 2 | 33% |
-| Cucaracha Carroñera | 20 | 3 | 5 | 1 | 33% |
-| Polilla Sedante | 15 | 2 | 4 | 0 | 33% |
+### Fix conexiones de zonas — sistema por zona, no global
+- [x] Cada zona tiene su propio diccionario `"conexiones"` en `ZONAS`
+- [x] `_on_entrar_zona` usa `ZONAS[_zona_actual]["conexiones"]` en lugar de `CONEXIONES` global
+- [x] Eliminado `const CONEXIONES` global que causaba que desde la Azotea se pudiera ir al Sótano
+- [x] Ahora: Azotea→solo Laboratorio, Sótano→solo Laboratorio, Pasillo→solo Laboratorio, Máquinas→solo Laboratorio
 
-### Fórmulas clave
-- **Evasión enemiga:** `GAN×3.5% + CRI×2.5%` (cap 55%)
-- **Precisión jugador:** reduce evasión en `SEN×2%`
-- **Velocidad:** `(Ganglios + Sensilios) / 2`
+### Minimapa en HUD
+- [x] Minimapa 68×68px en esquina superior derecha
+- [x] Cruz con 5 celdas coloreadas por zona (LAB/AZO/SOT/PAS/MAQ)
+- [x] Zona actual se ilumina, las demás quedan oscuras
+- [x] Punto amarillo indica posición actual
+- [x] Label de zona actual debajo del minimapa (7px, centrado)
+- [x] Se actualiza automáticamente al cambiar de zona
 
----
+### Estado actual del juego ✅
+- Juego arranca desde menú → creación de personaje → laboratorio
+- Mapa isométrico visible con 4 puertas etiquetadas
+- Player se mueve libremente (WASD/flechas)
+- Transiciones entre las 5 zonas funcionando con fade
+- Cada zona tiene mapa, colores y spots únicos
+- Minimapa muestra posición en la cruz del edificio
 
-## 🍄 SISTEMA DE ESENCIA (EL SILENCIO VERDE)
-
-La Esencia empieza en 100%. Si llega a 0% → Game Over "Asimilado".
-
-### Fases de infección (se activan al bajar)
-| Fase | Umbral | Efecto |
-|------|--------|--------|
-| Susurros | 75% | -1 Sensilios |
-| Parasitismo | 50% | +1 Tórax, -2 Ganglios |
-| Dominación | 25% | -1 a todos los stats |
-| Marioneta | 0% | Game Over |
-
-### Acciones que bajan Esencia
-- Matar sin justificación: -10%
-- Diablerie (consumir fósil): -15%
-- Traicionar aliado: -7%
-- Fallo del enjambre: -8%
-- Huir del combate: -2%
-- Usar habilidad excesiva: -3%
-
-### Acciones que suben Esencia
-- Quest pacífica: +5%
-- Meditar en El Panal: +5%
-- Resistir impulso: +4%
-- Descansar en Nido: +3%
-- Ayudar aliado: +2%
-- Victoria social (Danza): +2%
+### Pendientes inmediatos
+- [ ] Reintroducir colisiones con paredes (es_caminable_pos con offset correcto)
+- [ ] Testear flujo completo: Menú → Creación → Juego → Spots → Combate → Fin Demo
+- [ ] Verificar spawn correcto al entrar a cada zona secundaria
+- [ ] Exportar APK actualizada
 
 ---
 
-## 🎒 SISTEMA DE LOOT E INVENTARIO
+## 📅 Sesión 6 — 1 Junio 2026
 
-Inventario máximo: 20 items.
+### Cambio de alcance: Migración a 3D Low Poly + 2D Combat (estilo Cassette Beasts)
+- [x] Decisión: exploración pasa a 3D Low Poly, combate y diálogos se mantienen en 2D
+- [x] Referencia visual: Cassette Beasts — overworld 3D con combate 2D sprite-based
+- [x] Target cambia: PC Windows (Forward Plus renderer) — se abandona Android/mobile
+- [x] Futuro port: Nintendo Switch como objetivo secundario
+- [x] Input: Teclado + Xbox controller (XInput)
+- [x] Spec creado: `c:\Taxones\.kiro\specs\3d-exploration-2d-combat\requirements.md`
+- [x] 11 requirements definidos y aprobados
 
-### Tiers de loot
-| Tier | Probabilidad |
-|------|-------------|
-| Común | 60% |
-| Poco Común | 25% |
-| Raro | 12% |
-| Épico | 2.5% |
-| Legendario | 0.5% |
+### 3 Taxones DLC → Juego Base (ya no son DLC)
+- [x] 🪲 Escarabajo — "La Nobleza Acorazada" (TOR 9, QUI 10, Facción: La Colmena)
+- [x] 🦗 Grillo — "Los Bardos Exorcistas" (FER 9, SEN 8, Facción: Neutral, Soporte/Exorcista)
+- [x] 🌸 Mantis — "Las Inquisidoras" (CRI 9, TOR 8, Facción: Enjambre Negro, Asesina)
+- [x] Agregados a `data/criaturas.json` con stats, atavismos, defectos y lore completos
+- [x] Páginas wiki individuales: `taxon-escarabajos.html`, `taxon-grillos.html`, `taxon-mantis.html`
+- [x] CSS: `.dlc-badge` y `.dlc-tag` agregados a `style.css`
+- [x] Novela del Grillo definida: "El Exorcista del Gran Charco" (horror/thriller moral)
 
-### Crafteo (objetivo de la demo)
-**Anclaje de Fibra** = 3× Seda de Fibra de Carbono + 1× Nervio de Cobre + 15 Hemolinfa
-→ Completa la demo → desbloquea Escorpión
+### Organigrama Político del Gran Charco
+- [x] Cronología completa: 8 eras desde el Gran Éter (350M años) hasta el Día 8 de la crisis
+- [x] Estructura de poder: Reina → Consejo de Antenas (8 cargos) → 17 Primogénitos
+- [x] Superficie vs Subterráneo: quiénes viven arriba, quiénes abajo, cómo bajan
+- [x] 5 conflictos activos simultáneos definidos
+- [x] Post-humanos del Año 20.000 definidos (Gigantes Débiles en burbujas térmicas)
+- [x] Documento: `organigrama-politico.md` + `organigrama-politico.html` (wiki)
+- [x] Integración de los 3 nuevos taxones en la estructura política
 
-### Fusión de items
-Items repetidos se pueden fusionar en items de tier superior.
-Ejemplos: 10× Espina de Cactus → Lanza de Espinas (+6 daño) → 3× Lanza → Tridente del Charco (+12 daño)
+### Sistema de Diálogos (Dialogue Manager + IA)
+- [x] `dialogues/vlad_laboratorio.dialogue` — diálogo ramificado de Vlad (4 opciones, quest, condicional FER≥6)
+- [x] `scripts/dialogue_trigger.gd` — script para NPCs con diálogo (pausa player, fallback sin addon)
+- [x] `scripts/ai_npc_cache.gd` — sistema de caché progresivo con Gemini API
+- [x] `scripts/ai_npc.gd` — llamada directa a Gemini (sin caché)
+- [x] `dialogues/cache/vlad.json` — 10 respuestas pre-cacheadas para Vlad
+- [x] NPC Vlad agregado al Laboratorio en tile (5,3) con diálogo
+- [x] `.env` con API key de Gemini (protegida por `.gitignore`)
+- [x] `.env.example` como template para otros desarrolladores
 
----
+### API Gemini — Estado
+- [x] Key creada y configurada (`AIzaSy...`)
+- [x] Cuota temporalmente agotada (429) — se resetea automáticamente
+- [x] Sistema listo para generar y cachear diálogos cuando la cuota vuelva
 
-## 💾 GUARDADO
-
-- **F5** — Guardar
-- **F9** — Cargar
-- Archivo: `user://save_data.json`
-- Guarda: nivel, EXP, stats, inventario, reputación, zona, taxón, nombre
-
----
-
-## 🗺️ MAPA ISOMÉTRICO (NUEVO — Mayo 2026)
-
-Se agregó `scripts/iso_map.gd` que genera el mapa del Laboratorio por código.
-- Reemplaza la imagen de fondo `fondo.jpg`
-- Tiles isométricos dibujados con `Image.create()` en runtime
-- Mapa 10×9 con tipos: piso / pared / acento verde / peligro rojo
-- Se instancia en `main.gd` antes del player
-- El player hace spawn en tile (4,4) = centro del mapa
-
-**Pendiente:** ajustar posiciones de los Spots para que coincidan con el mapa isométrico.
-
----
-
-## 📱 EXPORTACIÓN ANDROID
-
-- APK firmado con `debug.keystore`
-- Script de exportación: `exportar_apk.bat`
-- Versiones exportadas: v0.2.0, v0.3.0, latest en `export/`
-- Touch controls: joystick virtual + botones (solo aparece en dispositivos touch)
-
----
-
-## 🔧 SCRIPTS — RESUMEN
-
-| Script | Tipo | Función |
-|--------|------|---------|
-| `game_manager.gd` | Autoload | Estado global: stats, esencia, inventario, combate |
-| `loot_system.gd` | Autoload | Generador de loot aleatorio por tier |
-| `save_system.gd` | Autoload | Guardar/cargar partida (F5/F9) |
-| `main.gd` | Node2D | Construye toda la escena del Laboratorio por código |
-| `menu_principal.gd` | Control | Menú + reproducción de trailers OGV |
-| `creacion_personaje.gd` | Control | Selección de Taxón + Arquetipo |
-| `player.gd` | CharacterBody2D | Movimiento + sprites direccionales + touch |
-| `combat_manager.gd` | CanvasLayer | Combate por turnos completo |
-| `spot.gd` | Node2D | Punto de interacción en el mapa |
-| `spot_menu.gd` | CanvasLayer | Menú de interacción (explorar/cazar/saquear) |
-| `hud.gd` | CanvasLayer | Barras de Turgencia, Hemolinfa, Esencia, EXP |
-| `inventario_ui.gd` | CanvasLayer | Inventario + fusión + crafteo |
-| `bestiario_ui.gd` | CanvasLayer | Pokédex de enemigos vencidos |
-| `touch_controls.gd` | CanvasLayer | Joystick virtual para Android |
-| `iso_map.gd` | Node2D | Mapa isométrico generado por código |
-
----
-
-## ⌨️ CONTROLES
-
-| Acción | Teclado | Android |
-|--------|---------|---------|
-| Mover | WASD / Flechas | Joystick virtual |
-| Interactuar | Espacio / Enter | Botón ⚡ |
-| Inventario | I | Botón 🎒 |
-| Bestiario | L | — |
-| Guardar | F5 | — |
-| Cargar | F9 | — |
-
----
-
-## 📝 NOTAS DE DESARROLLO
-
-- Todo se construye por código (`main.gd`) para evitar problemas de UID en Godot
-- Los sprites del zancudo están en `assets/sprites/` (zancudo_front/back/left/right.png)
-- Las imágenes de enemigos van en `imagenes/Enemigos/2d_[nombre].png`
-- El proyecto `c:\Users\HardwareX\OneDrive\Documentos\la-descarada` es una rama experimental — el proyecto real es este (`descarada`)
+### Pendientes (próxima sesión)
+- [ ] Probar API Gemini cuando se resetee la cuota
+- [ ] Expandir organigrama con descripciones detalladas de todos los NPCs (estilo VTM/GoT)
+- [ ] Instalar Dialogue Manager en Godot (desde AssetLib)
+- [ ] Generar diseño técnico (Implementation Plan) del spec 3D
+- [ ] Crear primer prototipo 3D del Laboratorio (MeshInstance3D básicos)
+- [ ] Configurar CharacterBody3D con billboard sprite
+- [ ] Configurar Camera3D ortográfica con seguimiento
+- [ ] Probar transición 3D→2D para combate
+- [ ] Alimentar caché de diálogos de Vlad con más respuestas via Gemini
