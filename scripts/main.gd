@@ -15,6 +15,9 @@ const ZONAS := {
 			 "desc": "Donde hay milagros, hay parásitos.",           "color": Color(0.2, 0.4, 0.8)},
 			{"tile": Vector2i(2, 8), "nombre": "Cable Expuesto",           "tipo": "explorar",
 			 "desc": "El cobre asoma como un hueso roto.",           "color": Color(0.9, 0.3, 0.1)},
+			{"tile": Vector2i(5, 3), "nombre": "Vlad — Cirujano",          "tipo": "npc",
+			 "desc": "Anopheles Vlad. Cirujano de La Colmena.",      "color": Color(0.4, 0.9, 0.4),
+			 "dialogue": "res://dialogues/vlad_laboratorio.dialogue"},
 		],
 	},
 	"azotea": {
@@ -140,7 +143,10 @@ func _cargar_zona(zona_key: String, desde: String = "") -> void:
 	for spot_data in ZONAS[zona_key]["spots"]:
 		var tile: Vector2i = spot_data["tile"]
 		var pos: Vector2 = mapa.get_tile_pos(tile.x, tile.y)
-		_create_spot(pos, spot_data["nombre"], spot_data["tipo"], spot_data["desc"], spot_data["color"])
+		var extra: Dictionary = {}
+		if spot_data.has("dialogue"):
+			extra["dialogue"] = spot_data["dialogue"]
+		_create_spot(pos, spot_data["nombre"], spot_data["tipo"], spot_data["desc"], spot_data["color"], extra)
 
 	# HUD (solo si no existe ya)
 	if not get_node_or_null("HUD"):
@@ -258,15 +264,22 @@ func _create_player(mapa: Node2D, desde: String = "") -> void:
 	player.add_child(cam)
 
 # ── Crear spot ──────────────────────────────────────────────────────────────
-func _create_spot(pos: Vector2, spot_name: String, spot_type: String, desc: String, color: Color) -> void:
+func _create_spot(pos: Vector2, spot_name: String, spot_type: String, desc: String, color: Color, extra: Dictionary = {}) -> void:
 	var spot := Node2D.new()
 	spot.position = pos
 	spot.z_as_relative = false
 	spot.z_index = int(pos.y / 8.0) * 2 + 2
-	spot.set_script(load("res://scripts/spot.gd"))
-	spot.spot_name = spot_name
-	spot.spot_type = spot_type
-	spot.description = desc
+
+	# NPC con diálogo usa dialogue_trigger.gd
+	if spot_type == "npc" and extra.has("dialogue"):
+		spot.set_script(load("res://scripts/dialogue_trigger.gd"))
+		spot.dialogue_file = extra["dialogue"]
+		spot.npc_name = spot_name
+	else:
+		spot.set_script(load("res://scripts/spot.gd"))
+		spot.spot_name = spot_name
+		spot.spot_type = spot_type
+		spot.description = desc
 
 	var area := Area2D.new()
 	area.name = "Area2D"

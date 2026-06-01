@@ -1,0 +1,55 @@
+{
+	"npc_id": "vlad",
+	"dialogues": [
+		{
+			"input": "hola",
+			"response": "Ah, otra larva perdida en mi laboratorio. Soy Vlad, cirujano de La Colmena. ¿Vienes a que te cosa o a que te abra?",
+			"timestamp": "2026-06-01T00:00:00"
+		},
+		{
+			"input": "quien eres",
+			"response": "Anopheles Vlad. Cirujano, investigador y el único en este edificio que sabe usar un bisturí sin matarte. De nada.",
+			"timestamp": "2026-06-01T00:00:00"
+		},
+		{
+			"input": "que haces aqui",
+			"response": "Investigo el Cordyceps. Busco una cura antes de que todos nos convirtamos en marionetas verdes. ¿Tú qué haces? Aparte de estorbar.",
+			"timestamp": "2026-06-01T00:00:00"
+		},
+		{
+			"input": "necesito ayuda",
+			"response": "Todos necesitan ayuda. Nadie ofrece nada a cambio. Tráeme un Cordyceps Luminoso del Sótano y hablamos de 'ayuda'.",
+			"timestamp": "2026-06-01T00:00:00"
+		},
+		{
+			"input": "que es el silencio verde",
+			"response": "El Cordyceps. Un hongo que te come el cerebro y te convierte en zombi. Todos lo llevamos dentro. La pregunta no es si te infectará — es cuándo.",
+			"timestamp": "2026-06-01T00:00:00"
+		},
+		{
+			"input": "donde consigo materiales",
+			"response": "Seda de Fibra en el Sótano — las arañas la tejen. Nervio de Cobre en el Pasillo — entre los cables. No toques nada rojo.",
+			"timestamp": "2026-06-01T00:00:00"
+		},
+		{
+			"input": "que pasa afuera",
+			"response": "Glaciación. El agua se congela. Los Zancudos de arriba están desesperados por bajar. Hacen cosas... horribles. No preguntes más.",
+			"timestamp": "2026-06-01T00:00:00"
+		},
+		{
+			"input": "quien manda aqui",
+			"response": "La Reina Cimex III gobierna el Gran Charco. Yo respondo ante ella. Tú respondes ante mí. Así funciona La Colmena.",
+			"timestamp": "2026-06-01T00:00:00"
+		},
+		{
+			"input": "adios",
+			"response": "Lárgate antes de que te cobre la consulta. Y no toques mis instrumentos al salir.",
+			"timestamp": "2026-06-01T00:00:00"
+		},
+		{
+			"input": "me puedes curar",
+			"response": "¿Curar? Soy cirujano, no milagrero. Si tienes Hemolinfa para pagar, te coso. Si no, usa un Rocío Matutino como los pobres.",
+			"timestamp": "2026-06-01T00:00:00"
+		}
+	]
+}

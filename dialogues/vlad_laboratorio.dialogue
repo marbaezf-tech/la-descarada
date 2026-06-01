@@ -1,0 +1,61 @@
+~ start
+
+Vlad: [wave]Bienvenido al Laboratorio[/wave], larva. Soy Anopheles "Vlad", cirujano de La Colmena. ¿Qué te trae a mi mesa de operaciones?
+- Necesito materiales para el Anclaje de Fibra.
+	Vlad: Ah, un artesano con ambición. La Seda de Fibra de Carbono la tejen las arañas del Sótano. El Nervio de Cobre está en el Pasillo, entre los cables expuestos.
+	Vlad: Pero cuidado — Los Sueltos controlan el Pasillo y no les gusta que La Colmena meta las antenas donde no debe.
+	=> consejo_materiales
+- ¿Quién manda aquí?
+	Vlad: La Reina Cimex III "El Patrón" gobierna el Gran Charco desde El Barrio Alto. Yo soy su cirujano asignado a esta zona.
+	Vlad: Este edificio es territorio de La Colmena. Pero el Sótano... ahí mandan Los Parásitos Libres. Y la Sala de Máquinas la controla el Enjambre Negro.
+	Vlad: Consejo gratis: no te metas con nadie hasta que tengas algo que ofrecer.
+	=> end
+- ¿Qué está pasando afuera? Hace un frío terrible.
+	Vlad: [shake]La glaciación[/shake], larva. El agua se congela. Los Zancudos de superficie están desesperados por bajar.
+	Vlad: Hace 7 días, Don Mosin Nagant emitió la Directriz de Incubación Viva. Están usando prisioneros como incubadoras para sus huevos.
+	Vlad: Y para colmo, acusaron a las Típulas de ser las culpables. Pobres diablos de patas largas — no pueden ni bajar por los túneles.
+	=> crisis_info
+- [if GameManager.feromonas >= 6] Vengo en paz, hermano de Hemolinfa. Las feromonas no mienten.
+	Vlad: ...Interesante. Tienes feromonas refinadas para ser tan joven. Quizás pueda ayudarte con algo más que palabras.
+	Vlad: Hay un hongo en el Sótano — [color=green]Cordyceps Luminoso[/color]. Si me traes una muestra, te mejoro el arma gratis. ¿Trato?
+	- Trato hecho.
+		set GameManager.quest_vlad_hongo = true
+		Vlad: Excelente. Baja al Sótano, busca los hongos bioluminiscentes cerca de la Colonia. Pero no toques los que brillan rojo — esos te infectan.
+		=> end
+	- No me interesa hacer favores.
+		Vlad: Tu pérdida, larva. La oferta sigue en pie si cambias de opinión.
+		=> end
+
+~ consejo_materiales
+
+Vlad: Un consejo más: el Anclaje de Fibra necesita 3 Sedas + 1 Nervio + 15 de Hemolinfa. No desperdicies recursos en combates innecesarios.
+Vlad: Si puedes resolver las cosas con la Danza de Antenas en lugar de las mandíbulas, tu Esencia te lo agradecerá.
+=> end
+
+~ crisis_info
+
+Vlad: La situación es grave. Los Escarabajos encontraron a una de sus larvas convertida en nido de Zancudos. Quieren sangre.
+Vlad: Las Cucarachas descubrieron la verdad antes que nadie y ahora extorsionan a los Zancudos con "impuestos de silencio".
+Vlad: Y mientras todos se pelean... [shake]el Silencio Verde avanza[/shake]. El frío debilita a todos. El hongo se alimenta del caos.
+- ¿Hay algo que pueda hacer?
+	Vlad: Sobrevivir. Craftea ese Anclaje y sal de aquí antes de que esto explote. O... quédate y elige un bando.
+	Vlad: Pero recuerda: en el Gran Charco, la neutralidad es un lujo que se paga con Hemolinfa.
+	=> end
+- Eso no es mi problema.
+	Vlad: Todo es tu problema cuando vives en un charco congelado, larva. Pero bueno — cada bicho con su antena.
+	=> end
+
+~ vlad_quest_complete
+
+if GameManager.quest_vlad_hongo == true and GameManager.tiene_item("cordyceps_luminoso")
+	Vlad: ¡Lo conseguiste! [wave]Magnífico[/wave]. Este Cordyceps Luminoso es perfecto para mi investigación.
+	Vlad: Como prometí — dame tu arma. La reforzaré con fibra neural.
+	do GameManager.remover_item("cordyceps_luminoso")
+	do GameManager.mejorar_arma_equipada(2)
+	Vlad: Listo. +2 de daño permanente. No me agradezcas — agrádecele al hongo.
+	set GameManager.quest_vlad_hongo = false
+	set GameManager.quest_vlad_completada = true
+	=> end
+else
+	Vlad: ¿Tienes el Cordyceps Luminoso del Sótano? No, ¿verdad? Vuelve cuando lo tengas.
+	=> end
